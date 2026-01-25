@@ -4,9 +4,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SetHub</title>
-  <meta name="description" content="SetHub –  Enjoy your sets" />
+  <meta name="description" content="SetHub – Enjoy your sets" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png" >
+  <link rel="icon" type="image/png" href="Bilder/lagos.png">
 
   <style>
     :root{
@@ -55,33 +55,12 @@
       pointer-events:auto;
     }
 
-    .nav-brand{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:.6rem;
-    }
-
+    .nav-brand{display:flex;align-items:center;justify-content:center;gap:.6rem}
     .logo-svg{width:100%;height:100%;display:block}
-
-    .nav-logo{
-      height:48px;
-      width:auto;
-      display:grid;
-      place-items:center;
-      transform:translateY(8px);
-      gap: 0.7rem;
-    }
-
+    .nav-logo{height:48px;width:auto;display:grid;place-items:center;transform:translateY(8px)}
     .nav-text{
-      display:flex;
-      align-items:center;
-      gap:.15em;
-      line-height:1;
-      font-weight:900;
-      letter-spacing:.04em;
-      color:#fff;
-      font-size:1.6rem;
+      display:flex;align-items:center;gap:.15em;
+      line-height:1;font-weight:900;letter-spacing:.04em;color:#fff;font-size:1.6rem
     }
     .nav-text span{cursor:default}
 
@@ -94,7 +73,6 @@
       transition:opacity .35s ease;
     }
     .brand-fixed.hidden{opacity:0; pointer-events:none}
-
     .brand-fixed::before{
       content:""; position:fixed; left:0; right:0; top:0; height:78px;
       backdrop-filter:blur(10px);
@@ -106,62 +84,44 @@
 
     .brand-line{
       position:fixed;
-      top:50vh;
-      left:50vw;
+      top:50vh; left:50vw;
       transform:translate(-50%,-50%) scale(1);
       transform-origin:center center;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      justify-content:center;
+      display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
       gap:.45rem;
       will-change:transform, top, left;
       text-align:center;
       padding-inline:1.2rem;
     }
-
     .brand-logo{
       height:clamp(210px,30vw,360px);
       width:auto;
       display:grid;
       place-items:center;
-      margin-bottom:0;
     }
-
     .brand-big{
       font-size:clamp(5.5rem,16vw,11rem);
       font-weight:800;
       letter-spacing:.08em;
       line-height:1;
       display:flex;
-      flex-wrap:nowrap;
       gap:.18em;
       justify-content:center;
       color:var(--fg);
       white-space:nowrap;
     }
-
-    .brand-big span{
-      cursor:default;
-      color:#fff;
-      transition:transform .12s;
-    }
-
+    .brand-big span{cursor:default;color:#fff;transition:transform .12s}
     .brand-big span:hover{transform:translateY(-1px)}
-
     body.brand-min .brand-big{color:var(--fg-on)}
     body.theme-light{background:var(--bg-light)}
 
     @media (max-width:900px){
       .brand-line{gap:.35rem}
       .brand-logo{height:clamp(190px,52vw,300px)}
-      .brand-big{
-        font-size:clamp(3.2rem,10vw,4.2rem);
-        letter-spacing:.12em;
-      }
+      .brand-big{font-size:clamp(3.2rem,10vw,4.2rem);letter-spacing:.12em}
       .nav-logo{height:44px}
     }
-
     @media (max-width:380px){
       .brand-big{font-size:2.6rem; letter-spacing:.14em}
       .brand-logo{height:clamp(175px,60vw,260px)}
@@ -180,9 +140,7 @@
       gap:2.8rem;
       padding:clamp(1.8rem,3vw,2.6rem);
     }
-    @media(min-width:1024px){
-      .feature{grid-template-columns:1.05fr 1.1fr}
-    }
+    @media(min-width:1024px){.feature{grid-template-columns:1.05fr 1.1fr}}
 
     .stage{
       position:absolute;
@@ -198,49 +156,20 @@
       z-index:-1;
     }
 
-    .copy{
-      position:relative;
-      z-index:1;
-      max-width:720px;
-      text-align:center;
-      margin-inline:auto;
-    }
-
-    .copy .kicker{
-      color:#fff;
-      font-weight:900;
-      font-size:clamp(4.1rem,6.8vw,5.6rem);
-      margin-bottom:.4rem;
-    }
-
+    .copy{position:relative;z-index:1;max-width:720px;text-align:center;margin-inline:auto}
+    .copy .kicker{color:#fff;font-weight:900;font-size:clamp(4.1rem,6.8vw,5.6rem);margin-bottom:.4rem}
     .copy .mega{
-      font-weight:900;
-      line-height:1.02;
-      letter-spacing:.06em;
+      font-weight:900;line-height:1.02;letter-spacing:.06em;
       font-size:clamp(3.8rem,6.4vw,5.2rem);
-      margin-bottom:1.1rem;
-      color:var(--pink);
+      margin-bottom:1.1rem;color:var(--pink)
     }
-
     .copy .mega .row{display:block}
-
     .copy .sub{
-      margin-top:.6rem;
-      color:#d7dde3;
-      font-size:clamp(.8rem,1vw,.95rem);
-      text-transform:uppercase;
-      letter-spacing:.2em;
-      opacity:.9;
+      margin-top:.6rem;color:#d7dde3;font-size:clamp(.8rem,1vw,.95rem);
+      text-transform:uppercase;letter-spacing:.2em;opacity:.9
     }
 
-    .countdown{
-      display:flex;
-      gap:1rem;
-      flex-wrap:wrap;
-      margin-top:.95rem;
-      justify-content:center;
-    }
-
+    .countdown{display:flex;gap:1rem;flex-wrap:wrap;margin-top:.95rem;justify-content:center}
     .cd-box{
       background:var(--glass);
       border:1px solid var(--glass-border);
@@ -251,34 +180,18 @@
       min-width:140px;
       text-align:center;
     }
-
-    .cd-num{
-      font-size:clamp(2.8rem,4.4vw,3.3rem);
-      font-weight:800;
-    }
-
+    .cd-num{font-size:clamp(2.8rem,4.4vw,3.3rem);font-weight:800}
     .cd-label{
-      font-size:.85rem;
-      color:var(--muted);
-      text-transform:uppercase;
-      letter-spacing:.14em;
-      margin-top:.15rem;
+      font-size:.85rem;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.14em;margin-top:.15rem
     }
 
-    @media (max-width:900px){
-      .feature{grid-template-columns:1fr}
-      .copy{max-width:100%}
-    }
-
+    @media (max-width:900px){.feature{grid-template-columns:1fr}.copy{max-width:100%}}
     @media (max-width:600px){
       .copy .kicker{font-size:3.3rem}
       .copy .mega{font-size:2.9rem}
       .countdown{gap:.7rem}
-      .cd-box{
-        padding:.85rem 1.1rem;
-        flex:1 1 calc(50% - .7rem);
-        min-width:0;
-      }
+      .cd-box{padding:.85rem 1.1rem;flex:1 1 calc(50% - .7rem);min-width:0}
       .cd-num{font-size:2.2rem}
     }
 
@@ -293,7 +206,7 @@
       align-items:center;
       justify-content:center;
     }
-    .preview{width:100%; border-radius:1rem}
+    .preview{width:100%; border-radius:18px}
 
     .team-title{
       font-weight:900;
@@ -305,136 +218,105 @@
 
     .team-grid{
       display:grid;
-      gap:1.4rem;
+      gap:1.1rem;
       grid-template-columns:repeat(2,minmax(180px,1fr));
       justify-content:center;
       align-items:stretch;
     }
 
     .card-wrap{
-      background:linear-gradient(180deg,#101820,#0b1218);
+      border-radius:18px;
       border:1px solid #16212a;
-      border-radius:1.3rem;
-      padding:1rem;
-      display:flex;
+      background:linear-gradient(180deg,#101820,#0b1218);
+      box-shadow:0 18px 70px rgba(0,0,0,.55);
+      padding:12px;
+      transition:transform .12s ease, filter .12s ease;
     }
+    .card-wrap:hover{transform:translateY(-2px);filter:brightness(1.03)}
 
     .card{
-      position:relative;
-      border-radius:1rem;
-      width:100%;
-      min-height:260px;
-      cursor:default;
-      transform:none;
-      transition:none;
-    }
-
-    .card-face{
-      position:absolute;
-      inset:0;
-      border-radius:1rem;
+      border-radius:14px;
       overflow:hidden;
-      backface-visibility:hidden;
+      border:1px solid #223041;
+      background:linear-gradient(180deg,#111b23,#0b1218);
+      min-height:260px;
       display:flex;
-      flex-direction:column;
-      padding:1rem;
     }
 
     .card-face.front{
+      width:100%;
+      display:flex;
+      flex-direction:column;
       align-items:center;
       justify-content:flex-start;
-      gap:.7rem;
-      background:linear-gradient(180deg,#111b23,#0b1218);
+      gap:10px;
+      padding:12px;
     }
-
-    .card-face.back{display:none}
 
     .avatar{
       width:100%;
-      border-radius:1rem;
+      border-radius:12px;
       object-fit:cover;
-      max-height:210px;
+      max-height:240px;
+      border:1px solid #1a2530;
+      background:#0b1218;
     }
 
-    .name{margin-top:.2rem; font-weight:700; text-align:center}
-    .role{color:var(--muted); font-size:.9rem; text-align:center}
-
-    .card-long .name{margin-top:0}
-    .card-long .role{margin-top:0}
-    .card-top .name{margin-top:0}
-    .card-top .role{margin-top:0}
+    .name{
+      margin-top:2px;
+      font-weight:900;
+      letter-spacing:.02em;
+      text-align:center;
+      color:#fff;
+      font-size:1.05rem;
+    }
 
     @media (max-width:600px){
       .section{padding-inline:4%}
-      .team-grid{gap:1.1rem}
-      .card-wrap{padding:.8rem}
+      .team-grid{gap:1rem}
+      .card-wrap{padding:10px}
       .card{min-height:240px}
+      .avatar{max-height:220px}
     }
 
     @media (min-width:1024px){
-      .team-grid{
-        grid-template-columns:repeat(3,minmax(220px,1fr));
-        gap:1.2rem;
-      }
-      .card{height:420px; min-height:420px}
-      .card-face.front{
-        align-items:center;
-        justify-content:center;
-        gap:.7rem;
-      }
-      .avatar{width:84%; max-height:none}
+      .team-grid{grid-template-columns:repeat(3,minmax(220px,1fr));gap:1.1rem}
+      .card{min-height:420px}
+      .avatar{max-height:none}
     }
 
     .footer-cta{background:#12181e;padding:3.5rem 0 0}
     .cta-inner{width:min(1400px,100%);margin:0 auto;padding:0 5% 2rem}
-    .cta-head{
-      display:flex;
-      align-items:center;
-      justify-content:flex-start;
-      gap:0.1rem;
-      margin-bottom:0rem;
-    }
+    .cta-head{display:flex;align-items:center;justify-content:flex-start;gap:.1rem;margin-bottom:0}
     .cta-title{font-size:2rem;font-weight:800}
-
-    .logo-small{
-      height:58px;
-      width:auto;
-      display:grid;
-      place-items:center;
-      transform:translateY(1px);
-    }
+    .logo-small{height:58px;width:auto;display:grid;place-items:center;transform:translateY(1px)}
 
     .signup{display:flex;gap:.6rem;max-width:520px;position:relative}
     .signup input{
       flex:1;
       padding:.9rem 1rem;
-      border-radius:.5rem;
-      border:1px solid #2a3641;
-      background:#18222b;
-      color:#cfd6dd;
+      border-radius:.6rem;
+      border:1px solid #223041;
+      background:rgba(16,24,32,.55);
+      color:#e8eef4;
       outline:none;
+      font-weight:800;
+      letter-spacing:.01em;
     }
+    .signup input::placeholder{color:#9aa4ae}
+    .signup input:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
     .signup button{
       padding:.9rem 1.1rem;
-      border-radius:.5rem;
-      border:1px solid #2a3641;
-      background:#b9916d;
-      color:#0f1419;
-      font-weight:700;
+      border-radius:.6rem;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;
+      font-weight:900;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease, opacity .12s ease;
     }
-    .signup button:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.06);
-    }
-    .signup button:disabled{
-      opacity:.6;
-      cursor:default;
-      transform:none;
-      filter:none;
-    }
-    .contact{margin-top:1.25rem;color:#cfd6dd}
+    .signup button:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .signup button:disabled{opacity:.6;cursor:default;transform:none;filter:none}
 
     .impressum{
       padding:1.6rem 5% 2.2rem;
@@ -444,29 +326,7 @@
       font-size:.95rem;
       line-height:1.5;
     }
-    .impressum h3{
-      font-size:1.2rem;
-      margin-bottom:.6rem;
-      font-weight:800;
-    }
-
-    .social-bar{
-      margin-top:1.6rem;
-      background:#0b1016;
-      color:#fff;
-      display:flex;
-      justify-content:flex-end;
-      gap:.6rem;
-      padding:.7rem 5%;
-      align-items:center;
-    }
-    .soc{width:36px;height:36px;border-radius:.5rem;display:grid;place-items:center}
-    .soc svg{width:18px;height:18px}
-    .tiktok{background:#000}
-    .snap{background:#fffc00}
-    .insta{background:#f50e57}
-    .twitter{background:#1da1f2}
-    .discord{background:#5865f2}
+    .impressum h3{font-size:1.2rem;margin-bottom:.6rem;font-weight:800}
 
     .burger{
       position:fixed;
@@ -492,11 +352,7 @@
       opacity:1;
       pointer-events:auto;
     }
-    .burger .lines{
-      width:20px;
-      height:14px;
-      position:relative;
-    }
+    .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
       position:absolute;
       left:0; right:0;
@@ -508,16 +364,9 @@
     .burger .lines span:nth-child(1){top:0}
     .burger .lines span:nth-child(2){top:6px}
     .burger .lines span:nth-child(3){top:12px}
-
-    body.drawer-open .burger .lines span:nth-child(1){
-      top:6px; transform:rotate(45deg);
-    }
-    body.drawer-open .burger .lines span:nth-child(2){
-      opacity:0;
-    }
-    body.drawer-open .burger .lines span:nth-child(3){
-      top:6px; transform:rotate(-45deg);
-    }
+    body.drawer-open .burger .lines span:nth-child(1){top:6px; transform:rotate(45deg)}
+    body.drawer-open .burger .lines span:nth-child(2){opacity:0}
+    body.drawer-open .burger .lines span:nth-child(3){top:6px; transform:rotate(-45deg)}
 
     .drawer{
       position:fixed;
@@ -534,7 +383,6 @@
       gap:10px;
     }
     body.drawer-open .drawer{transform:translateX(0)}
-
     .drawer a{
       display:flex;
       align-items:center;
@@ -543,15 +391,11 @@
       border-radius:12px;
       background:#0f1820;
       border:1px solid #1a2530;
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.02em;
     }
     .drawer a:hover{background:#13202a}
-
-    .drawer small{
-      color:#94a3b8;
-      font-weight:600;
-    }
+    .drawer small{color:#94a3b8;font-weight:700}
 
     .drawer-backdrop{
       position:fixed;
@@ -562,10 +406,7 @@
       pointer-events:none;
       transition:opacity .25s ease;
     }
-    body.drawer-open .drawer-backdrop{
-      opacity:1;
-      pointer-events:auto;
-    }
+    body.drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
 
     .cookie-backdrop{
       position:fixed;
@@ -576,7 +417,6 @@
       transition:opacity .25s ease;
       z-index:60;
     }
-
     .cookie-modal{
       position:fixed;
       left:50%;
@@ -588,7 +428,6 @@
       z-index:61;
       transition:transform .35s ease, opacity .35s ease;
     }
-
     .cookie-card{
       background:
         radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.30), transparent 60%),
@@ -600,106 +439,49 @@
       box-shadow:0 24px 80px rgba(0,0,0,.6);
       backdrop-filter:blur(14px);
     }
-
-    .cookie-head{
-      display:flex;
-      gap:12px;
-      align-items:flex-start;
-    }
-
+    .cookie-head{display:flex;gap:12px;align-items:flex-start}
     .cookie-icon{
-      width:52px;
-      height:52px;
-      border-radius:14px;
+      width:52px;height:52px;border-radius:14px;
       background:var(--glass);
       border:1px solid var(--glass-border);
-      display:grid;
-      place-items:center;
-      color:#fff;
-      flex:0 0 auto;
+      display:grid;place-items:center;color:#fff;flex:0 0 auto;
       animation:cookieFloat 3.6s ease-in-out infinite;
     }
-
     .cookie-icon svg{
-      width:30px;
-      height:30px;
-      color:var(--pink);
+      width:30px;height:30px;color:var(--pink);
       filter:drop-shadow(0 6px 18px rgba(207,100,229,.55));
     }
-
     .cookie-card h3{
-      font-size:1.25rem;
-      font-weight:900;
-      margin-bottom:6px;
-      letter-spacing:.04em;
-      color:#fff;
+      font-size:1.25rem;font-weight:900;margin-bottom:6px;letter-spacing:.04em;color:#fff;
     }
-
-    .cookie-text{
-      font-size:.95rem;
-      color:#cfd6dd;
-      line-height:1.45;
-    }
-
-    .cookie-actions{
-      display:flex;
-      gap:8px;
-      justify-content:flex-end;
-      margin-top:12px;
-    }
-
+    .cookie-text{font-size:.95rem;color:#cfd6dd;line-height:1.45}
+    .cookie-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
     .cookie-btn{
-      padding:.72rem 1rem;
-      border-radius:.6rem;
-      border:1px solid #2a3641;
-      background:linear-gradient(180deg,#6a37a2,#4b2579);
-      color:#fff;
-      font-weight:800;
-      letter-spacing:.02em;
+      padding:.72rem 1rem;border-radius:.6rem;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;font-weight:900;letter-spacing:.02em;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease, opacity .12s ease;
     }
-
-    .cookie-btn:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.06);
-    }
-
-    .cookie-btn.ghost{
-      background:#111b23;
-      color:#d9e1e8;
-    }
-
+    .cookie-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .cookie-btn.ghost{background:#111b23;border:1px solid #2a3641;color:#d9e1e8}
     .cookie-links{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      justify-content:flex-start;
-      margin-top:8px;
-      font-size:.85rem;
-      color:var(--muted);
+      display:flex;gap:8px;align-items:center;justify-content:flex-start;
+      margin-top:8px;font-size:.85rem;color:var(--muted);
     }
-
     .cookie-links a:hover{color:#fff}
-
-    body.cookie-open .cookie-backdrop{
-      opacity:1;
-      pointer-events:auto;
-    }
-
+    body.cookie-open .cookie-backdrop{opacity:1;pointer-events:auto}
     body.cookie-open .cookie-modal{
-      opacity:1;
-      pointer-events:auto;
+      opacity:1;pointer-events:auto;
       transform:translateX(-50%) translateY(0) scale(1);
       animation:cookiePop .5s ease;
     }
-
     @keyframes cookiePop{
       0%{transform:translateX(-50%) translateY(30px) scale(.96)}
       60%{transform:translateX(-50%) translateY(-4px) scale(1.01)}
       100%{transform:translateX(-50%) translateY(0) scale(1)}
     }
-
     @keyframes cookieFloat{
       0%{transform:translateY(0)}
       50%{transform:translateY(-4px)}
@@ -707,16 +489,13 @@
     }
 
     .toast-wrap{
-      position:fixed;
-      inset:0;
-      display:grid;
-      place-items:center;
+      position:fixed; inset:0;
+      display:grid; place-items:center;
       pointer-events:none;
       z-index:80;
       opacity:0;
       transition:opacity .25s ease;
     }
-
     .toast{
       width:min(520px,90vw);
       background:
@@ -732,77 +511,158 @@
       transition:transform .25s ease, opacity .25s ease;
       pointer-events:auto;
     }
-
-    .toast h4{
-      font-size:1.2rem;
-      font-weight:900;
-      letter-spacing:.03em;
-      color:#fff;
-      margin-bottom:6px;
-    }
-
-    .toast p{
-      color:#cfd6dd;
-      font-size:.98rem;
-      line-height:1.5;
-    }
-
+    .toast h4{font-size:1.2rem;font-weight:900;letter-spacing:.03em;color:#fff;margin-bottom:6px}
+    .toast p{color:#cfd6dd;font-size:.98rem;line-height:1.5}
     .toast .ok{
       margin-top:12px;
       padding:.72rem 1rem;
       border-radius:.6rem;
-      border:1px solid #2a3641;
-      background:linear-gradient(180deg,#6a37a2,#4b2579);
-      color:#fff;
-      font-weight:800;
-      cursor:pointer;
-      width:100%;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;font-weight:900;cursor:pointer;width:100%;
       transition:transform .12s ease, filter .12s ease;
     }
-
-    .toast .ok:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.06);
-    }
-
-    body.toast-on .toast-wrap{
-      opacity:1;
-      pointer-events:auto;
-    }
-
-    body.toast-on .toast{
-      transform:translateY(0) scale(1);
-      animation:toastPop .45s ease;
-    }
-
+    .toast .ok:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
+    body.toast-on .toast{transform:translateY(0) scale(1);animation:toastPop .45s ease}
     @keyframes toastPop{
       0%{transform:translateY(16px) scale(.96)}
       60%{transform:translateY(-4px) scale(1.01)}
       100%{transform:translateY(0) scale(1)}
     }
+
+    /* AI FAB + OVERLAY. BACK */
+    .ai-fab{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:75;
+      width:58px;
+      height:58px;
+      border-radius:999px;
+      border:1px solid #2a3641;
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(18px);
+      transition:transform .18s ease, filter .12s ease, opacity .18s ease;
+    }
+    body.ai-fab-on .ai-fab{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateY(0);
+    }
+    .ai-fab:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .ai-fab svg{width:22px;height:22px;color:#fff}
+
+    .ai-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+      z-index:90;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:22px;
+    }
+    body.ai-open .ai-overlay{opacity:1;pointer-events:auto}
+
+    .ai-phone{
+      width:390px;
+      height:844px;
+      max-width:92vw;
+      max-height:86vh;
+      border-radius:26px;
+      border:1px solid #223041;
+      background:rgba(12,18,24,.98);
+      box-shadow:0 30px 120px rgba(0,0,0,.6);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+
+      opacity:0;
+      transform:translateX(28px) translateY(-10px) scale(.985);
+      will-change:transform, opacity;
+    }
+    body.ai-open .ai-phone{animation:aiIn .36s cubic-bezier(.2,.9,.2,1) forwards}
+    body.ai-closing .ai-phone{animation:aiOutDown .36s cubic-bezier(.2,.0,.2,1) forwards}
+
+    @keyframes aiIn{
+      0%{opacity:0;transform:translateX(28px) translateY(-10px) scale(.985)}
+      55%{opacity:1;transform:translateX(-4px) translateY(2px) scale(1.01)}
+      100%{opacity:1;transform:translateX(0) translateY(0) scale(1)}
+    }
+    @keyframes aiOutDown{
+      0%{opacity:1;transform:translateX(0) translateY(0) scale(1)}
+      40%{opacity:1;transform:translateX(2px) translateY(14px) scale(.995)}
+      100%{opacity:0;transform:translateX(2px) translateY(90px) scale(.985)}
+    }
+
+    .ai-top{
+      height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 12px;
+      border-bottom:1px solid #1a2530;
+      background:rgba(16,24,32,.75);
+      backdrop-filter:blur(12px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .ai-top::before{
+      content:"";
+      position:absolute;
+      left:-60%;
+      top:0;
+      height:3px;
+      width:60%;
+      background:linear-gradient(90deg, rgba(207,100,229,0), rgba(207,100,229,.95), rgba(0,229,255,.95), rgba(255,94,160,.95), rgba(207,100,229,0));
+      animation:aiBar 1.1s linear infinite;
+    }
+
+    @keyframes aiBar{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(280%)}
+    }
+
+    .ai-top-title{font-weight:900;letter-spacing:.04em;color:#fff}
+
+    .ai-close{
+      height:36px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid #2a3641;
+      background:#111b23;
+      color:#d9e1e8;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .ai-close:hover{transform:translateY(-1px);filter:brightness(1.06)}
+
+    .ai-frame{width:100%;height:100%;border:0;background:#0b1218}
   </style>
 </head>
-<body>
 
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen">
+<body>
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
   </button>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
-    <a href="#team" class="drawer-link">
-      Team
-      <small>Meet the team</small>
-    </a>
-    <a href="#contact" class="drawer-link">
-      Contact Us
-      <small>Get in touch</small>
-    </a>
-    <a href="#impressum" class="drawer-link">
-      Impressum
-      <small>Legal information</small>
-    </a>
+    <a href="#team" class="drawer-link">Team <small>Meet the team</small></a>
+    <a href="#contact" class="drawer-link">Contact <small>Get in touch</small></a>
+    <a href="#impressum" class="drawer-link">Impressum <small>Legal information</small></a>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 
@@ -829,8 +689,8 @@
       </div>
 
       <div class="cookie-actions">
-        <button class="cookie-btn ghost" id="cookieDecline">Ablehnen</button>
-        <button class="cookie-btn" id="cookieAccept">Akzeptieren</button>
+        <button class="cookie-btn ghost" id="cookieDecline" type="button">Ablehnen</button>
+        <button class="cookie-btn" id="cookieAccept" type="button">Akzeptieren</button>
       </div>
 
       <div class="cookie-links">
@@ -841,7 +701,7 @@
     </div>
   </div>
 
-    <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
+  <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
     <symbol id="sethub-logo" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
       <defs>
         <g id="logo-geometry">
@@ -955,68 +815,50 @@
         <h2 class="team-title">The Team</h2>
 
         <div class="team-grid">
-          <div class="card-wrap"><div class="card card-top">
-            <div class="card-face front">
-              <img class="avatar" src="/Bilder/niklas.png" alt="Profil Niklas Hack">
-              <div class="name">Niklas</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="/Bilder/niklas.png" alt="Profil Niklas Hack">
+            <div class="name">Niklas</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card card-top">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/Fabian.png" alt="Profil Fabian">
-              <div class="name">Fabian</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Fabian.png" alt="Profil Fabian">
+            <div class="name">Fabian</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card card-top">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/kurz.png" alt="Profil Christoph Kurz">
-              <div class="name">Christoph</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/kurz.png" alt="Profil Christoph Kurz">
+            <div class="name">Christoph</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/Michell.png" alt="Profil Michelle">
-              <div class="name">Michelle</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Michell.png" alt="Profil Michelle">
+            <div class="name">Michelle</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/Mert.png" alt="Profil Mert Aydin">
-              <div class="name">Mert</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Mert.png" alt="Profil Mert Aydin">
+            <div class="name">Mert</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
-              <div class="name">Ibrahim</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
+            <div class="name">Ibrahim</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card card-long">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/lukas.png" alt="Profil Lukas Zlavinker">
-              <div class="name">Lukas</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/lukas.png" alt="Profil Lukas Zlavinker">
+            <div class="name">Lukas</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card card-long">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/Hannes.png" alt="Profil Hannes Porhacka">
-              <div class="name">Hannes</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Hannes.png" alt="Profil Hannes Porhacka">
+            <div class="name">Hannes</div>
+          </div></div></div>
 
-          <div class="card-wrap"><div class="card card-long">
-            <div class="card-face front">
-              <img class="avatar" src="Bilder/hund.png" alt="Profil Loki">
-              <div class="name">loki</div>
-            </div>
-          </div></div>
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/hund.png" alt="Profil Loki">
+            <div class="name">Loki</div>
+          </div></div></div>
         </div>
       </div>
     </section>
@@ -1032,15 +874,13 @@
           </div>
         </div>
 
-        <!-- MAILCHIMP SIGNUP FORM -->
         <form class="signup" id="signupForm"
-              action="https://sethub.us15.list-manage.com/subscribe/post?u=7ec946cee576bceb6230c39d1&amp;id=f9515cb6c5&amp;f_id=00f1c2e1f0"
-              method="post"
-              target="mcHiddenFrame"
-              novalidate>
+          action="https://sethub.us15.list-manage.com/subscribe/post?u=7ec946cee576bceb6230c39d1&amp;id=f9515cb6c5&amp;f_id=00f1c2e1f0"
+          method="post"
+          target="mcHiddenFrame"
+          novalidate>
           <input type="email" name="EMAIL" id="signupEmail" placeholder="Enter Email Address" required />
 
-          <!-- honeypot feld MUSS zu deiner neuen u/id passen -->
           <div aria-hidden="true" style="position:absolute; left:-5000px;">
             <input type="text" name="b_7ec946cee576bceb6230c39d1_f9515cb6c5" tabindex="-1" value="">
           </div>
@@ -1048,13 +888,7 @@
           <button type="submit" id="signupBtn">Sign Up</button>
         </form>
 
-        <!-- hidden iframe damit kein neues tab aufgeht -->
         <iframe name="mcHiddenFrame" id="mcHiddenFrame" style="display:none"></iframe>
-
-        <div class="contact">
-          <div></div>
-          <div></div>
-        </div>
       </div>
 
       <section class="impressum" id="impressum">
@@ -1071,7 +905,25 @@
     <div class="toast" role="status" aria-live="polite">
       <h4>Gesendet</h4>
       <p>Deine Email wurde geschickt Danke für dein Interesse</p>
-      <button class="ok" id="toastOk">Ok</button>
+      <button class="ok" id="toastOk" type="button">Ok</button>
+    </div>
+  </div>
+
+  <button class="ai-fab" id="aiFab" aria-label="AI öffnen" type="button">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 2a5 5 0 0 0-5 5v1H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1v1a5 5 0 0 0 10 0v-1h1a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3h-1V7a5 5 0 0 0-5-5Z" stroke="currentColor" stroke-width="2"/>
+      <path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="ai-overlay" id="aiOverlay" aria-hidden="true">
+    <div class="ai-phone" role="dialog" aria-modal="true" aria-label="AI">
+      <div class="ai-top">
+        <div class="ai-top-title">SetHub AI</div>
+        <button class="ai-close" id="aiClose" type="button">Close</button>
+      </div>
+      <iframe class="ai-frame" id="aiFrame" title="AI" loading="lazy"></iframe>
     </div>
   </div>
 
@@ -1089,7 +941,6 @@
 
       const startTop = h/2
       const endTop = 38
-
       const startLeft = w/2
       const endLeft = w/2
 
@@ -1114,6 +965,7 @@
       document.body.classList.toggle('header-on', done)
 
       document.body.classList.toggle('menu-on', y > 10)
+      document.body.classList.toggle('ai-fab-on', done)
 
       rafPending = false
     }
@@ -1140,13 +992,10 @@
 
       const d=Math.floor(diff/86400000)
       diff-=d*86400000
-
       const h=Math.floor(diff/3600000)
       diff-=h*3600000
-
       const m=Math.floor(diff/60000)
       diff-=m*60000
-
       const s=Math.floor(diff/1000)
 
       elD.textContent=String(d).padStart(2,'0')
@@ -1160,56 +1009,33 @@
     const burgerBtn = document.getElementById('burgerBtn')
     const drawerBackdrop = document.getElementById('drawerBackdrop')
 
-    function openDrawer(){
-      document.body.classList.add('drawer-open')
-    }
-    function closeDrawer(){
-      document.body.classList.remove('drawer-open')
-    }
+    function openDrawer(){ document.body.classList.add('drawer-open') }
+    function closeDrawer(){ document.body.classList.remove('drawer-open') }
 
     burgerBtn.addEventListener('click',()=>{
-      if(document.body.classList.contains('drawer-open')) closeDrawer()
-      else openDrawer()
+      document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
     })
-
-    drawerBackdrop.addEventListener('click',closeDrawer)
-
+    drawerBackdrop.addEventListener('click', closeDrawer)
     document.querySelectorAll('.drawer-link').forEach(link=>{
-      link.addEventListener('click',()=>{
-        closeDrawer()
-      })
+      link.addEventListener('click',()=>{ closeDrawer() })
     })
 
     const cookieBackdrop = document.getElementById('cookieBackdrop')
     const cookieAccept = document.getElementById('cookieAccept')
     const cookieDecline = document.getElementById('cookieDecline')
 
-    function openCookie(){
-      document.body.classList.add('cookie-open')
-    }
-    function closeCookie(){
-      document.body.classList.remove('cookie-open')
-    }
+    function openCookie(){ document.body.classList.add('cookie-open') }
+    function closeCookie(){ document.body.classList.remove('cookie-open') }
     function saveCookie(choice){
       localStorage.setItem('sethub_cookie_choice', choice)
       localStorage.setItem('sethub_cookie_time', String(Date.now()))
     }
 
     const existingChoice = localStorage.getItem('sethub_cookie_choice')
-    if(!existingChoice){
-      setTimeout(openCookie, 700)
-    }
+    if(!existingChoice){ setTimeout(openCookie, 700) }
 
-    cookieAccept.addEventListener('click', ()=>{
-      saveCookie('accepted')
-      closeCookie()
-    })
-
-    cookieDecline.addEventListener('click', ()=>{
-      saveCookie('declined')
-      closeCookie()
-    })
-
+    cookieAccept.addEventListener('click', ()=>{ saveCookie('accepted'); closeCookie() })
+    cookieDecline.addEventListener('click', ()=>{ saveCookie('declined'); closeCookie() })
     cookieBackdrop.addEventListener('click', closeCookie)
 
     const signupForm = document.getElementById('signupForm')
@@ -1222,7 +1048,6 @@
       document.body.classList.add('toast-on')
       toastWrap.setAttribute('aria-hidden','false')
     }
-
     function closeToast(){
       document.body.classList.remove('toast-on')
       toastWrap.setAttribute('aria-hidden','true')
@@ -1233,10 +1058,6 @@
       if(e.target === toastWrap) closeToast()
     })
 
-    // wichtig
-    // kein preventDefault
-    // form sendet normal zu mailchimp
-    // toast kommt danach
     signupForm.addEventListener('submit', ()=>{
       const email = signupEmail.value.trim()
       if(!email) return
@@ -1250,6 +1071,48 @@
         signupBtn.textContent = 'Sign Up'
         openToast()
       }, 900)
+    })
+
+    const aiFab = document.getElementById('aiFab')
+    const aiOverlay = document.getElementById('aiOverlay')
+    const aiClose = document.getElementById('aiClose')
+    const aiFrame = document.getElementById('aiFrame')
+
+    const AI_URL = 'https://lego.sethub.ddnsfree.com/'
+    let aiBusy = false
+
+    function openAI(){
+      if(aiBusy) return
+      if(!aiFrame.src) aiFrame.src = AI_URL
+      document.body.classList.remove('ai-closing')
+      document.body.classList.add('ai-open')
+      aiOverlay.setAttribute('aria-hidden','false')
+    }
+
+    function closeAI(){
+      if(aiBusy) return
+      if(!document.body.classList.contains('ai-open')) return
+
+      aiBusy = true
+      document.body.classList.add('ai-closing')
+
+      setTimeout(()=>{
+        document.body.classList.remove('ai-open')
+        document.body.classList.remove('ai-closing')
+        aiOverlay.setAttribute('aria-hidden','true')
+        aiBusy = false
+      }, 360)
+    }
+
+    aiFab.addEventListener('click', openAI)
+    aiClose.addEventListener('click', closeAI)
+
+    aiOverlay.addEventListener('click', e => {
+      if(e.target === aiOverlay) closeAI()
+    })
+
+    addEventListener('keydown', e => {
+      if(e.key === 'Escape') closeAI()
     })
   </script>
 </body>
