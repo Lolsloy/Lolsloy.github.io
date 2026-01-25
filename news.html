@@ -589,7 +589,7 @@
     }
 
     function buildCard(item){
-      const href = firstText(item, ["sourceUrl","url","link"]) || "#"
+      const href = firstText(item, ["productUrl","sourceUrl","url","link"]) || "#"
       const img = firstText(item, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG
       const title = safeText(firstText(item, ["title","name","setName"]) || "Item")
 
@@ -754,7 +754,12 @@
       const clean = dedupeNews(pickLocale(list)).sort(byDateDesc)
 
       const sliderItems = clean.slice(0,5)
-      const newsItems = clean.slice(0,9)
+      const sliderKeys = new Set(
+        sliderItems.map(x => `${(x.title || "").trim()}__${(x.publishedAt || "").trim()}`)
+      )
+      const newsItems = clean
+        .filter(x => !sliderKeys.has(`${(x.title || "").trim()}__${(x.publishedAt || "").trim()}`))
+        .slice(0,9)
 
       track.innerHTML = sliderItems.map(buildSlide).join("")
       mountDots(sliderItems.length)
