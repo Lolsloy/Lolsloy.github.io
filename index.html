@@ -39,7 +39,6 @@
 
     header.site{
       position:fixed; left:0; right:0; top:0; height:78px;
-      display:flex; align-items:center; justify-content:center;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
       border-bottom:1px solid #0f1a22;
@@ -55,14 +54,82 @@
       pointer-events:auto;
     }
 
-    .nav-brand{display:flex;align-items:center;justify-content:center;gap:.6rem}
+    .topbar-inner{
+      height:100%;
+      width:min(1240px,100%);
+      margin:0 auto;
+      padding:0 14px;
+      display:grid;
+      grid-template-columns:56px 1fr 220px;
+      align-items:center;
+    }
+
+    .nav-brand{
+      grid-column:2;
+      justify-self:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.6rem;
+      min-width:0;
+      transform:translateY(4px);
+    }
+
     .logo-svg{width:100%;height:100%;display:block}
-    .nav-logo{height:48px;width:auto;display:grid;place-items:center;transform:translateY(8px)}
+
+    .nav-logo{
+      height:48px;
+      width:auto;
+      display:grid;
+      place-items:center;
+      transform:translateY(10px);
+      flex:0 0 auto;
+    }
+
     .nav-text{
-      display:flex;align-items:center;gap:.15em;
-      line-height:1;font-weight:900;letter-spacing:.04em;color:#fff;font-size:1.6rem
+      display:flex;
+      align-items:center;
+      gap:.15em;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.04em;
+      color:#fff;
+      font-size:1.6rem;
+      white-space:nowrap;
     }
     .nav-text span{cursor:default}
+
+    .top-links{
+      grid-column:3;
+      justify-self:end;
+      display:flex;
+      gap:10px;
+    }
+
+    .top-link{
+      height:44px;
+      padding:0 14px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      font-weight:900;
+      color:#fff;
+      letter-spacing:.02em;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .top-link span{color:#94a3b8;font-weight:800}
+
+    @media (max-width:520px){
+      .top-links{display:none}
+      .topbar-inner{grid-template-columns:56px 1fr 56px}
+    }
 
     .brand-fixed{
       position:fixed; inset:0;
@@ -73,6 +140,7 @@
       transition:opacity .35s ease;
     }
     .brand-fixed.hidden{opacity:0; pointer-events:none}
+
     .brand-fixed::before{
       content:""; position:fixed; left:0; right:0; top:0; height:78px;
       backdrop-filter:blur(10px);
@@ -84,44 +152,63 @@
 
     .brand-line{
       position:fixed;
-      top:50vh; left:50vw;
+      top:50vh;
+      left:50vw;
       transform:translate(-50%,-50%) scale(1);
       transform-origin:center center;
-      display:flex; flex-direction:column;
-      align-items:center; justify-content:center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
       gap:.45rem;
       will-change:transform, top, left;
       text-align:center;
       padding-inline:1.2rem;
     }
+
     .brand-logo{
       height:clamp(210px,30vw,360px);
       width:auto;
       display:grid;
       place-items:center;
+      margin-bottom:0;
     }
+
     .brand-big{
       font-size:clamp(5.5rem,16vw,11rem);
       font-weight:800;
       letter-spacing:.08em;
       line-height:1;
       display:flex;
+      flex-wrap:nowrap;
       gap:.18em;
       justify-content:center;
       color:var(--fg);
       white-space:nowrap;
     }
-    .brand-big span{cursor:default;color:#fff;transition:transform .12s}
+
+    .brand-big span{
+      cursor:default;
+      color:#fff;
+      transition:transform .12s;
+    }
+
     .brand-big span:hover{transform:translateY(-1px)}
+
     body.brand-min .brand-big{color:var(--fg-on)}
     body.theme-light{background:var(--bg-light)}
 
     @media (max-width:900px){
       .brand-line{gap:.35rem}
       .brand-logo{height:clamp(190px,52vw,300px)}
-      .brand-big{font-size:clamp(3.2rem,10vw,4.2rem);letter-spacing:.12em}
+      .brand-big{
+        font-size:clamp(3.2rem,10vw,4.2rem);
+        letter-spacing:.12em;
+      }
       .nav-logo{height:44px}
+      header.site{height:72px}
     }
+
     @media (max-width:380px){
       .brand-big{font-size:2.6rem; letter-spacing:.14em}
       .brand-logo{height:clamp(175px,60vw,260px)}
@@ -391,11 +478,11 @@
       border-radius:12px;
       background:#0f1820;
       border:1px solid #1a2530;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:.02em;
     }
     .drawer a:hover{background:#13202a}
-    .drawer small{color:#94a3b8;font-weight:700}
+    .drawer small{color:#94a3b8;font-weight:800}
 
     .drawer-backdrop{
       position:fixed;
@@ -531,7 +618,6 @@
       100%{transform:translateY(0) scale(1)}
     }
 
-    /* AI FAB + OVERLAY. BACK */
     .ai-fab{
       position:fixed;
       right:18px;
@@ -660,9 +746,10 @@
   </button>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
-    <a href="#team" class="drawer-link">Team <small>Meet the team</small></a>
-    <a href="#contact" class="drawer-link">Contact <small>Get in touch</small></a>
-    <a href="#impressum" class="drawer-link">Impressum <small>Legal information</small></a>
+    <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
+    <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
+    <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 
@@ -746,14 +833,27 @@
   </svg>
 
   <header class="site" id="topBar" aria-label="Navigation">
-    <div class="nav-brand">
-      <div class="nav-logo" aria-hidden="true">
-        <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
-          <use href="#sethub-logo"></use>
-        </svg>
+    <div class="topbar-inner">
+      <div></div>
+
+      <div class="nav-brand">
+        <div class="nav-logo" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+            <use href="#sethub-logo"></use>
+          </svg>
+        </div>
+        <div class="nav-text" aria-label="SetHub">
+          <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+        </div>
       </div>
-      <div class="nav-text" aria-label="SetHub">
-        <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+
+      <div class="top-links" aria-label="Quick Links">
+        <a class="top-link" href="/news.html" aria-label="News">
+          <strong>News</strong><span>Updates</span>
+        </a>
+        <a class="top-link" href="/events.html" aria-label="Events">
+          <strong>Events</strong><span>Dates</span>
+        </a>
       </div>
     </div>
   </header>
@@ -941,6 +1041,7 @@
 
       const startTop = h/2
       const endTop = 38
+
       const startLeft = w/2
       const endLeft = w/2
 
