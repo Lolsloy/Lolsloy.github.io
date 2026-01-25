@@ -38,8 +38,9 @@
     }
 
     header.site{
-      position:fixed; left:0; right:0; top:0; height:78px;
-      display:flex; align-items:center; justify-content:center;
+      position:fixed;
+      left:0; right:0; top:0;
+      height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
       border-bottom:1px solid #0f1a22;
@@ -55,11 +56,25 @@
       pointer-events:auto;
     }
 
+    .topbar-inner{
+      height:100%;
+      width:min(1240px,100%);
+      margin:0 auto;
+      padding:0 14px;
+      display:grid;
+      grid-template-columns:56px 1fr 56px;
+      align-items:center;
+    }
+
     .nav-brand{
+      grid-column:2;
+      justify-self:center;
       display:flex;
       align-items:center;
       justify-content:center;
       gap:.6rem;
+      min-width:0;
+      transform:translateY(4px);
     }
 
     .logo-svg{width:100%;height:100%;display:block}
@@ -69,8 +84,8 @@
       width:auto;
       display:grid;
       place-items:center;
-      transform:translateY(8px);
-      gap: 0.7rem;
+      transform:translateY(10px);
+      flex:0 0 auto;
     }
 
     .nav-text{
@@ -82,6 +97,7 @@
       letter-spacing:.04em;
       color:#fff;
       font-size:1.6rem;
+      white-space:nowrap;
     }
     .nav-text span{cursor:default}
 
@@ -160,12 +176,15 @@
         letter-spacing:.12em;
       }
       .nav-logo{height:44px}
+      .nav-text{font-size:1.45rem}
+      header.site{height:72px}
     }
 
     @media (max-width:380px){
       .brand-big{font-size:2.6rem; letter-spacing:.14em}
       .brand-logo{height:clamp(175px,60vw,260px)}
       .nav-logo{height:40px}
+      .nav-text{font-size:1.35rem}
     }
 
     main{position:relative; z-index:5; margin-top:72vh}
@@ -629,9 +648,7 @@
     }
 
     @media (max-width:520px){
-      .top-links{left:64px; gap:8px}
-      .top-link{padding:0 12px}
-      .top-link span{display:none}
+      .top-links{display:none}
     }
 
     .ai-fab{
@@ -666,12 +683,6 @@
       height:22px;
       color:#fff;
     }
-
-    /* AI PANEL
-       open animation top bar
-       close animation pulls down
-       no dark backdrop
-    */
 
     .ai-overlay{
       position:fixed;
@@ -834,17 +845,21 @@
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
-    <a href="#team" class="drawer-link">
-      Team
-      <small>Meet the team</small>
+    <a href="/index.html" class="drawer-link">
+      Home
+      <small>Start</small>
     </a>
-    <a href="#contact" class="drawer-link">
-      Contact Us
-      <small>Get in touch</small>
+    <a href="/news.html" class="drawer-link">
+      News
+      <small>Updates</small>
     </a>
-    <a href="#impressum" class="drawer-link">
+    <a href="/events.html" class="drawer-link">
+      Events
+      <small>Dates</small>
+    </a>
+    <a href="/index.html#impressum" class="drawer-link">
       Impressum
-      <small>Legal information</small>
+      <small>Legal</small>
     </a>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
@@ -929,14 +944,16 @@
   </svg>
 
   <header class="site" id="topBar" aria-label="Navigation">
-    <div class="nav-brand">
-      <div class="nav-logo" aria-hidden="true">
-        <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
-          <use href="#sethub-logo"></use>
-        </svg>
-      </div>
-      <div class="nav-text" aria-label="SetHub">
-        <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+    <div class="topbar-inner">
+      <div class="nav-brand">
+        <div class="nav-logo" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+            <use href="#sethub-logo"></use>
+          </svg>
+        </div>
+        <div class="nav-text" aria-label="SetHub">
+          <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+        </div>
       </div>
     </div>
   </header>
@@ -1135,7 +1152,7 @@
       const y = scrollY
 
       const startTop = h/2
-      const endTop = 38
+      const endTop = 40
 
       const startLeft = w/2
       const endLeft = w/2
