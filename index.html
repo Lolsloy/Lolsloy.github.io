@@ -232,6 +232,22 @@
     body.user-on #loginOpen{display:none}
     body.user-on #statusPill{display:flex}
 
+    /* mobile login icon */
+    .login-icon-btn{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:var(--glass2);
+      border:1px solid var(--border);
+      backdrop-filter:blur(10px);
+      display:none;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .login-icon-btn svg{width:22px;height:22px;color:#fff}
+
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
@@ -242,11 +258,15 @@
       .top-link span{display:none}
       .login-float{top:14px;right:12px}
       .status-pill{height:44px}
+      .login-icon-btn{height:44px;width:44px;border-radius:12px}
     }
 
     @media (max-width:520px){
       .top-links{display:none}
       .status-pill{display:none}
+      #loginOpen{display:none}
+      .login-icon-btn{display:grid}
+      body.user-on .login-icon-btn{display:none}
     }
 
     .drawer{
@@ -912,8 +932,16 @@
     <div class="status-pill" id="statusPill" aria-live="polite">
       <strong id="userName">User</strong><span id="userEmail">Email</span>
     </div>
+
     <button class="top-link" id="loginOpen" type="button" aria-label="Anmelden">
       <strong>Anmelden</strong><span>Google</span>
+    </button>
+
+    <button class="login-icon-btn" id="loginIconBtn" type="button" aria-label="Anmelden">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
     </button>
   </div>
 
@@ -981,8 +1009,6 @@
         <mask id="logoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="3326" height="2408">
           <use href="#logo-geometry"></use>
         </mask>
-
-        <!-- removed invalid // comment -->
 
         <linearGradient id="gradA" x1="-20%" y1="0%" x2="120%" y2="0%" spreadMethod="reflect">
           <stop offset="0%">
@@ -1217,7 +1243,6 @@
 
   <script>
     const GOOGLE_CLIENT_ID = '890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com'
-
     const SUBSCRIBE_URL = 'https://YOUR_BACKEND_DOMAIN/api/subscribe'
 
     const brandLine = document.getElementById('brandLine')
@@ -1425,6 +1450,7 @@
     aiOverlay.addEventListener('click', e => { if(e.target === aiOverlay) closeAI() })
 
     const loginOpen = document.getElementById('loginOpen')
+    const loginIconBtn = document.getElementById('loginIconBtn')
     const loginOpenDrawer = document.getElementById('loginOpenDrawer')
     const loginBackdrop = document.getElementById('loginBackdrop')
     const loginModal = document.getElementById('loginModal')
@@ -1443,6 +1469,7 @@
     }
 
     loginOpen.addEventListener('click', openLogin)
+    loginIconBtn.addEventListener('click', openLogin)
     loginOpenDrawer.addEventListener('click', ()=>{ closeDrawer(); openLogin() })
     loginClose.addEventListener('click', closeLogin)
     loginBackdrop.addEventListener('click', closeLogin)
