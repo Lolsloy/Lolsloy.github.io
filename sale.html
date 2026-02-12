@@ -6,156 +6,267 @@
   <title>SetHub Sale</title>
   <meta name="description" content="SetHub Sale – Deals von Amazon, LEGO, Alternate" />
   <meta name="theme-color" content="#0E141A" />
+  <link rel="icon" type="image/png" href="Bilder/lagos.png" />
 
   <style>
     :root{
       --bg:#0E141A;
-      --panel:rgba(16,24,32,.55);
-      --panel2:rgba(16,24,32,.72);
-      --fg:#E6E9ED;
-      --muted:#9AA4AE;
-      --border:#213140;
+      --fg-on:#E6E9ED;
+      --glass:rgba(16,24,32,.65);
+      --glass2:rgba(16,24,32,.7);
+      --shadow:0 26px 90px rgba(0,0,0,.55);
+      --r2:23px;
+      --gap:16px;
+
+      --border:#1f2a35;
       --border2:#0f1a22;
+      --border3:#223041;
+
       --pink:#cf64e5;
-      --cyan:#00E5FF;
-      --shadow:0 30px 120px rgba(0,0,0,.55);
-      --r:18px;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     html{scroll-behavior:smooth}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--fg-on);
       background:var(--bg);
-      color:var(--fg);
-      min-height:100vh;
       overflow-x:hidden;
+      min-height:100vh;
     }
+    img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
     button,input,select{font:inherit}
 
-    header{
-      position:sticky;
-      top:0;
-      z-index:50;
-      backdrop-filter:blur(12px);
+    header.site{
+      position:fixed;
+      left:0; right:0; top:0;
+      height:78px;
       background:rgba(16,24,32,.65);
+      backdrop-filter:blur(10px);
       border-bottom:1px solid var(--border2);
+      z-index:50;
     }
 
-    .topbar{
-      width:min(1400px,100%);
+    .topbar-inner{
+      height:100%;
+      width:min(1240px,100%);
       margin:0 auto;
-      padding:14px 14px;
+      padding:0 14px;
+      display:grid;
+      grid-template-columns:56px 1fr 56px;
+      align-items:center;
+    }
+
+    .nav-brand{
+      grid-column:2;
+      justify-self:center;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:.6rem;
+      min-width:0;
+      transform:translateY(4px);
+    }
+
+    .logo-svg{width:100%;height:100%;display:block}
+
+    .nav-logo{
+      height:48px;
+      width:auto;
+      display:grid;
+      place-items:center;
+      transform:translateY(10px);
+      flex:0 0 auto;
+    }
+
+    .nav-text{
+      display:flex;
+      align-items:center;
+      gap:.15em;
+      line-height:1;
+      font-weight:900;
+      letter-spacing:.04em;
+      color:#fff;
+      font-size:1.6rem;
+      white-space:nowrap;
+    }
+    .nav-text span{cursor:default}
+
+    .burger{
+      position:fixed;
+      top:16px;
+      left:14px;
+      z-index:60;
+      width:46px;
+      height:46px;
+      border-radius:12px;
+      background:var(--glass2);
+      border:1px solid var(--border);
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
+
+    .burger .lines{width:20px;height:14px;position:relative}
+    .burger .lines span{
+      position:absolute;left:0;right:0;
+      height:2px;background:#e8eef4;border-radius:2px;
+      transition:transform .25s ease, opacity .2s ease, top .25s ease;
+    }
+    .burger .lines span:nth-child(1){top:0}
+    .burger .lines span:nth-child(2){top:6px}
+    .burger .lines span:nth-child(3){top:12px}
+
+    body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
+    body.drawer-open .burger .lines span:nth-child(2){opacity:0}
+    body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
+
+    .top-links{
+      position:fixed;
+      top:16px;
+      left:68px;
+      z-index:59;
+      display:flex;
+      gap:10px;
+    }
+
+    .top-link{
+      height:46px;
+      padding:0 14px;
+      border-radius:12px;
+      background:var(--glass2);
+      border:1px solid var(--border);
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      font-weight:800;
+      color:#fff;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      transition:transform .12s ease, filter .12s ease, background .12s ease;
+    }
+    .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .top-link span{color:#b7c2cc;font-weight:700}
+    .top-link.active{
+      border-color:rgba(207,100,229,.55);
+      box-shadow:0 0 0 4px rgba(207,100,229,.08) inset;
+    }
+
+    @media (max-width:720px){
+      header.site{height:72px}
+      .nav-logo{height:44px}
+      .nav-text{font-size:1.45rem}
+      .burger{width:44px;height:44px;top:14px}
+      .top-links{top:14px;left:64px;gap:8px}
+      .top-link{height:44px;padding:0 12px}
+      .top-link span{display:none}
+    }
+    @media (max-width:520px){
+      .top-links{display:none}
+    }
+
+    .drawer{
+      position:fixed;
+      top:0; left:0; bottom:0;
+      width:min(320px,86vw);
+      background:rgba(12,18,24,.98);
+      border-right:1px solid #16212a;
+      z-index:58;
+      transform:translateX(-100%);
+      transition:transform .32s ease;
+      display:flex;
+      flex-direction:column;
+      padding:90px 18px 18px;
+      gap:10px;
+    }
+    body.drawer-open .drawer{transform:translateX(0)}
+
+    .drawer a{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-    }
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
-    .brand .dot{
-      width:38px;
-      height:38px;
+      padding:14px 14px;
       border-radius:12px;
-      background:linear-gradient(180deg,#7a3bd0,#572B87);
-      border:1px solid rgba(207,100,229,.65);
-      box-shadow:0 16px 50px rgba(0,0,0,.45);
+      background:#0f1820;
+      border:1px solid #1a2530;
+      font-weight:700;
+      letter-spacing:.02em;
     }
-    .brand strong{
-      font-weight:950;
-      letter-spacing:.05em;
-      white-space:nowrap;
-    }
-    .brand span{
-      color:var(--muted);
-      font-weight:800;
-      margin-left:8px;
-      white-space:nowrap;
-    }
+    .drawer a:hover{background:#13202a}
+    .drawer small{color:#94a3b8;font-weight:600}
 
-    .navlinks{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
+    .drawer-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.45);
+      z-index:57;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
     }
-    .navbtn{
-      height:42px;
-      padding:0 12px;
-      border-radius:12px;
-      border:1px solid var(--border);
-      background:var(--panel2);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .navbtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .navbtn:active{transform:translateY(0)}
-    .navbtn small{color:#b7c2cc;font-weight:800}
+    body.drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
 
     main{
-      width:min(1400px,100%);
+      padding:92px 5% 60px;
+      width:min(1240px,100%);
       margin:0 auto;
-      padding:18px 14px 60px;
     }
+    @media (max-width:720px){ main{padding-top:84px} }
+    @media (max-width:420px){ main{padding-inline:4%} }
 
-    .hero{
-      position:relative;
-      border-radius:26px;
-      border:1px solid #223041;
+    .panel{
+      border-radius:var(--r2);
       background:
-        radial-gradient(1100px 650px at 72% 18%, rgba(236,72,153,.28), transparent 70%),
-        radial-gradient(900px 600px at 84% 88%, rgba(59,130,246,.24), transparent 65%),
-        rgba(15,22,30,.55);
-      backdrop-filter:blur(14px);
+        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.22), transparent 70%),
+        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.18), transparent 65%),
+        rgba(15,22,30,.68);
+      border:1px solid var(--border3);
       box-shadow:var(--shadow);
-      padding:18px;
-      overflow:hidden;
+      padding:clamp(14px,2.2vw,20px);
     }
 
-    .herohead{
+    .headrow{
       display:flex;
-      align-items:flex-start;
+      align-items:flex-end;
       justify-content:space-between;
-      gap:14px;
+      gap:12px;
       flex-wrap:wrap;
     }
 
-    .title{
-      font-size:2.1rem;
-      font-weight:950;
-      letter-spacing:.02em;
-      line-height:1.05;
+    .section-title{
+      font-weight:900;
+      font-size:clamp(2rem,3.4vw,2.7rem);
+      letter-spacing:.01em;
+      margin:0;
     }
-    .subtitle{
+
+    .subline{
       margin-top:6px;
       color:#cfd6dd;
       font-weight:800;
-      letter-spacing:.12em;
+      letter-spacing:.14em;
       text-transform:uppercase;
-      font-size:.85rem;
+      font-size:.82rem;
+      opacity:.92;
     }
 
-    .stats{
+    .pills{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      align-items:center;
       justify-content:flex-end;
+      align-items:center;
     }
     .pill{
-      border:1px solid var(--border);
-      background:rgba(12,18,24,.55);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.42);
       border-radius:999px;
       padding:10px 12px;
       font-weight:900;
@@ -163,13 +274,22 @@
       align-items:center;
       gap:8px;
       white-space:nowrap;
+      backdrop-filter:blur(10px);
     }
-    .pill span{color:var(--muted);font-weight:800}
+    .pill span{color:#9AA4AE;font-weight:800}
 
     .controls{
       margin-top:14px;
-      display:grid;
-      grid-template-columns:1.2fr .7fr .7fr .5fr;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .searchwrap{
+      flex:1 1 360px;
+      min-width:240px;
+      display:flex;
       gap:10px;
       align-items:center;
     }
@@ -185,167 +305,161 @@
       font-weight:850;
       width:100%;
     }
-    .field:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
     .field::placeholder{color:#9aa4ae}
+    .field:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
+
+    .iconbtn{
+      height:46px;
+      width:46px;
+      border-radius:14px;
+      border:1px solid #223041;
+      background:rgba(16,24,32,.55);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .iconbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .iconbtn svg{width:22px;height:22px;color:#fff}
 
     .btn{
       height:46px;
+      padding:0 14px;
       border-radius:14px;
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
       color:#fff;
       font-weight:950;
       cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
     }
-    .btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .btn:active{transform:translateY(0)}
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .btn:disabled{opacity:.6;cursor:default;transform:none;filter:none}
 
-    .gridwrap{
-      margin-top:16px;
-    }
-
     .grid{
+      margin-top:14px;
       display:grid;
-      gap:12px;
+      gap:var(--gap);
       grid-template-columns:repeat(2,minmax(0,1fr));
     }
-
-    @media (min-width:700px){
-      .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-    }
-    @media (min-width:1100px){
-      .grid{grid-template-columns:repeat(4,minmax(0,1fr))}
-    }
-    @media (min-width:1400px){
-      .grid{grid-template-columns:repeat(5,minmax(0,1fr))}
-    }
+    @media (min-width:820px){ .grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+    @media (min-width:1080px){ .grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
+    @media (min-width:1320px){ .grid{grid-template-columns:repeat(5,minmax(0,1fr))} }
 
     .card{
-      position:relative;
-      border-radius:22px;
-      border:1px solid #223041;
-      background:rgba(16,24,32,.42);
-      backdrop-filter:blur(12px);
-      box-shadow:0 24px 90px rgba(0,0,0,.50);
+      border-radius:18px;
       overflow:hidden;
+      border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg,#101820,#0b1218);
+      position:relative;
+      transform:translateY(0);
+      transition:transform .15s ease, border-color .15s ease, filter .15s ease;
       display:flex;
       flex-direction:column;
-      min-height:320px;
-      cursor:pointer;
-      transition:transform .18s ease, filter .18s ease;
+      min-height:340px;
     }
-    .card:hover{transform:translateY(-6px);filter:brightness(1.07)}
-    .card:active{transform:translateY(-2px)}
+    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.04)}
 
-    .imgwrap{
+    .thumb{
+      height:clamp(160px,18vw,210px);
+      background:#0b1218;
       position:relative;
-      aspect-ratio:1/1;
-      background:rgba(12,18,24,.70);
-      border-bottom:1px solid #1a2530;
-      display:grid;
-      place-items:center;
-      overflow:hidden;
     }
-    .imgwrap img{
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      display:block;
-    }
+    @media (max-width:560px){ .thumb{height:150px} :root{--gap:12px} }
+    .thumb img{width:100%;height:100%;object-fit:cover}
 
     .heart{
       position:absolute;
-      right:10px;
-      top:10px;
-      height:42px;
-      width:42px;
+      right:12px;
+      top:12px;
+      width:38px;
+      height:38px;
       border-radius:14px;
-      border:1px solid #2a3641;
-      background:rgba(12,18,24,.55);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.55);
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
       cursor:pointer;
-      z-index:2;
+      transition:filter .12s ease, transform .12s ease;
     }
-    .heart:hover{filter:brightness(1.08)}
-    .heart svg{width:20px;height:20px;color:#e8eef4}
-    .heart.on{border:1px solid rgba(207,100,229,.65)}
+    .heart:hover{filter:brightness(1.08);transform:translateY(-1px)}
+    .heart svg{width:18px;height:18px;color:#fff}
+    .heart.on{border-color:rgba(207,100,229,.65)}
     .heart.on svg{color:var(--pink)}
 
-    .body{
-      padding:12px;
+    .txt{
+      padding:12px 10px 14px;
+      text-align:left;
       display:flex;
       flex-direction:column;
       gap:10px;
       flex:1;
     }
 
-    .name{
-      font-weight:950;
-      letter-spacing:.01em;
+    .t1{
+      font-weight:900;
+      font-size:1rem;
       line-height:1.2;
-      font-size:1.05rem;
-      overflow:hidden;
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
-      min-height:2.5em;
+      overflow:hidden;
+      min-height:2.4em;
     }
 
     .meta{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
       align-items:center;
       justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
     .setno{
-      color:var(--muted);
+      color:#9AA4AE;
       font-weight:900;
-      letter-spacing:.08em;
+      letter-spacing:.12em;
       text-transform:uppercase;
       font-size:.78rem;
+      white-space:nowrap;
     }
 
     .price{
       font-weight:950;
-      font-size:1.25rem;
+      font-size:1.12rem;
       letter-spacing:.01em;
-      color:#fff;
+      white-space:nowrap;
     }
 
-    .sources{
+    .chips{
       display:flex;
-      gap:6px;
+      gap:8px;
       flex-wrap:wrap;
       align-items:center;
       margin-top:2px;
     }
+
     .chip{
-      border:1px solid #2a3641;
-      background:rgba(12,18,24,.55);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.45);
       border-radius:999px;
-      padding:7px 9px;
+      padding:8px 10px;
       font-weight:900;
       font-size:.78rem;
       color:#d9e1e8;
       display:flex;
-      align-items:center;
-      gap:6px;
-    }
-    .chip span{color:var(--muted);font-weight:800}
-    .chip.best{border:1px solid rgba(0,229,255,.45)}
-    .chip.best span{color:#bff7ff}
-
-    .cta{
-      margin-top:auto;
-      display:flex;
       gap:8px;
       align-items:center;
+      white-space:nowrap;
     }
+    .chip span{color:#9AA4AE;font-weight:800}
+    .chip.best{
+      border-color:rgba(0,229,255,.35);
+      box-shadow:0 0 0 4px rgba(0,229,255,.06) inset;
+    }
+    .chip.best span{color:#bff7ff}
+
     .openbtn{
       width:100%;
       height:42px;
@@ -355,15 +469,16 @@
       color:#fff;
       font-weight:950;
       cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+      margin-top:auto;
     }
-    .openbtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .openbtn:active{transform:translateY(0)}
+    .openbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
     .empty{
-      margin-top:16px;
-      border:1px solid var(--border);
-      background:rgba(12,18,24,.55);
+      margin-top:14px;
       border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.35);
       padding:14px;
       color:#cfd6dd;
       font-weight:850;
@@ -371,7 +486,7 @@
     }
 
     .pager{
-      margin-top:16px;
+      margin-top:14px;
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -382,70 +497,264 @@
       height:44px;
       padding:0 12px;
       border-radius:14px;
-      border:1px solid var(--border);
-      background:var(--panel2);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.45);
       color:#fff;
       font-weight:950;
       cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
     }
-    .pagebtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .pagebtn:active{transform:translateY(0)}
+    .pagebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .pagebtn:disabled{opacity:.5;cursor:default;transform:none;filter:none}
 
     .pinfo{
-      color:var(--muted);
+      color:#9AA4AE;
       font-weight:900;
-      letter-spacing:.06em;
+      letter-spacing:.10em;
       text-transform:uppercase;
-      font-size:.8rem;
+      font-size:.78rem;
     }
 
-    @media (max-width:900px){
-      .controls{grid-template-columns:1fr 1fr;gap:10px}
+    .skeleton{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(16,24,32,.35);
+      min-height:340px;
     }
+
+    .filter-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:70;
+    }
+
+    .filter-modal{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%) translateY(24px) scale(.985);
+      width:min(560px,92vw);
+      opacity:0;
+      pointer-events:none;
+      z-index:71;
+      transition:transform .35s ease, opacity .35s ease;
+    }
+
+    .filter-card{
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.26), transparent 60%),
+        radial-gradient(800px 520px at 92% 120%, rgba(59,130,246,.22), transparent 60%),
+        rgba(12,18,24,.96);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:14px;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      backdrop-filter:blur(14px);
+    }
+
+    .filter-head{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:10px;
+    }
+    .filter-head h3{
+      font-size:1.2rem;
+      font-weight:900;
+      letter-spacing:.03em;
+    }
+
+    .closebtn{
+      height:38px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.45);
+      color:#d9e1e8;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .closebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+
+    .filter-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    @media (max-width:560px){ .filter-grid{grid-template-columns:1fr} }
+
+    .filter-actions{
+      margin-top:10px;
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    body.filter-open .filter-backdrop{opacity:1;pointer-events:auto}
+    body.filter-open .filter-modal{
+      opacity:1;
+      pointer-events:auto;
+      transform:translateX(-50%) translateY(0) scale(1);
+    }
+
     @media (max-width:520px){
-      .title{font-size:1.65rem}
-      .controls{grid-template-columns:1fr;gap:10px}
-      .navlinks{display:none}
+      .filter-modal{
+        left:0;
+        bottom:0;
+        transform:translate(0, 14px) scale(.985);
+        width:100vw;
+        padding:0 10px 10px;
+      }
+      body.filter-open .filter-modal{transform:translate(0,0) scale(1)}
+      .filter-card{border-radius:18px 18px 0 0}
     }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="topbar">
-      <a class="brand" href="/index.html" aria-label="SetHub">
-        <div class="dot" aria-hidden="true"></div>
-        <div>
-          <strong>SetHub</strong>
-          <span>Sale</span>
-        </div>
-      </a>
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+    <div class="lines" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </button>
 
-      <div class="navlinks">
-        <a class="navbtn" href="/news.html"><strong>News</strong><small>Updates</small></a>
-        <a class="navbtn" href="/events.html"><strong>Events</strong><small>Dates</small></a>
-        <a class="navbtn" href="/sale.html"><strong>Sale</strong><small>Deals</small></a>
+  <div class="top-links" aria-label="Quick Links">
+    <a class="top-link" href="/news.html" aria-label="News">
+      <strong>News</strong><span>Updates</span>
+    </a>
+    <a class="top-link" href="/events.html" aria-label="Events">
+      <strong>Events</strong><span>Dates</span>
+    </a>
+    <a class="top-link active" href="/sale.html" aria-label="Sale">
+      <strong>Sale</strong><span>Deals</span>
+    </a>
+  </div>
+
+  <nav class="drawer" id="drawer" aria-label="Menü">
+    <a href="/index.html" class="drawer-link">Home<small>Start</small></a>
+    <a href="/news.html" class="drawer-link">News<small>Updates</small></a>
+    <a href="/events.html" class="drawer-link">Events<small>Dates</small></a>
+    <a href="/sale.html" class="drawer-link">Sale<small>Deals</small></a>
+    <a href="/index.html#impressum" class="drawer-link">Impressum<small>Legal</small></a>
+  </nav>
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
+    <symbol id="sethub-logo" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <g id="logo-geometry">
+          <g id="Ebene_3">
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,318.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1434.5,208.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1826.54,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1839.5,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,799.99c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1434.5,689.83c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1019.52,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1032.48,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
+          </g>
+          <g id="Ebene_5">
+            <path fill="#04d5eb" d="M1586,1605l-765-450v-585l765,459v576Z"></path>
+            <path fill="#04d5eb" d="M1640,1605l765-450v-585l-765,459v576Z"></path>
+          </g>
+        </g>
+
+        <mask id="logoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="3326" height="2408">
+          <use href="#logo-geometry"></use>
+        </mask>
+
+        <linearGradient id="gradA" x1="-20%" y1="0%" x2="120%" y2="0%" spreadMethod="reflect">
+          <stop offset="0%">
+            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
+              values="#00E5FF; #FF5EA0; #FFD300; #00FF87; #00E5FF"></animate>
+          </stop>
+          <stop offset="50%">
+            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
+              values="#7A5CFF; #00FF87; #FF5EA0; #00E5FF; #7A5CFF"></animate>
+          </stop>
+          <stop offset="100%">
+            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
+              values="#FF5EA0; #FFD300; #00E5FF; #7A5CFF; #FF5EA0"></animate>
+          </stop>
+          <animateTransform attributeName="gradientTransform" type="translate" dur="12s"
+            repeatCount="indefinite" values="-0.4 0; 0.4 0; -0.4 0"></animateTransform>
+        </linearGradient>
+      </defs>
+
+      <g mask="url(#logoMask)">
+        <rect x="0" y="0" width="3326" height="2408" fill="url(#gradA)"></rect>
+      </g>
+    </symbol>
+  </svg>
+
+  <header class="site" aria-label="Navigation">
+    <div class="topbar-inner">
+      <div class="nav-brand">
+        <div class="nav-logo" aria-hidden="true">
+          <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+            <use href="#sethub-logo"></use>
+          </svg>
+        </div>
+        <div class="nav-text" aria-label="SetHub">
+          <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+        </div>
       </div>
     </div>
   </header>
 
   <main>
-    <section class="hero">
-      <div class="herohead">
+    <div class="panel">
+      <div class="headrow">
         <div>
-          <div class="title">Sale Deals</div>
-          <div class="subtitle">Amazon · LEGO · Alternate</div>
+          <div class="section-title">Sale</div>
+          <div class="subline">Amazon · LEGO · Alternate</div>
         </div>
-        <div class="stats">
+
+        <div class="pills">
           <div class="pill"><span>Sets</span><strong id="statSets">0</strong></div>
           <div class="pill"><span>Wishlist</span><strong id="statWish">0</strong></div>
         </div>
       </div>
 
       <div class="controls" role="search">
-        <input class="field" id="q" placeholder="Suche Set Name oder Set Number" autocomplete="off" />
+        <div class="searchwrap">
+          <input class="field" id="q" placeholder="Suche Name oder Set Number" autocomplete="off" />
+          <button class="iconbtn" id="filterOpen" type="button" aria-label="Filter">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+        <button class="btn" id="reload" type="button">Reload</button>
+      </div>
 
+      <div class="grid" id="grid" aria-label="Sale Sets">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+
+      <div class="empty" id="empty" hidden>Keine Treffer</div>
+
+      <div class="pager" id="pager" hidden>
+        <button class="pagebtn" id="prev" type="button">Zurück</button>
+        <div class="pinfo" id="pinfo">Seite 1</div>
+        <button class="pagebtn" id="next" type="button">Weiter</button>
+      </div>
+    </div>
+  </main>
+
+  <div class="filter-backdrop" id="filterBackdrop" aria-hidden="true"></div>
+  <div class="filter-modal" id="filterModal" role="dialog" aria-modal="true" aria-labelledby="filterTitle" aria-hidden="true">
+    <div class="filter-card">
+      <div class="filter-head">
+        <h3 id="filterTitle">Filter</h3>
+        <button class="closebtn" id="filterClose" type="button">Close</button>
+      </div>
+
+      <div class="filter-grid">
         <select class="field" id="sort">
           <option value="best">Billigste zuerst</option>
           <option value="worst">Teuerste zuerst</option>
@@ -462,48 +771,64 @@
           <option value="alternate">Nur Alternate</option>
         </select>
 
-        <button class="btn" id="reload" type="button">Reload</button>
-      </div>
-    </section>
-
-    <section class="gridwrap" aria-label="Sale Sets">
-      <div class="grid" id="grid"></div>
-
-      <div class="empty" id="empty" hidden>
-        Keine Treffer
+        <input class="field" id="minPrice" inputmode="decimal" placeholder="Min Preis" />
+        <input class="field" id="maxPrice" inputmode="decimal" placeholder="Max Preis" />
       </div>
 
-      <div class="pager" id="pager" hidden>
-        <button class="pagebtn" id="prev" type="button">Zurück</button>
-        <div class="pinfo" id="pinfo">Seite 1</div>
-        <button class="pagebtn" id="next" type="button">Weiter</button>
+      <div class="filter-actions">
+        <button class="closebtn" id="resetFilters" type="button">Reset</button>
+        <button class="btn" id="applyFilters" type="button">Apply</button>
       </div>
-    </section>
-  </main>
+    </div>
+  </div>
 
   <script>
     const API = {
-      amazon: 'https://sethub.ddnsfree.com/SaleScraper/api/Amazon/sales',
-      lego: 'https://sethub.ddnsfree.com/SaleScraper/api/Lego',
-      alternate: 'https://sethub.ddnsfree.com/SaleScraper/api/Alternate'
+      amazon: "https://sethub.ddnsfree.com/SaleScraper/api/Amazon/sales",
+      lego: "https://sethub.ddnsfree.com/SaleScraper/api/Lego",
+      alternate: "https://sethub.ddnsfree.com/SaleScraper/api/Alternate"
     }
 
+    const FALLBACK_IMG = "/Bilder/real1.png"
     const MAX_SETS = 200
     const PAGE_SIZE = pickPageSize()
 
+    const burgerBtn = document.getElementById("burgerBtn")
+    const drawerBackdrop = document.getElementById("drawerBackdrop")
+
+    function openDrawer(){ document.body.classList.add("drawer-open") }
+    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+
+    burgerBtn.addEventListener("click", () => {
+      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
+    })
+    drawerBackdrop.addEventListener("click", closeDrawer)
+    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
+    addEventListener("keydown", e => { if(e.key === "Escape") { closeDrawer(); closeFilter() } })
+
     const els = {
-      q: document.getElementById('q'),
-      sort: document.getElementById('sort'),
-      source: document.getElementById('source'),
-      reload: document.getElementById('reload'),
-      grid: document.getElementById('grid'),
-      empty: document.getElementById('empty'),
-      pager: document.getElementById('pager'),
-      prev: document.getElementById('prev'),
-      next: document.getElementById('next'),
-      pinfo: document.getElementById('pinfo'),
-      statSets: document.getElementById('statSets'),
-      statWish: document.getElementById('statWish')
+      q: document.getElementById("q"),
+      grid: document.getElementById("grid"),
+      empty: document.getElementById("empty"),
+      pager: document.getElementById("pager"),
+      prev: document.getElementById("prev"),
+      next: document.getElementById("next"),
+      pinfo: document.getElementById("pinfo"),
+      statSets: document.getElementById("statSets"),
+      statWish: document.getElementById("statWish"),
+      reload: document.getElementById("reload"),
+
+      filterOpen: document.getElementById("filterOpen"),
+      filterBackdrop: document.getElementById("filterBackdrop"),
+      filterModal: document.getElementById("filterModal"),
+      filterClose: document.getElementById("filterClose"),
+      resetFilters: document.getElementById("resetFilters"),
+      applyFilters: document.getElementById("applyFilters"),
+
+      sort: document.getElementById("sort"),
+      source: document.getElementById("source"),
+      minPrice: document.getElementById("minPrice"),
+      maxPrice: document.getElementById("maxPrice")
     }
 
     let raw = []
@@ -520,72 +845,98 @@
       return 20
     }
 
-    function loadWishlist(){
-      try{
-        const x = JSON.parse(localStorage.getItem('sethub_wishlist') || '[]')
-        if(Array.isArray(x)) return new Set(x.map(String))
-        return new Set()
-      }catch{
-        return new Set()
+    function debounce(fn, ms){
+      let t = 0
+      return (...args) => {
+        clearTimeout(t)
+        t = setTimeout(() => fn(...args), ms)
       }
     }
 
-    function saveWishlist(){
-      localStorage.setItem('sethub_wishlist', JSON.stringify([...wishlist]))
-      updateWishStat()
+    function escapeHtml(str){
+      return String(str || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;")
     }
 
-    function updateWishStat(){
-      els.statWish.textContent = String(wishlist.size)
-    }
+    function parsePrice(v){
+      if(v === null || v === undefined) return null
+      if(typeof v === "number" && isFinite(v)) return v
+      const s0 = String(v).trim()
+      if(!s0) return null
 
-    function money(v){
-      const n = Number(v)
+      const s = s0
+        .replaceAll("€","")
+        .replaceAll("EUR","")
+        .replaceAll(/\s/g,"")
+        .replace(/[^\d.,-]/g,"")
+
+      if(!s) return null
+
+      const lastComma = s.lastIndexOf(",")
+      const lastDot = s.lastIndexOf(".")
+      const decPos = Math.max(lastComma, lastDot)
+
+      let normalized = s
+      if(decPos >= 0){
+        const intPart = s.slice(0, decPos).replaceAll(".","").replaceAll(",","")
+        const decPart = s.slice(decPos + 1).replaceAll(".","").replaceAll(",","")
+        normalized = intPart + "." + decPart
+      }else{
+        normalized = s.replaceAll(".","").replaceAll(",","")
+      }
+
+      const n = Number(normalized)
       if(!isFinite(n)) return null
       return n
     }
 
     function formatEUR(n){
       try{
-        return new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR'}).format(n)
+        return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(n)
       }catch{
-        return (Math.round(n * 100) / 100).toFixed(2) + ' €'
+        return (Math.round(n * 100) / 100).toFixed(2) + " €"
       }
+    }
+
+    function guessSetNumberFromText(s){
+      const m = String(s || "").match(/\b\d{4,6}\b/)
+      return m ? m[0] : ""
+    }
+
+    function firstText(o, keys){
+      for(const k of keys){
+        const v = o && o[k]
+        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
+      }
+      return ""
     }
 
     function normItem(source, item){
       const it = item || {}
 
-      const setNumber =
-        it.setNumber ?? it.setnumber ?? it.set_no ?? it.setNo ?? it.number ?? it.set ?? it.id ?? it.setId
+      let setNumber = firstText(it, ["setNumber","setnumber","set_no","setNo","number","set","id","setId"])
+      const name = firstText(it, ["name","title","setName","productName","product","headline","description"])
 
-      const name =
-        it.name ?? it.title ?? it.setName ?? it.productName ?? it.product ?? it.headline ?? it.description
+      if(!setNumber) setNumber = guessSetNumberFromText(name)
 
-      const url =
-        it.url ?? it.link ?? it.productUrl ?? it.href ?? it.detailUrl ?? it.page
+      const url = firstText(it, ["url","link","productUrl","href","detailUrl","page"])
+      const image = firstText(it, ["image","img","imageUrl","image_url","thumbnail","thumb","picture","photo"])
 
-      const image =
-        it.image ?? it.img ?? it.imageUrl ?? it.image_url ?? it.thumbnail ?? it.thumb ?? it.picture ?? it.photo
-
-      const price =
-        it.price ?? it.currentPrice ?? it.salePrice ?? it.now ?? it.value ?? it.bestPrice ?? it.lowestPrice
-
-      const oldPrice =
-        it.oldPrice ?? it.wasPrice ?? it.regularPrice ?? it.listPrice ?? it.before ?? it.msrp
-
-      const discount =
-        it.discount ?? it.percent ?? it.discountPercent ?? it.off
+      const price = parsePrice(firstText(it, ["price","currentPrice","salePrice","now","value","bestPrice","lowestPrice","finalPrice"]))
+      const oldPrice = parsePrice(firstText(it, ["oldPrice","wasPrice","regularPrice","listPrice","before","msrp"]))
 
       return {
         source,
-        setNumber: setNumber != null ? String(setNumber).trim() : '',
-        name: name != null ? String(name).trim() : '',
-        url: url != null ? String(url).trim() : '',
-        image: image != null ? String(image).trim() : '',
-        price: money(price),
-        oldPrice: money(oldPrice),
-        discount: money(discount)
+        setNumber: String(setNumber || "").trim(),
+        name: String(name || "").trim(),
+        url: String(url || "").trim(),
+        image: String(image || "").trim(),
+        price,
+        oldPrice
       }
     }
 
@@ -594,13 +945,13 @@
 
       for(const x of list){
         if(!x.setNumber) continue
-        if(!x.price && x.price !== 0) continue
+        if(x.price === null) continue
 
         const key = x.setNumber
         const cur = map.get(key) || {
           setNumber: key,
-          name: x.name || '',
-          image: x.image || '',
+          name: x.name || "",
+          image: x.image || "",
           sources: {},
           best: null
         }
@@ -616,8 +967,8 @@
           name: x.name
         }
 
-        const curBest = cur.best
-        if(!curBest || x.price < curBest.price){
+        const b = cur.best
+        if(!b || x.price < b.price){
           cur.best = { source: x.source, price: x.price, url: x.url }
         }
 
@@ -627,74 +978,173 @@
       return [...map.values()]
     }
 
-    async function fetchSource(source, url){
-      const r = await fetch(url, { method:'GET' })
-      const data = await r.json()
+    function loadWishlist(){
+      try{
+        const x = JSON.parse(localStorage.getItem("sethub_wishlist") || "[]")
+        if(Array.isArray(x)) return new Set(x.map(String))
+        return new Set()
+      }catch{
+        return new Set()
+      }
+    }
 
-      const arr = Array.isArray(data) ? data : (Array.isArray(data.items) ? data.items : (Array.isArray(data.data) ? data.data : []))
+    function saveWishlist(){
+      localStorage.setItem("sethub_wishlist", JSON.stringify([...wishlist]))
+      updateWishStat()
+    }
+
+    function updateWishStat(){
+      els.statWish.textContent = String(wishlist.size)
+    }
+
+    function openFilter(){
+      document.body.classList.add("filter-open")
+      els.filterBackdrop.setAttribute("aria-hidden","false")
+      els.filterModal.setAttribute("aria-hidden","false")
+    }
+
+    function closeFilter(){
+      document.body.classList.remove("filter-open")
+      els.filterBackdrop.setAttribute("aria-hidden","true")
+      els.filterModal.setAttribute("aria-hidden","true")
+    }
+
+    els.filterOpen.addEventListener("click", openFilter)
+    els.filterClose.addEventListener("click", closeFilter)
+    els.filterBackdrop.addEventListener("click", closeFilter)
+
+    els.resetFilters.addEventListener("click", () => {
+      els.sort.value = "best"
+      els.source.value = "all"
+      els.minPrice.value = ""
+      els.maxPrice.value = ""
+    })
+
+    els.applyFilters.addEventListener("click", () => {
+      closeFilter()
+      page = 1
+      apply()
+    })
+
+    function withTimeout(ms){
+      const controller = new AbortController()
+      const t = setTimeout(() => controller.abort(), ms)
+      return { signal: controller.signal, clear: () => clearTimeout(t) }
+    }
+
+    async function fetchJsonLoose(url){
+      const { signal, clear } = withTimeout(14000)
+      try{
+        const res = await fetch(url, {
+          method:"GET",
+          mode:"cors",
+          cache:"no-store",
+          headers:{ "Accept":"application/json" },
+          signal
+        })
+
+        const txt = await res.text()
+        if(!res.ok) throw new Error("bad status")
+
+        let data = null
+        try{ data = JSON.parse(txt) }catch{ data = null }
+
+        if(Array.isArray(data)) return data
+        if(data && Array.isArray(data.items)) return data.items
+        if(data && Array.isArray(data.data)) return data.data
+        if(data && Array.isArray(data.results)) return data.results
+
+        return []
+      } finally {
+        clear()
+      }
+    }
+
+    async function fetchSource(source, url){
+      const arr = await fetchJsonLoose(url)
       return arr.map(it => normItem(source, it))
     }
 
+    function skeletonOn(){
+      els.grid.innerHTML = ""
+      for(let i = 0; i < 10; i++){
+        const d = document.createElement("div")
+        d.className = "skeleton"
+        els.grid.appendChild(d)
+      }
+    }
+
     async function loadAll(){
+      skeletonOn()
       els.reload.disabled = true
 
       const [a,l,alt] = await Promise.allSettled([
-        fetchSource('amazon', API.amazon),
-        fetchSource('lego', API.lego),
-        fetchSource('alternate', API.alternate)
+        fetchSource("amazon", API.amazon),
+        fetchSource("lego", API.lego),
+        fetchSource("alternate", API.alternate)
       ])
 
       const all = []
-      if(a.status === 'fulfilled') all.push(...a.value)
-      if(l.status === 'fulfilled') all.push(...l.value)
-      if(alt.status === 'fulfilled') all.push(...alt.value)
+      if(a.status === "fulfilled") all.push(...a.value)
+      if(l.status === "fulfilled") all.push(...l.value)
+      if(alt.status === "fulfilled") all.push(...alt.value)
 
       const merged = mergeBySetNumber(all)
-
-      merged.sort((x,y)=> (x.best?.price ?? 1e18) - (y.best?.price ?? 1e18))
+      merged.sort((x,y) => (x.best?.price ?? 1e18) - (y.best?.price ?? 1e18))
 
       raw = merged.slice(0, MAX_SETS)
-
       els.statSets.textContent = String(raw.length)
 
       page = 1
       apply()
+
       els.reload.disabled = false
     }
 
     function apply(){
-      const q = (els.q.value || '').trim().toLowerCase()
-      const s = els.source.value
+      const q = String(els.q.value || "").trim().toLowerCase()
+      const source = els.source.value
       const sort = els.sort.value
+
+      const minP = parsePrice(els.minPrice.value)
+      const maxP = parsePrice(els.maxPrice.value)
 
       let out = raw
 
-      if(s !== 'all'){
-        out = out.filter(x => x.sources[s] && isFinite(x.sources[s].price))
+      if(source !== "all"){
+        out = out.filter(x => x.sources[source] && isFinite(x.sources[source].price))
+      }
+
+      if(minP !== null){
+        out = out.filter(x => (x.best?.price ?? 1e18) >= minP)
+      }
+
+      if(maxP !== null){
+        out = out.filter(x => (x.best?.price ?? -1) <= maxP)
       }
 
       if(q){
         out = out.filter(x => {
-          const n = (x.name || '').toLowerCase()
-          const id = (x.setNumber || '').toLowerCase()
+          const n = (x.name || "").toLowerCase()
+          const id = (x.setNumber || "").toLowerCase()
           return n.includes(q) || id.includes(q)
         })
       }
 
       out = out.slice()
 
-      if(sort === 'best'){
+      if(sort === "best"){
         out.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
-      }else if(sort === 'worst'){
+      }else if(sort === "worst"){
         out.sort((a,b)=> (b.best?.price ?? -1) - (a.best?.price ?? -1))
-      }else if(sort === 'name_az'){
-        out.sort((a,b)=> (a.name || '').localeCompare((b.name || ''), 'de', { sensitivity:'base' }))
-      }else if(sort === 'name_za'){
-        out.sort((a,b)=> (b.name || '').localeCompare((a.name || ''), 'de', { sensitivity:'base' }))
-      }else if(sort === 'set_asc'){
-        out.sort((a,b)=> (a.setNumber || '').localeCompare((b.setNumber || ''), 'de', { numeric:true }))
-      }else if(sort === 'set_desc'){
-        out.sort((a,b)=> (b.setNumber || '').localeCompare((a.setNumber || ''), 'de', { numeric:true }))
+      }else if(sort === "name_az"){
+        out.sort((a,b)=> (a.name || "").localeCompare((b.name || ""), "de", { sensitivity:"base" }))
+      }else if(sort === "name_za"){
+        out.sort((a,b)=> (b.name || "").localeCompare((a.name || ""), "de", { sensitivity:"base" }))
+      }else if(sort === "set_asc"){
+        out.sort((a,b)=> (a.setNumber || "").localeCompare((b.setNumber || ""), "de", { numeric:true }))
+      }else if(sort === "set_desc"){
+        out.sort((a,b)=> (b.setNumber || "").localeCompare((a.setNumber || ""), "de", { numeric:true }))
       }
 
       view = out
@@ -704,12 +1154,21 @@
     function getBestUrl(x){
       const b = x.best
       if(b && b.url) return b.url
-      const order = ['alternate','lego','amazon']
+      const order = ["alternate","lego","amazon"]
       for(const k of order){
         const s = x.sources[k]
         if(s && s.url) return s.url
       }
-      return ''
+      return ""
+    }
+
+    function chip(source, x, bestSource){
+      const s = x.sources[source]
+      if(!s || !isFinite(s.price)) return ""
+      const isBest = source === bestSource
+      const cls = "chip" + (isBest ? " best" : "")
+      const label = source === "amazon" ? "Amazon" : (source === "lego" ? "LEGO" : "Alternate")
+      return `<div class="${cls}">${label}<span>${escapeHtml(formatEUR(s.price))}</span></div>`
     }
 
     function render(){
@@ -720,140 +1179,136 @@
       const start = (page - 1) * PAGE_SIZE
       const items = view.slice(start, start + PAGE_SIZE)
 
-      els.grid.innerHTML = ''
+      els.grid.innerHTML = ""
+
       els.empty.hidden = items.length !== 0
       els.pager.hidden = total <= PAGE_SIZE
-
       els.prev.disabled = page <= 1
       els.next.disabled = page >= pages
-      els.pinfo.textContent = 'Seite ' + page + ' von ' + pages
+      els.pinfo.textContent = "Seite " + page + " von " + pages
 
       for(const x of items){
         const bestPrice = x.best?.price
         const bestSource = x.best?.source
-
         const url = getBestUrl(x)
-        const name = x.name || 'Set'
-        const img = x.image || x.sources[bestSource]?.image || ''
-        const setNumber = x.setNumber || ''
 
-        const card = document.createElement('div')
-        card.className = 'card'
+        const name = x.name || "Set"
+        const img = x.image || x.sources[bestSource]?.image || ""
+        const setNumber = x.setNumber || ""
+
+        const card = document.createElement("div")
+        card.className = "card"
         card.tabIndex = 0
-        card.setAttribute('role','button')
-        card.setAttribute('aria-label', name)
+        card.setAttribute("role","button")
+        card.setAttribute("aria-label", name)
 
-        card.addEventListener('click', (e)=>{
+        card.addEventListener("click", (e) => {
           const t = e.target
-          if(t && t.closest && t.closest('.heart')) return
-          if(t && t.closest && t.closest('.openbtn')) return
-          if(url) window.open(url, '_blank', 'noopener')
+          if(t && t.closest && t.closest(".heart")) return
+          if(t && t.closest && t.closest(".openbtn")) return
+          if(url) window.open(url, "_blank", "noopener")
         })
-        card.addEventListener('keydown', (e)=>{
-          if(e.key === 'Enter' || e.key === ' '){
+
+        card.addEventListener("keydown", (e) => {
+          if(e.key === "Enter" || e.key === " "){
             e.preventDefault()
-            if(url) window.open(url, '_blank', 'noopener')
+            if(url) window.open(url, "_blank", "noopener")
           }
         })
 
         const heartOn = wishlist.has(setNumber)
 
         card.innerHTML = `
-          <div class="imgwrap">
-            ${img ? `<img loading="lazy" src="${escapeHtml(img)}" alt="${escapeHtml(name)}">` : ``}
-            <button class="heart ${heartOn ? 'on' : ''}" type="button" aria-label="Wishlist">
+          <div class="thumb">
+            <img src="${escapeHtml(img || FALLBACK_IMG)}" alt="${escapeHtml(name)}" loading="lazy"
+                 onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+            <button class="heart ${heartOn ? "on" : ""}" type="button" aria-label="Wishlist">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z"
+                      stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
               </svg>
             </button>
           </div>
 
-          <div class="body">
-            <div class="name">${escapeHtml(name)}</div>
+          <div class="txt">
+            <div class="t1">${escapeHtml(name)}</div>
 
             <div class="meta">
               <div class="setno">Set ${escapeHtml(setNumber)}</div>
-              <div class="price">${isFinite(bestPrice) ? escapeHtml(formatEUR(bestPrice)) : '-'}</div>
+              <div class="price">${isFinite(bestPrice) ? escapeHtml(formatEUR(bestPrice)) : "-"}</div>
             </div>
 
-            <div class="sources">
-              ${sourceChip('amazon', x, bestSource)}
-              ${sourceChip('lego', x, bestSource)}
-              ${sourceChip('alternate', x, bestSource)}
+            <div class="chips">
+              ${chip("amazon", x, bestSource)}
+              ${chip("lego", x, bestSource)}
+              ${chip("alternate", x, bestSource)}
             </div>
 
-            <div class="cta">
-              <button class="openbtn" type="button">Open Deal</button>
-            </div>
+            <button class="openbtn" type="button">Open Deal</button>
           </div>
         `
 
-        const heart = card.querySelector('.heart')
-        heart.addEventListener('click', ()=>{
+        const heart = card.querySelector(".heart")
+        heart.addEventListener("click", () => {
           if(!setNumber) return
           if(wishlist.has(setNumber)) wishlist.delete(setNumber)
           else wishlist.add(setNumber)
-          heart.classList.toggle('on')
+          heart.classList.toggle("on")
           saveWishlist()
         })
 
-        const openBtn = card.querySelector('.openbtn')
-        openBtn.addEventListener('click', ()=>{
-          if(url) window.open(url, '_blank', 'noopener')
+        const openBtn = card.querySelector(".openbtn")
+        openBtn.addEventListener("click", () => {
+          if(url) window.open(url, "_blank", "noopener")
         })
 
         els.grid.appendChild(card)
       }
-    }
 
-    function sourceChip(source, x, bestSource){
-      const s = x.sources[source]
-      if(!s || !isFinite(s.price)) return ''
-      const isBest = source === bestSource
-      const cls = 'chip' + (isBest ? ' best' : '')
-      const label = source === 'amazon' ? 'Amazon' : (source === 'lego' ? 'LEGO' : 'Alternate')
-      return `
-        <div class="${cls}">
-          ${label}
-          <span>${escapeHtml(formatEUR(s.price))}</span>
-        </div>
-      `
-    }
-
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll('&','&amp;')
-        .replaceAll('<','&lt;')
-        .replaceAll('>','&gt;')
-        .replaceAll('"','&quot;')
-        .replaceAll("'","&#039;")
-    }
-
-    function debounce(fn, ms){
-      let t = 0
-      return (...args)=>{
-        clearTimeout(t)
-        t = setTimeout(()=> fn(...args), ms)
+      if(total === 0){
+        els.empty.hidden = false
       }
     }
 
-    els.prev.addEventListener('click', ()=>{ page = Math.max(1, page - 1); render(); window.scrollTo({top:0,behavior:'smooth'}) })
-    els.next.addEventListener('click', ()=>{ page = page + 1; render(); window.scrollTo({top:0,behavior:'smooth'}) })
+    els.prev.addEventListener("click", () => {
+      page = Math.max(1, page - 1)
+      render()
+      window.scrollTo({ top:0, behavior:"smooth" })
+    })
 
-    els.sort.addEventListener('change', ()=>{ page = 1; apply() })
-    els.source.addEventListener('change', ()=>{ page = 1; apply() })
-    els.q.addEventListener('input', debounce(()=>{ page = 1; apply() }, 140))
+    els.next.addEventListener("click", () => {
+      page = Math.min(page + 1, Math.ceil(view.length / PAGE_SIZE))
+      render()
+      window.scrollTo({ top:0, behavior:"smooth" })
+    })
 
-    els.reload.addEventListener('click', loadAll)
+    els.q.addEventListener("input", debounce(() => { page = 1; apply() }, 140))
+    els.reload.addEventListener("click", loadAll)
 
-    window.addEventListener('resize', debounce(()=>{
+    window.addEventListener("resize", debounce(() => {
       const newSize = pickPageSize()
-      if(newSize !== PAGE_SIZE){
-        location.reload()
-      }
+      if(newSize !== PAGE_SIZE) location.reload()
     }, 250))
 
-    loadAll()
+    function showError(){
+      els.grid.innerHTML = ""
+      els.empty.hidden = false
+      els.empty.textContent = "Keine Verbindung"
+      els.pager.hidden = true
+      els.statSets.textContent = "0"
+    }
+
+    loadAll().catch(showError)
+
+    function closeAllOverlays(){
+      closeDrawer()
+      closeFilter()
+    }
+
+    function closeFilterOnScroll(){
+      if(document.body.classList.contains("filter-open")) closeFilter()
+    }
+    window.addEventListener("scroll", debounce(closeFilterOnScroll, 120), { passive:true })
   </script>
 </body>
 </html>
