@@ -13,11 +13,8 @@
       --bg:#0E141A;
       --fg-on:#E6E9ED;
       --muted:#9AA4AE;
-      --glass:rgba(16,24,32,.65);
       --shadow:0 26px 90px rgba(0,0,0,.55);
       --r2:23px;
-      --gap:16px;
-
       --border:#1f2a35;
       --border2:#0f1a22;
       --pink:#cf64e5;
@@ -468,6 +465,13 @@
     .chip.best{border-color:rgba(0,229,255,.40)}
     .chip.best span{color:#bff7ff}
 
+    .chip.sale{
+      border-color:rgba(207,100,229,.65);
+    }
+    .chip.sale span{
+      color:#f2c9ff;
+    }
+
     .openbtn{
       margin-top:auto;
       height:42px;
@@ -778,6 +782,15 @@
       }
     }
 
+    function calcDiscountPercent(price, oldPrice){
+      if(!isFinite(price) || !isFinite(oldPrice)) return null
+      if(oldPrice <= 0) return null
+      if(oldPrice <= price) return null
+      const pct = (1 - (price / oldPrice)) * 100
+      if(!isFinite(pct) || pct <= 0) return null
+      return Math.round(pct)
+    }
+
     function cleanSetNumber(v){
       const s = String(v ?? "").trim()
       if(!s) return ""
@@ -796,6 +809,25 @@
         if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
       }
       return ""
+    }
+
+    function ensureArrayFromApi(data){
+      if(Array.isArray(data)) return data
+
+      if(data && Array.isArray(data.$values)) return data.$values
+
+      if(data && Array.isArray(data.items)) return data.items
+      if(data && Array.isArray(data.data)) return data.data
+      if(data && Array.isArray(data.results)) return data.results
+      if(data && Array.isArray(data.value)) return data.value
+
+      if(data && typeof data === "object"){
+        const vals = Object.values(data)
+        if(vals.length && vals.every(x => x && typeof x === "object")) return vals
+        return [data]
+      }
+
+      return []
     }
 
     function normItem(source, item){
@@ -820,14 +852,18 @@
 
       if(!setNumber) setNumber = guessLegoSetNumberFromText(name)
 
+      const p = parsePrice(price)
+      const op = parsePrice(oldPrice)
+
       return {
         source,
         setNumber,
         name: String(name || "").trim(),
         url: String(url || "").trim(),
         image: String(image || "").trim(),
-        price: parsePrice(price),
-        oldPrice: parsePrice(oldPrice)
+        price: p,
+        oldPrice: op,
+        discountPct: calcDiscountPercent(p, op)
       }
     }
 
@@ -855,6 +891,7 @@
         cur.sources[x.source] = {
           price: x.price,
           oldPrice: x.oldPrice,
+          discountPct: x.discountPct,
           url: x.url,
           image: x.image,
           name: x.name
@@ -884,10 +921,8 @@
 
     async function fetchSource(source, url){
       const data = await fetchJson(url)
-      const arr = Array.isArray(data)
-        ? data
-        : (Array.isArray(data.items) ? data.items : (Array.isArray(data.data) ? data.data : []))
-      return arr.map(it => normItem(source, it))
+      const arr = ensureArrayFromApi(data)
+      return arr.map(it => normItem(source, it)).filter(x => x.name || x.url || x.setNumber)
     }
 
     function escapeHtml(str){
@@ -926,6 +961,16 @@
       "</div>"
     }
 
+    function saleChipHtml(x, bestSource){
+      const s = x.sources[bestSource]
+      const pct = s && isFinite(s.discountPct) ? s.discountPct : null
+      if(!pct) return ""
+      return "<div class=\"chip sale\">" +
+        "Rabatt" +
+        "<span>" + escapeHtml(String(pct)) + "%</span>" +
+      "</div>"
+    }
+
     async function loadAll(){
       els.reload.disabled = true
 
@@ -942,11 +987,9 @@
         }
 
         const merged = mergeByKey(all)
-
         merged.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
 
         raw = merged.slice(0, MAX_SETS)
-
         els.statSets.textContent = String(raw.length)
 
         page = 1
@@ -1021,7 +1064,7 @@
 
         const url = getBestUrl(x)
         const name = x.name || "Set"
-        const img = x.image || x.sources[bestSource]?.image || ""
+        const img = x.image || (bestSource && x.sources[bestSource] ? x.sources[bestSource].image : "") || ""
         const setNumber = x.setNumber || ""
 
         const card = document.createElement("div")
@@ -1051,7 +1094,7 @@
 
         card.innerHTML =
           "<div class=\"thumb\">" +
-            (img ? "<img loading=\"lazy\" src=\"" + escapeHtml(img) + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" : "") +
+            (img ? "<img loading=\"lazy\" src=\"" + escapeHtml(img) + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" : "<img loading=\"lazy\" src=\"/Bilder/real1.png\" alt=\"" + escapeHtml(name) + "\">") +
             "<button class=\"heart " + (heartOn ? "on" : "") + "\" type=\"button\" aria-label=\"Wishlist\">" +
               "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\">" +
                 "<path d=\"M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/>" +
@@ -1065,6 +1108,7 @@
               "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
             "</div>" +
             "<div class=\"chips\">" +
+              saleChipHtml(x, bestSource) +
               chipHtml("amazon", x, bestSource) +
               chipHtml("lego", x, bestSource) +
               chipHtml("alternate", x, bestSource) +
@@ -1073,7 +1117,8 @@
           "</div>"
 
         const heart = card.querySelector(".heart")
-        heart.addEventListener("click", () => {
+        heart.addEventListener("click", (e) => {
+          e.stopPropagation()
           if(wishlist.has(heartKey)) wishlist.delete(heartKey)
           else wishlist.add(heartKey)
           heart.classList.toggle("on")
@@ -1081,7 +1126,8 @@
         })
 
         const openBtn = card.querySelector(".openbtn")
-        openBtn.addEventListener("click", () => {
+        openBtn.addEventListener("click", (e) => {
+          e.stopPropagation()
           if(url) window.open(url, "_blank", "noopener")
         })
 
