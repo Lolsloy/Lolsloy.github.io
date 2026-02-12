@@ -12,21 +12,19 @@
     :root{
       --bg:#0E141A;
       --fg-on:#E6E9ED;
+      --muted:#9AA4AE;
       --glass:rgba(16,24,32,.65);
-      --glass2:rgba(16,24,32,.7);
       --shadow:0 26px 90px rgba(0,0,0,.55);
       --r2:23px;
       --gap:16px;
 
       --border:#1f2a35;
       --border2:#0f1a22;
-      --border3:#223041;
-
       --pink:#cf64e5;
+      --cyan:#00E5FF;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
-    html{scroll-behavior:smooth}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--fg-on);
@@ -91,7 +89,6 @@
       font-size:1.6rem;
       white-space:nowrap;
     }
-    .nav-text span{cursor:default}
 
     .burger{
       position:fixed;
@@ -101,12 +98,14 @@
       width:46px;
       height:46px;
       border-radius:12px;
-      background:var(--glass2);
+      background:rgba(16,24,32,.7);
       border:1px solid var(--border);
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
       cursor:pointer;
+      opacity:1;
+      pointer-events:auto;
       transition:transform .12s ease, filter .12s ease;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
@@ -120,7 +119,6 @@
     .burger .lines span:nth-child(1){top:0}
     .burger .lines span:nth-child(2){top:6px}
     .burger .lines span:nth-child(3){top:12px}
-
     body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
     body.drawer-open .burger .lines span:nth-child(2){opacity:0}
     body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
@@ -132,13 +130,16 @@
       z-index:59;
       display:flex;
       gap:10px;
+      opacity:1;
+      pointer-events:auto;
+      transform:none;
     }
 
     .top-link{
       height:46px;
       padding:0 14px;
       border-radius:12px;
-      background:var(--glass2);
+      background:rgba(16,24,32,.7);
       border:1px solid var(--border);
       backdrop-filter:blur(10px);
       display:flex;
@@ -150,14 +151,9 @@
       color:#fff;
       letter-spacing:.02em;
       white-space:nowrap;
-      transition:transform .12s ease, filter .12s ease, background .12s ease;
     }
-    .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .top-link:hover{background:rgba(19,32,42,.85)}
     .top-link span{color:#b7c2cc;font-weight:700}
-    .top-link.active{
-      border-color:rgba(207,100,229,.55);
-      box-shadow:0 0 0 4px rgba(207,100,229,.08) inset;
-    }
 
     @media (max-width:720px){
       header.site{height:72px}
@@ -168,6 +164,7 @@
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
     }
+
     @media (max-width:520px){
       .top-links{display:none}
     }
@@ -227,46 +224,47 @@
         radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.22), transparent 70%),
         radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.18), transparent 65%),
         rgba(15,22,30,.68);
-      border:1px solid var(--border3);
+      border:1px solid #223041;
       box-shadow:var(--shadow);
       padding:clamp(14px,2.2vw,20px);
     }
 
-    .headrow{
+    .head{
       display:flex;
-      align-items:flex-end;
+      align-items:flex-start;
       justify-content:space-between;
       gap:12px;
       flex-wrap:wrap;
+      margin-bottom:12px;
     }
 
-    .section-title{
+    .tblock{min-width:240px}
+    .title{
       font-weight:900;
       font-size:clamp(2rem,3.4vw,2.7rem);
       letter-spacing:.01em;
-      margin:0;
+      line-height:1.05;
     }
-
-    .subline{
-      margin-top:6px;
+    .sub{
+      margin-top:8px;
       color:#cfd6dd;
       font-weight:800;
       letter-spacing:.14em;
       text-transform:uppercase;
-      font-size:.82rem;
-      opacity:.92;
+      font-size:.85rem;
+      opacity:.95;
     }
 
-    .pills{
+    .stats{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
       align-items:center;
+      justify-content:flex-end;
     }
     .pill{
       border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.42);
+      background:rgba(16,24,32,.35);
       border-radius:999px;
       padding:10px 12px;
       font-weight:900;
@@ -274,132 +272,147 @@
       align-items:center;
       gap:8px;
       white-space:nowrap;
-      backdrop-filter:blur(10px);
     }
-    .pill span{color:#9AA4AE;font-weight:800}
+    .pill span{color:var(--muted);font-weight:800}
 
     .controls{
-      margin-top:14px;
       display:flex;
       gap:10px;
       align-items:center;
       flex-wrap:wrap;
+      margin-top:10px;
     }
 
     .searchwrap{
-      flex:1 1 360px;
-      min-width:240px;
+      flex:1 1 280px;
       display:flex;
       gap:10px;
       align-items:center;
+      min-width:240px;
     }
 
     .field{
       height:46px;
       border-radius:14px;
-      border:1px solid #223041;
-      background:rgba(16,24,32,.55);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.42);
       color:#e8eef4;
       outline:none;
       padding:0 12px;
       font-weight:850;
       width:100%;
     }
-    .field::placeholder{color:#9aa4ae}
     .field:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
+    .field::placeholder{color:#9aa4ae}
 
     .iconbtn{
       height:46px;
       width:46px;
       border-radius:14px;
-      border:1px solid #223041;
-      background:rgba(16,24,32,.55);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.42);
       display:grid;
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      flex:0 0 auto;
     }
     .iconbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .iconbtn svg{width:22px;height:22px;color:#fff}
+    .iconbtn svg{width:20px;height:20px;color:#fff}
+
+    .filters{
+      display:none;
+      width:100%;
+      margin-top:10px;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .filters.on{display:flex}
 
     .btn{
       height:46px;
-      padding:0 14px;
       border-radius:14px;
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
       color:#fff;
-      font-weight:950;
+      font-weight:900;
       cursor:pointer;
-      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+      padding:0 14px;
+      transition:transform .12s ease, filter .12s ease;
     }
     .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .btn:disabled{opacity:.6;cursor:default;transform:none;filter:none}
 
     .grid{
-      margin-top:14px;
       display:grid;
-      gap:var(--gap);
+      gap:12px;
       grid-template-columns:repeat(2,minmax(0,1fr));
+      margin-top:14px;
     }
-    @media (min-width:820px){ .grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
-    @media (min-width:1080px){ .grid{grid-template-columns:repeat(4,minmax(0,1fr))} }
-    @media (min-width:1320px){ .grid{grid-template-columns:repeat(5,minmax(0,1fr))} }
+
+    @media (min-width:700px){
+      .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+    }
+    @media (min-width:1100px){
+      .grid{grid-template-columns:repeat(5,minmax(0,1fr))}
+    }
 
     .card{
+      position:relative;
       border-radius:18px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
       background:linear-gradient(180deg,#101820,#0b1218);
-      position:relative;
+      box-shadow:0 18px 70px rgba(0,0,0,.55);
+      cursor:pointer;
       transform:translateY(0);
       transition:transform .15s ease, border-color .15s ease, filter .15s ease;
       display:flex;
       flex-direction:column;
-      min-height:340px;
+      min-height:320px;
     }
-    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.04)}
+    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.03)}
 
     .thumb{
-      height:clamp(160px,18vw,210px);
-      background:#0b1218;
       position:relative;
+      aspect-ratio:1/1;
+      background:#0b1218;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
-    @media (max-width:560px){ .thumb{height:150px} :root{--gap:12px} }
     .thumb img{width:100%;height:100%;object-fit:cover}
 
     .heart{
       position:absolute;
-      right:12px;
-      top:12px;
-      width:38px;
-      height:38px;
+      right:10px;
+      top:10px;
+      height:42px;
+      width:42px;
       border-radius:14px;
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.55);
-      backdrop-filter:blur(10px);
+      background:rgba(16,24,32,.45);
       display:grid;
       place-items:center;
       cursor:pointer;
-      transition:filter .12s ease, transform .12s ease;
+      z-index:2;
     }
-    .heart:hover{filter:brightness(1.08);transform:translateY(-1px)}
-    .heart svg{width:18px;height:18px;color:#fff}
+    .heart:hover{filter:brightness(1.06)}
+    .heart svg{width:20px;height:20px;color:#e8eef4}
     .heart.on{border-color:rgba(207,100,229,.65)}
     .heart.on svg{color:var(--pink)}
 
     .txt{
       padding:12px 10px 14px;
-      text-align:left;
+      text-align:center;
       display:flex;
       flex-direction:column;
-      gap:10px;
+      gap:8px;
       flex:1;
     }
 
-    .t1{
+    .name{
       font-weight:900;
-      font-size:1rem;
+      font-size:.98rem;
       line-height:1.2;
       display:-webkit-box;
       -webkit-line-clamp:2;
@@ -414,75 +427,71 @@
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
+      margin-top:2px;
     }
-
     .setno{
-      color:#9AA4AE;
+      color:var(--muted);
       font-weight:900;
-      letter-spacing:.12em;
+      letter-spacing:.08em;
       text-transform:uppercase;
       font-size:.78rem;
-      white-space:nowrap;
     }
-
     .price{
-      font-weight:950;
-      font-size:1.12rem;
+      font-weight:900;
+      font-size:1.1rem;
       letter-spacing:.01em;
+      color:#fff;
       white-space:nowrap;
     }
 
     .chips{
       display:flex;
-      gap:8px;
+      justify-content:center;
+      gap:6px;
       flex-wrap:wrap;
-      align-items:center;
       margin-top:2px;
     }
-
     .chip{
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.45);
+      background:rgba(16,24,32,.35);
       border-radius:999px;
-      padding:8px 10px;
+      padding:7px 9px;
       font-weight:900;
       font-size:.78rem;
       color:#d9e1e8;
       display:flex;
-      gap:8px;
       align-items:center;
+      gap:6px;
       white-space:nowrap;
     }
-    .chip span{color:#9AA4AE;font-weight:800}
-    .chip.best{
-      border-color:rgba(0,229,255,.35);
-      box-shadow:0 0 0 4px rgba(0,229,255,.06) inset;
-    }
+    .chip span{color:var(--muted);font-weight:800}
+    .chip.best{border-color:rgba(0,229,255,.40)}
     .chip.best span{color:#bff7ff}
 
     .openbtn{
-      width:100%;
+      margin-top:auto;
       height:42px;
       border-radius:14px;
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
       color:#fff;
-      font-weight:950;
+      font-weight:900;
       cursor:pointer;
+      width:100%;
       transition:transform .12s ease, filter .12s ease;
-      margin-top:auto;
     }
     .openbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
     .empty{
       margin-top:14px;
-      border-radius:18px;
       border:1px solid rgba(255,255,255,.10);
       background:rgba(16,24,32,.35);
+      border-radius:18px;
       padding:14px;
       color:#cfd6dd;
       font-weight:850;
       line-height:1.5;
+      text-align:center;
     }
 
     .pager{
@@ -493,127 +502,34 @@
       gap:10px;
       flex-wrap:wrap;
     }
+
     .pagebtn{
       height:44px;
       padding:0 12px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.45);
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.42);
       color:#fff;
-      font-weight:950;
+      font-weight:900;
       cursor:pointer;
-      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+      transition:transform .12s ease, filter .12s ease;
     }
     .pagebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .pagebtn:disabled{opacity:.5;cursor:default;transform:none;filter:none}
 
     .pinfo{
-      color:#9AA4AE;
+      color:var(--muted);
       font-weight:900;
-      letter-spacing:.10em;
+      letter-spacing:.06em;
       text-transform:uppercase;
-      font-size:.78rem;
+      font-size:.8rem;
     }
 
     .skeleton{
       border-radius:18px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(16,24,32,.35);
-      min-height:340px;
-    }
-
-    .filter-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.55);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .25s ease;
-      z-index:70;
-    }
-
-    .filter-modal{
-      position:fixed;
-      left:50%;
-      bottom:24px;
-      transform:translateX(-50%) translateY(24px) scale(.985);
-      width:min(560px,92vw);
-      opacity:0;
-      pointer-events:none;
-      z-index:71;
-      transition:transform .35s ease, opacity .35s ease;
-    }
-
-    .filter-card{
-      background:
-        radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.26), transparent 60%),
-        radial-gradient(800px 520px at 92% 120%, rgba(59,130,246,.22), transparent 60%),
-        rgba(12,18,24,.96);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:14px;
-      box-shadow:0 24px 80px rgba(0,0,0,.6);
-      backdrop-filter:blur(14px);
-    }
-
-    .filter-head{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      margin-bottom:10px;
-    }
-    .filter-head h3{
-      font-size:1.2rem;
-      font-weight:900;
-      letter-spacing:.03em;
-    }
-
-    .closebtn{
-      height:38px;
-      padding:0 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.45);
-      color:#d9e1e8;
-      font-weight:900;
-      cursor:pointer;
-      transition:transform .12s ease, filter .12s ease;
-    }
-    .closebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
-
-    .filter-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:10px;
-    }
-    @media (max-width:560px){ .filter-grid{grid-template-columns:1fr} }
-
-    .filter-actions{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-
-    body.filter-open .filter-backdrop{opacity:1;pointer-events:auto}
-    body.filter-open .filter-modal{
-      opacity:1;
-      pointer-events:auto;
-      transform:translateX(-50%) translateY(0) scale(1);
-    }
-
-    @media (max-width:520px){
-      .filter-modal{
-        left:0;
-        bottom:0;
-        transform:translate(0, 14px) scale(.985);
-        width:100vw;
-        padding:0 10px 10px;
-      }
-      body.filter-open .filter-modal{transform:translate(0,0) scale(1)}
-      .filter-card{border-radius:18px 18px 0 0}
+      height:320px;
     }
   </style>
 </head>
@@ -625,14 +541,14 @@
     </div>
   </button>
 
-  <div class="top-links" aria-label="Quick Links">
+  <div class="top-links" id="topLinks" aria-label="Quick Links">
     <a class="top-link" href="/news.html" aria-label="News">
       <strong>News</strong><span>Updates</span>
     </a>
     <a class="top-link" href="/events.html" aria-label="Events">
       <strong>Events</strong><span>Dates</span>
     </a>
-    <a class="top-link active" href="/sale.html" aria-label="Sale">
+    <a class="top-link" href="/sale.html" aria-label="Sale">
       <strong>Sale</strong><span>Deals</span>
     </a>
   </div>
@@ -707,13 +623,13 @@
 
   <main>
     <div class="panel">
-      <div class="headrow">
-        <div>
-          <div class="section-title">Sale</div>
-          <div class="subline">Amazon · LEGO · Alternate</div>
+      <div class="head">
+        <div class="tblock">
+          <div class="title">Sale</div>
+          <div class="sub">Amazon · LEGO · Alternate</div>
         </div>
 
-        <div class="pills">
+        <div class="stats">
           <div class="pill"><span>Sets</span><strong id="statSets">0</strong></div>
           <div class="pill"><span>Wishlist</span><strong id="statWish">0</strong></div>
         </div>
@@ -722,18 +638,38 @@
       <div class="controls" role="search">
         <div class="searchwrap">
           <input class="field" id="q" placeholder="Suche Name oder Set Number" autocomplete="off" />
-          <button class="iconbtn" id="filterOpen" type="button" aria-label="Filter">
+          <button class="iconbtn" id="filterBtn" type="button" aria-label="Filter öffnen">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
             </svg>
           </button>
         </div>
+
         <button class="btn" id="reload" type="button">Reload</button>
       </div>
 
+      <div class="filters" id="filters">
+        <select class="field" id="sort" aria-label="Sortierung">
+          <option value="best">Billigste zuerst</option>
+          <option value="worst">Teuerste zuerst</option>
+          <option value="name_az">Name A bis Z</option>
+          <option value="name_za">Name Z bis A</option>
+          <option value="set_asc">Set Number aufsteigend</option>
+          <option value="set_desc">Set Number absteigend</option>
+        </select>
+
+        <select class="field" id="source" aria-label="Quelle">
+          <option value="all">Alle Quellen</option>
+          <option value="amazon">Nur Amazon</option>
+          <option value="lego">Nur LEGO</option>
+          <option value="alternate">Nur Alternate</option>
+        </select>
+      </div>
+
       <div class="grid" id="grid" aria-label="Sale Sets">
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div>
       </div>
 
       <div class="empty" id="empty" hidden>Keine Treffer</div>
@@ -746,42 +682,6 @@
     </div>
   </main>
 
-  <div class="filter-backdrop" id="filterBackdrop" aria-hidden="true"></div>
-  <div class="filter-modal" id="filterModal" role="dialog" aria-modal="true" aria-labelledby="filterTitle" aria-hidden="true">
-    <div class="filter-card">
-      <div class="filter-head">
-        <h3 id="filterTitle">Filter</h3>
-        <button class="closebtn" id="filterClose" type="button">Close</button>
-      </div>
-
-      <div class="filter-grid">
-        <select class="field" id="sort">
-          <option value="best">Billigste zuerst</option>
-          <option value="worst">Teuerste zuerst</option>
-          <option value="name_az">Name A bis Z</option>
-          <option value="name_za">Name Z bis A</option>
-          <option value="set_asc">Set Number aufsteigend</option>
-          <option value="set_desc">Set Number absteigend</option>
-        </select>
-
-        <select class="field" id="source">
-          <option value="all">Alle Quellen</option>
-          <option value="amazon">Nur Amazon</option>
-          <option value="lego">Nur LEGO</option>
-          <option value="alternate">Nur Alternate</option>
-        </select>
-
-        <input class="field" id="minPrice" inputmode="decimal" placeholder="Min Preis" />
-        <input class="field" id="maxPrice" inputmode="decimal" placeholder="Max Preis" />
-      </div>
-
-      <div class="filter-actions">
-        <button class="closebtn" id="resetFilters" type="button">Reset</button>
-        <button class="btn" id="applyFilters" type="button">Apply</button>
-      </div>
-    </div>
-  </div>
-
   <script>
     const API = {
       amazon: "https://sethub.ddnsfree.com/SaleScraper/api/Amazon/sales",
@@ -789,48 +689,46 @@
       alternate: "https://sethub.ddnsfree.com/SaleScraper/api/Alternate"
     }
 
-    const FALLBACK_IMG = "/Bilder/real1.png"
     const MAX_SETS = 200
-    const PAGE_SIZE = pickPageSize()
-
-    const burgerBtn = document.getElementById("burgerBtn")
-    const drawerBackdrop = document.getElementById("drawerBackdrop")
-
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
-
-    burgerBtn.addEventListener("click", () => {
-      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
-    })
-    drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
-    addEventListener("keydown", e => { if(e.key === "Escape") { closeDrawer(); closeFilter() } })
 
     const els = {
+      burgerBtn: document.getElementById("burgerBtn"),
+      drawerBackdrop: document.getElementById("drawerBackdrop"),
+      filterBtn: document.getElementById("filterBtn"),
+      filters: document.getElementById("filters"),
+
       q: document.getElementById("q"),
+      sort: document.getElementById("sort"),
+      source: document.getElementById("source"),
+      reload: document.getElementById("reload"),
+
       grid: document.getElementById("grid"),
       empty: document.getElementById("empty"),
       pager: document.getElementById("pager"),
       prev: document.getElementById("prev"),
       next: document.getElementById("next"),
       pinfo: document.getElementById("pinfo"),
+
       statSets: document.getElementById("statSets"),
-      statWish: document.getElementById("statWish"),
-      reload: document.getElementById("reload"),
-
-      filterOpen: document.getElementById("filterOpen"),
-      filterBackdrop: document.getElementById("filterBackdrop"),
-      filterModal: document.getElementById("filterModal"),
-      filterClose: document.getElementById("filterClose"),
-      resetFilters: document.getElementById("resetFilters"),
-      applyFilters: document.getElementById("applyFilters"),
-
-      sort: document.getElementById("sort"),
-      source: document.getElementById("source"),
-      minPrice: document.getElementById("minPrice"),
-      maxPrice: document.getElementById("maxPrice")
+      statWish: document.getElementById("statWish")
     }
 
+    function openDrawer(){ document.body.classList.add("drawer-open") }
+    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+
+    els.burgerBtn.addEventListener("click", () => {
+      if(document.body.classList.contains("drawer-open")) closeDrawer()
+      else openDrawer()
+    })
+    els.drawerBackdrop.addEventListener("click", closeDrawer)
+    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
+    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+
+    els.filterBtn.addEventListener("click", () => {
+      els.filters.classList.toggle("on")
+    })
+
+    let PAGE_SIZE = pickPageSize()
     let raw = []
     let view = []
     let page = 1
@@ -840,142 +738,9 @@
 
     function pickPageSize(){
       const w = window.innerWidth || 1200
-      if(w <= 520) return 12
-      if(w <= 900) return 18
+      if(w <= 520) return 10
+      if(w <= 900) return 15
       return 20
-    }
-
-    function debounce(fn, ms){
-      let t = 0
-      return (...args) => {
-        clearTimeout(t)
-        t = setTimeout(() => fn(...args), ms)
-      }
-    }
-
-    function escapeHtml(str){
-      return String(str || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;")
-    }
-
-    function parsePrice(v){
-      if(v === null || v === undefined) return null
-      if(typeof v === "number" && isFinite(v)) return v
-      const s0 = String(v).trim()
-      if(!s0) return null
-
-      const s = s0
-        .replaceAll("€","")
-        .replaceAll("EUR","")
-        .replaceAll(/\s/g,"")
-        .replace(/[^\d.,-]/g,"")
-
-      if(!s) return null
-
-      const lastComma = s.lastIndexOf(",")
-      const lastDot = s.lastIndexOf(".")
-      const decPos = Math.max(lastComma, lastDot)
-
-      let normalized = s
-      if(decPos >= 0){
-        const intPart = s.slice(0, decPos).replaceAll(".","").replaceAll(",","")
-        const decPart = s.slice(decPos + 1).replaceAll(".","").replaceAll(",","")
-        normalized = intPart + "." + decPart
-      }else{
-        normalized = s.replaceAll(".","").replaceAll(",","")
-      }
-
-      const n = Number(normalized)
-      if(!isFinite(n)) return null
-      return n
-    }
-
-    function formatEUR(n){
-      try{
-        return new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR"}).format(n)
-      }catch{
-        return (Math.round(n * 100) / 100).toFixed(2) + " €"
-      }
-    }
-
-    function guessSetNumberFromText(s){
-      const m = String(s || "").match(/\b\d{4,6}\b/)
-      return m ? m[0] : ""
-    }
-
-    function firstText(o, keys){
-      for(const k of keys){
-        const v = o && o[k]
-        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
-      }
-      return ""
-    }
-
-    function normItem(source, item){
-      const it = item || {}
-
-      let setNumber = firstText(it, ["setNumber","setnumber","set_no","setNo","number","set","id","setId"])
-      const name = firstText(it, ["name","title","setName","productName","product","headline","description"])
-
-      if(!setNumber) setNumber = guessSetNumberFromText(name)
-
-      const url = firstText(it, ["url","link","productUrl","href","detailUrl","page"])
-      const image = firstText(it, ["image","img","imageUrl","image_url","thumbnail","thumb","picture","photo"])
-
-      const price = parsePrice(firstText(it, ["price","currentPrice","salePrice","now","value","bestPrice","lowestPrice","finalPrice"]))
-      const oldPrice = parsePrice(firstText(it, ["oldPrice","wasPrice","regularPrice","listPrice","before","msrp"]))
-
-      return {
-        source,
-        setNumber: String(setNumber || "").trim(),
-        name: String(name || "").trim(),
-        url: String(url || "").trim(),
-        image: String(image || "").trim(),
-        price,
-        oldPrice
-      }
-    }
-
-    function mergeBySetNumber(list){
-      const map = new Map()
-
-      for(const x of list){
-        if(!x.setNumber) continue
-        if(x.price === null) continue
-
-        const key = x.setNumber
-        const cur = map.get(key) || {
-          setNumber: key,
-          name: x.name || "",
-          image: x.image || "",
-          sources: {},
-          best: null
-        }
-
-        if(!cur.name && x.name) cur.name = x.name
-        if(!cur.image && x.image) cur.image = x.image
-
-        cur.sources[x.source] = {
-          price: x.price,
-          oldPrice: x.oldPrice,
-          url: x.url,
-          image: x.image,
-          name: x.name
-        }
-
-        const b = cur.best
-        if(!b || x.price < b.price){
-          cur.best = { source: x.source, price: x.price, url: x.url }
-        }
-
-        map.set(key, cur)
-      }
-
-      return [...map.values()]
     }
 
     function loadWishlist(){
@@ -997,130 +762,213 @@
       els.statWish.textContent = String(wishlist.size)
     }
 
-    function openFilter(){
-      document.body.classList.add("filter-open")
-      els.filterBackdrop.setAttribute("aria-hidden","false")
-      els.filterModal.setAttribute("aria-hidden","false")
+    function parsePrice(v){
+      if(v === null || v === undefined) return null
+      if(typeof v === "number" && isFinite(v)) return v
+      const s = String(v).replace(",", ".").replace(/[^\d.]/g, "")
+      const n = Number(s)
+      return isFinite(n) ? n : null
     }
 
-    function closeFilter(){
-      document.body.classList.remove("filter-open")
-      els.filterBackdrop.setAttribute("aria-hidden","true")
-      els.filterModal.setAttribute("aria-hidden","true")
-    }
-
-    els.filterOpen.addEventListener("click", openFilter)
-    els.filterClose.addEventListener("click", closeFilter)
-    els.filterBackdrop.addEventListener("click", closeFilter)
-
-    els.resetFilters.addEventListener("click", () => {
-      els.sort.value = "best"
-      els.source.value = "all"
-      els.minPrice.value = ""
-      els.maxPrice.value = ""
-    })
-
-    els.applyFilters.addEventListener("click", () => {
-      closeFilter()
-      page = 1
-      apply()
-    })
-
-    function withTimeout(ms){
-      const controller = new AbortController()
-      const t = setTimeout(() => controller.abort(), ms)
-      return { signal: controller.signal, clear: () => clearTimeout(t) }
-    }
-
-    async function fetchJsonLoose(url){
-      const { signal, clear } = withTimeout(14000)
+    function formatEUR(n){
       try{
-        const res = await fetch(url, {
-          method:"GET",
-          mode:"cors",
-          cache:"no-store",
-          headers:{ "Accept":"application/json" },
-          signal
-        })
-
-        const txt = await res.text()
-        if(!res.ok) throw new Error("bad status")
-
-        let data = null
-        try{ data = JSON.parse(txt) }catch{ data = null }
-
-        if(Array.isArray(data)) return data
-        if(data && Array.isArray(data.items)) return data.items
-        if(data && Array.isArray(data.data)) return data.data
-        if(data && Array.isArray(data.results)) return data.results
-
-        return []
-      } finally {
-        clear()
+        return new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" }).format(n)
+      }catch{
+        return (Math.round(n * 100) / 100).toFixed(2) + " €"
       }
+    }
+
+    function cleanSetNumber(v){
+      const s = String(v ?? "").trim()
+      if(!s) return ""
+      if(s === "0") return ""
+      return s
+    }
+
+    function guessLegoSetNumberFromText(s){
+      const m = String(s || "").match(/\b\d{4,6}\b/)
+      return m ? m[0] : ""
+    }
+
+    function firstText(o, keys){
+      for(const k of keys){
+        const v = o && o[k]
+        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
+      }
+      return ""
+    }
+
+    function normItem(source, item){
+      const it = item || {}
+
+      const name = firstText(it, ["name","title","setName","productName","product","headline","description"])
+      const url = firstText(it, ["url","link","productUrl","href","detailUrl","page"])
+      const image = firstText(it, ["imageUrl","image","img","image_url","thumbnail","thumb","picture","photo"])
+      const price = firstText(it, ["price","currentPrice","salePrice","now","value","bestPrice","lowestPrice"])
+      const oldPrice = firstText(it, ["originalPrice","oldPrice","wasPrice","regularPrice","listPrice","before","msrp"])
+
+      let setNumber = ""
+      setNumber =
+        cleanSetNumber(it.setNumber) ||
+        cleanSetNumber(it.setnumber) ||
+        cleanSetNumber(it.set_no) ||
+        cleanSetNumber(it.setNo) ||
+        cleanSetNumber(it.number) ||
+        cleanSetNumber(it.set) ||
+        cleanSetNumber(it.setId) ||
+        cleanSetNumber(it.id)
+
+      if(!setNumber) setNumber = guessLegoSetNumberFromText(name)
+
+      return {
+        source,
+        setNumber,
+        name: String(name || "").trim(),
+        url: String(url || "").trim(),
+        image: String(image || "").trim(),
+        price: parsePrice(price),
+        oldPrice: parsePrice(oldPrice)
+      }
+    }
+
+    function mergeByKey(list){
+      const map = new Map()
+
+      for(const x of list){
+        if(x.price === null) continue
+
+        const key = x.setNumber
+          ? "set:" + x.setNumber
+          : "fallback:" + x.source + ":" + (x.url || x.name || "").slice(0,160)
+
+        const cur = map.get(key) || {
+          setNumber: x.setNumber || "",
+          name: x.name || "",
+          image: x.image || "",
+          sources: {},
+          best: null
+        }
+
+        if(!cur.name && x.name) cur.name = x.name
+        if(!cur.image && x.image) cur.image = x.image
+
+        cur.sources[x.source] = {
+          price: x.price,
+          oldPrice: x.oldPrice,
+          url: x.url,
+          image: x.image,
+          name: x.name
+        }
+
+        const b = cur.best
+        if(!b || x.price < b.price){
+          cur.best = { source:x.source, price:x.price, url:x.url }
+        }
+
+        map.set(key, cur)
+      }
+
+      return [...map.values()]
+    }
+
+    async function fetchJson(url){
+      const res = await fetch(url, {
+        method:"GET",
+        mode:"cors",
+        cache:"no-store",
+        headers:{ "Accept":"application/json" }
+      })
+      if(!res.ok) throw new Error("bad status " + res.status)
+      return await res.json()
     }
 
     async function fetchSource(source, url){
-      const arr = await fetchJsonLoose(url)
+      const data = await fetchJson(url)
+      const arr = Array.isArray(data)
+        ? data
+        : (Array.isArray(data.items) ? data.items : (Array.isArray(data.data) ? data.data : []))
       return arr.map(it => normItem(source, it))
     }
 
-    function skeletonOn(){
-      els.grid.innerHTML = ""
-      for(let i = 0; i < 10; i++){
-        const d = document.createElement("div")
-        d.className = "skeleton"
-        els.grid.appendChild(d)
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;")
+    }
+
+    function sourceLabel(source){
+      if(source === "amazon") return "Amazon"
+      if(source === "lego") return "LEGO"
+      return "Alternate"
+    }
+
+    function getBestUrl(x){
+      const b = x.best
+      if(b && b.url) return b.url
+      const order = ["alternate","lego","amazon"]
+      for(const k of order){
+        const s = x.sources[k]
+        if(s && s.url) return s.url
       }
+      return ""
+    }
+
+    function chipHtml(source, x, bestSource){
+      const s = x.sources[source]
+      if(!s || !isFinite(s.price)) return ""
+      const cls = "chip" + (source === bestSource ? " best" : "")
+      return "<div class=\"" + cls + "\">" +
+        escapeHtml(sourceLabel(source)) +
+        "<span>" + escapeHtml(formatEUR(s.price)) + "</span>" +
+      "</div>"
     }
 
     async function loadAll(){
-      skeletonOn()
       els.reload.disabled = true
 
-      const [a,l,alt] = await Promise.allSettled([
-        fetchSource("amazon", API.amazon),
-        fetchSource("lego", API.lego),
-        fetchSource("alternate", API.alternate)
-      ])
+      try{
+        const results = await Promise.allSettled([
+          fetchSource("amazon", API.amazon),
+          fetchSource("lego", API.lego),
+          fetchSource("alternate", API.alternate)
+        ])
 
-      const all = []
-      if(a.status === "fulfilled") all.push(...a.value)
-      if(l.status === "fulfilled") all.push(...l.value)
-      if(alt.status === "fulfilled") all.push(...alt.value)
+        const all = []
+        for(const r of results){
+          if(r.status === "fulfilled") all.push(...r.value)
+        }
 
-      const merged = mergeBySetNumber(all)
-      merged.sort((x,y) => (x.best?.price ?? 1e18) - (y.best?.price ?? 1e18))
+        const merged = mergeByKey(all)
 
-      raw = merged.slice(0, MAX_SETS)
-      els.statSets.textContent = String(raw.length)
+        merged.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
 
-      page = 1
-      apply()
+        raw = merged.slice(0, MAX_SETS)
 
-      els.reload.disabled = false
+        els.statSets.textContent = String(raw.length)
+
+        page = 1
+        apply()
+      }catch{
+        raw = []
+        view = []
+        render()
+      }finally{
+        els.reload.disabled = false
+      }
     }
 
     function apply(){
-      const q = String(els.q.value || "").trim().toLowerCase()
-      const source = els.source.value
+      const q = (els.q.value || "").trim().toLowerCase()
+      const s = els.source.value
       const sort = els.sort.value
-
-      const minP = parsePrice(els.minPrice.value)
-      const maxP = parsePrice(els.maxPrice.value)
 
       let out = raw
 
-      if(source !== "all"){
-        out = out.filter(x => x.sources[source] && isFinite(x.sources[source].price))
-      }
-
-      if(minP !== null){
-        out = out.filter(x => (x.best?.price ?? 1e18) >= minP)
-      }
-
-      if(maxP !== null){
-        out = out.filter(x => (x.best?.price ?? -1) <= maxP)
+      if(s !== "all"){
+        out = out.filter(x => x.sources[s] && isFinite(x.sources[s].price))
       }
 
       if(q){
@@ -1151,26 +999,6 @@
       render()
     }
 
-    function getBestUrl(x){
-      const b = x.best
-      if(b && b.url) return b.url
-      const order = ["alternate","lego","amazon"]
-      for(const k of order){
-        const s = x.sources[k]
-        if(s && s.url) return s.url
-      }
-      return ""
-    }
-
-    function chip(source, x, bestSource){
-      const s = x.sources[source]
-      if(!s || !isFinite(s.price)) return ""
-      const isBest = source === bestSource
-      const cls = "chip" + (isBest ? " best" : "")
-      const label = source === "amazon" ? "Amazon" : (source === "lego" ? "LEGO" : "Alternate")
-      return `<div class="${cls}">${label}<span>${escapeHtml(formatEUR(s.price))}</span></div>`
-    }
-
     function render(){
       const total = view.length
       const pages = Math.max(1, Math.ceil(total / PAGE_SIZE))
@@ -1180,8 +1008,8 @@
       const items = view.slice(start, start + PAGE_SIZE)
 
       els.grid.innerHTML = ""
-
       els.empty.hidden = items.length !== 0
+
       els.pager.hidden = total <= PAGE_SIZE
       els.prev.disabled = page <= 1
       els.next.disabled = page >= pages
@@ -1190,8 +1018,8 @@
       for(const x of items){
         const bestPrice = x.best?.price
         const bestSource = x.best?.source
-        const url = getBestUrl(x)
 
+        const url = getBestUrl(x)
         const name = x.name || "Set"
         const img = x.image || x.sources[bestSource]?.image || ""
         const setNumber = x.setNumber || ""
@@ -1216,43 +1044,38 @@
           }
         })
 
-        const heartOn = wishlist.has(setNumber)
+        const heartKey = setNumber ? setNumber : ("fallback:" + (url || name))
+        const heartOn = wishlist.has(heartKey)
 
-        card.innerHTML = `
-          <div class="thumb">
-            <img src="${escapeHtml(img || FALLBACK_IMG)}" alt="${escapeHtml(name)}" loading="lazy"
-                 onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
-            <button class="heart ${heartOn ? "on" : ""}" type="button" aria-label="Wishlist">
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z"
-                      stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
+        const priceTxt = isFinite(bestPrice) ? formatEUR(bestPrice) : "-"
 
-          <div class="txt">
-            <div class="t1">${escapeHtml(name)}</div>
-
-            <div class="meta">
-              <div class="setno">Set ${escapeHtml(setNumber)}</div>
-              <div class="price">${isFinite(bestPrice) ? escapeHtml(formatEUR(bestPrice)) : "-"}</div>
-            </div>
-
-            <div class="chips">
-              ${chip("amazon", x, bestSource)}
-              ${chip("lego", x, bestSource)}
-              ${chip("alternate", x, bestSource)}
-            </div>
-
-            <button class="openbtn" type="button">Open Deal</button>
-          </div>
-        `
+        card.innerHTML =
+          "<div class=\"thumb\">" +
+            (img ? "<img loading=\"lazy\" src=\"" + escapeHtml(img) + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" : "") +
+            "<button class=\"heart " + (heartOn ? "on" : "") + "\" type=\"button\" aria-label=\"Wishlist\">" +
+              "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\">" +
+                "<path d=\"M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/>" +
+              "</svg>" +
+            "</button>" +
+          "</div>" +
+          "<div class=\"txt\">" +
+            "<div class=\"name\">" + escapeHtml(name) + "</div>" +
+            "<div class=\"meta\">" +
+              "<div class=\"setno\">" + (setNumber ? ("Set " + escapeHtml(setNumber)) : "Kein Set") + "</div>" +
+              "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
+            "</div>" +
+            "<div class=\"chips\">" +
+              chipHtml("amazon", x, bestSource) +
+              chipHtml("lego", x, bestSource) +
+              chipHtml("alternate", x, bestSource) +
+            "</div>" +
+            "<button class=\"openbtn\" type=\"button\">Open Deal</button>" +
+          "</div>"
 
         const heart = card.querySelector(".heart")
         heart.addEventListener("click", () => {
-          if(!setNumber) return
-          if(wishlist.has(setNumber)) wishlist.delete(setNumber)
-          else wishlist.add(setNumber)
+          if(wishlist.has(heartKey)) wishlist.delete(heartKey)
+          else wishlist.add(heartKey)
           heart.classList.toggle("on")
           saveWishlist()
         })
@@ -1264,9 +1087,13 @@
 
         els.grid.appendChild(card)
       }
+    }
 
-      if(total === 0){
-        els.empty.hidden = false
+    function debounce(fn, ms){
+      let t = 0
+      return (...args) => {
+        clearTimeout(t)
+        t = setTimeout(() => fn(...args), ms)
       }
     }
 
@@ -1277,38 +1104,26 @@
     })
 
     els.next.addEventListener("click", () => {
-      page = Math.min(page + 1, Math.ceil(view.length / PAGE_SIZE))
+      page = page + 1
       render()
       window.scrollTo({ top:0, behavior:"smooth" })
     })
 
+    els.sort.addEventListener("change", () => { page = 1; apply() })
+    els.source.addEventListener("change", () => { page = 1; apply() })
     els.q.addEventListener("input", debounce(() => { page = 1; apply() }, 140))
     els.reload.addEventListener("click", loadAll)
 
     window.addEventListener("resize", debounce(() => {
-      const newSize = pickPageSize()
-      if(newSize !== PAGE_SIZE) location.reload()
+      const n = pickPageSize()
+      if(n !== PAGE_SIZE){
+        PAGE_SIZE = n
+        page = 1
+        render()
+      }
     }, 250))
 
-    function showError(){
-      els.grid.innerHTML = ""
-      els.empty.hidden = false
-      els.empty.textContent = "Keine Verbindung"
-      els.pager.hidden = true
-      els.statSets.textContent = "0"
-    }
-
-    loadAll().catch(showError)
-
-    function closeAllOverlays(){
-      closeDrawer()
-      closeFilter()
-    }
-
-    function closeFilterOnScroll(){
-      if(document.body.classList.contains("filter-open")) closeFilter()
-    }
-    window.addEventListener("scroll", debounce(closeFilterOnScroll, 120), { passive:true })
+    loadAll()
   </script>
 </body>
 </html>
