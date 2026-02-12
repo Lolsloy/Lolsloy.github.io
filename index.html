@@ -393,7 +393,6 @@
     .section{padding:clamp(2rem,4vw,5rem) 5%}
     .container{width:min(1400px,100%);margin:0 auto}
 
-    /* QUICK CARDS CLEAN + PERFECT FIT */
     .quick-wrap{
       width:min(1400px,100%);
       margin:0 auto 4.5rem;
@@ -598,7 +597,6 @@
       .q-ico svg{width:25px;height:25px}
     }
 
-    /* big box */
     .feature{
       position:relative;
       min-height:82vh;
@@ -1022,6 +1020,7 @@
     .ai-close:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .ai-frame{width:100%;height:100%;border:0;background:#0b1218}
 
+    /* LOGIN */
     .login-backdrop{
       position:fixed;
       inset:0;
@@ -1054,6 +1053,9 @@
       padding:16px;
       box-shadow:0 24px 80px rgba(0,0,0,.6);
       backdrop-filter:blur(14px);
+      max-height:86vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
     }
 
     .login-head{
@@ -1085,6 +1087,7 @@
       margin-top:12px;
       color:var(--muted);
       font-size:.85rem;
+      flex-wrap:wrap;
     }
     .login-foot a:hover{color:#fff}
 
@@ -1093,6 +1096,55 @@
       opacity:1;
       pointer-events:auto;
       transform:translate(-50%,-50%) translateY(0) scale(1);
+    }
+
+    #gsiButton{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    @media (max-width:520px){
+      .login-modal{
+        left:0;
+        top:auto;
+        bottom:0;
+        width:100vw;
+        transform:translateY(14px) scale(.985);
+        padding:0 10px 10px;
+      }
+
+      body.login-open .login-modal{
+        transform:translateY(0) scale(1);
+      }
+
+      .login-card{
+        border-radius:18px 18px 0 0;
+        padding:14px;
+        max-height:78vh;
+      }
+
+      .login-card h3{font-size:1.1rem}
+      .login-text{font-size:.9rem}
+
+      #gsiButton > div,
+      #gsiButton iframe{
+        width:100% !important;
+        min-width:0 !important;
+      }
+
+      .login-card .ai-close{
+        height:34px;
+        padding:0 10px;
+        border-radius:10px;
+      }
+    }
+
+    @media (max-width:360px){
+      .login-modal{padding:0 8px 8px}
+      .login-card{padding:12px}
+      .login-card h3{font-size:1.05rem}
     }
   </style>
 </head>
@@ -1751,6 +1803,7 @@
       document.body.classList.add('login-open')
       loginBackdrop.setAttribute('aria-hidden','false')
       loginModal.setAttribute('aria-hidden','false')
+      setTimeout(renderGsiFit, 0)
     }
 
     function closeLogin(){
@@ -1808,18 +1861,26 @@
         cancel_on_tap_outside: true
       })
 
+      renderGsiFit()
+    }
+
+    function renderGsiFit(){
       const btn = document.getElementById('gsiButton')
-      if(btn){
-        google.accounts.id.renderButton(btn, {
-          theme: 'filled_black',
-          size: 'large',
-          type: 'standard',
-          shape: 'pill',
-          text: 'signin_with',
-          logo_alignment: 'left',
-          width: 360
-        })
-      }
+      if(!btn || !window.google || !google.accounts || !google.accounts.id) return
+
+      btn.innerHTML = ''
+
+      const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
+
+      google.accounts.id.renderButton(btn, {
+        theme: 'filled_black',
+        size: 'large',
+        type: 'standard',
+        shape: 'pill',
+        text: 'signin_with',
+        logo_alignment: 'left',
+        width: w
+      })
     }
 
     window.addEventListener('load', ()=>{
@@ -1832,6 +1893,12 @@
         }
         if(Date.now() - start > 4000) clearInterval(t)
       }, 50)
+    })
+
+    window.addEventListener('resize', ()=>{
+      if(document.body.classList.contains('login-open')){
+        renderGsiFit()
+      }
     })
 
     addEventListener('keydown', e => {
