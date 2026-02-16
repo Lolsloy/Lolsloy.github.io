@@ -1191,6 +1191,7 @@
     /* SLIDER */
 /* replace ONLY your slider + card css with this */
 
+/* SLIDER */
 .slider-wrap{
   position:relative;
   width:100%;
@@ -1211,18 +1212,20 @@
   scroll-padding-left:5%;
   scroll-padding-right:5%;
 
-  touch-action:pan-x;
   overscroll-behavior-x:contain;
 
   scrollbar-width:none;
+
+  touch-action:pan-x pan-y;
+  pointer-events:auto;
 }
 .slider::-webkit-scrollbar{display:none}
 
 .pcard{
   flex:0 0 auto;
 
-  width:min(520px,78vw);
-  height:460px;
+  width:min(440px,72vw);
+  height:480px;
 
   border-radius:26px;
   border:1px solid #223041;
@@ -1243,12 +1246,8 @@
   padding:22px 22px 18px;
   color:#fff;
 
-  transform:none;
-  filter:none;
-
   transition:transform .18s ease, filter .18s ease;
 }
-
 .pcard:hover{
   transform:translateY(-6px);
   filter:brightness(1.06);
@@ -1271,12 +1270,12 @@
 .pcard-img{
   position:absolute;
   left:50%;
-  bottom:18px;
+  bottom:-8px;
   transform:translateX(-50%);
 
-  width:68%;
-  max-width:360px;
-  max-height:78%;
+  width:92%;
+  max-width:520px;
+  max-height:86%;
 
   object-fit:contain;
 
@@ -1284,7 +1283,7 @@
   pointer-events:none;
   user-select:none;
 
-  filter:drop-shadow(0 26px 70px rgba(0,0,0,.65));
+  filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
 }
 
 .pcard-dark{
@@ -1302,18 +1301,21 @@
     rgba(14,20,26,.58);
 }
 
-@media (max-width:720px){
+@media (max-width:620px){
   .slider{
-    padding:22px 4% 40px;
-    scroll-padding-left:4%;
-    scroll-padding-right:4%;
-    gap:16px;
+    gap:14px;
+
+    padding:18px 12px 34px;
+
+    scroll-padding-left:12px;
+    scroll-padding-right:12px;
   }
 
   .pcard{
-    width:84vw;
-    height:420px;
+    width:calc(100% - 24px);
+    height:440px;
     padding:18px;
+    scroll-snap-align:center;
   }
 
   .pcard-title{
@@ -1321,54 +1323,17 @@
   }
 
   .pcard-img{
-    position:absolute;
-  left:50%;
-  bottom:10px;
-  transform:translateX(-50%);
-
-  width:82%;
-  max-width:420px;
-  max-height:84%;
-
-  object-fit:contain;
-
-  z-index:1;
-  pointer-events:none;
-  user-select:none;
-
-  filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
+    width:96%;
+    max-width:none;
+    bottom:-6px;
+    max-height:88%;
   }
 }
 
-
-    .pcard.is-active .pcard-img{
-      transform:translateY(-12px) scale(1.04);
-    }
-
-    @media (max-width:720px){
-      .sbtn{height:42px;width:42px}
-        .pcard-img{
-    width:88%;
-    max-width:380px;
-    bottom:8px;
-  }
-      .slider{
-        gap:20px;
-        padding-top:28px;
-        padding-bottom:44px;
-        padding-left:calc(50vw - (86vw / 2));
-        padding-right:calc(50vw - (86vw / 2));
-      }
-
-      .pcard{width:86vw;height:460px;padding:22px}
-      .pcard-title{font-size:1.55rem}
-      .pcard-img{right:-18px;bottom:-48px;width:96%}
-    }
-
-    @media (prefers-reduced-motion:reduce){
-      html{scroll-behavior:auto}
-      .pcard,.pcard-img,.qcard::before,.q-ico::after{animation:none;transition:none}
-    }
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .pcard,.pcard-img,.qcard::before,.q-ico::after{animation:none;transition:none}
+}
   </style>
 </head>
 
@@ -2205,16 +2170,17 @@
 const cardSlider = document.getElementById('cardSlider')
 const slidePrev = document.getElementById('slidePrev')
 const slideNext = document.getElementById('slideNext')
+const cards = Array.from(cardSlider.querySelectorAll('.pcard'))
 
-function step(){
-  const first = cardSlider.querySelector('.pcard')
+function getStep(){
+  const first = cards[0]
   if(!first) return 320
   const gap = parseFloat(getComputedStyle(cardSlider).gap || '22')
   return first.getBoundingClientRect().width + gap
 }
 
 function slideBy(dir){
-  cardSlider.scrollBy({ left: step() * dir, behavior:'smooth' })
+  cardSlider.scrollBy({ left: getStep() * dir, behavior: 'smooth' })
 }
 
 slidePrev.addEventListener('click', ()=> slideBy(-1))
@@ -2225,37 +2191,44 @@ cardSlider.addEventListener('keydown', e=>{
   if(e.key === 'ArrowRight') slideBy(1)
 })
 
-function updateActive(){
-  const center = window.innerWidth / 2
-  let closest = null
-  let closestDist = Infinity
+let isDown = false
+let startX = 0
+let startY = 0
+let startScroll = 0
+let lock = ''
 
-  for(const card of cards){
-    const r = card.getBoundingClientRect()
-    const cardCenter = r.left + r.width / 2
-    const dist = Math.abs(center - cardCenter)
-    if(dist < closestDist){
-      closestDist = dist
-      closest = card
-    }
+cardSlider.addEventListener('pointerdown', e=>{
+  isDown = true
+  lock = ''
+  startX = e.clientX
+  startY = e.clientY
+  startScroll = cardSlider.scrollLeft
+  cardSlider.setPointerCapture(e.pointerId)
+})
+
+cardSlider.addEventListener('pointermove', e=>{
+  if(!isDown) return
+  const dx = e.clientX - startX
+  const dy = e.clientY - startY
+
+  if(!lock){
+    lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
   }
 
-  for(const c of cards) c.classList.remove('is-active')
-  if(closest) closest.classList.add('is-active')
+  if(lock === 'x'){
+    cardSlider.scrollLeft = startScroll - dx
+    e.preventDefault()
+  }
+})
+
+function endDrag(){
+  isDown = false
+  lock = ''
 }
 
-let raf = 0
-cardSlider.addEventListener('scroll', ()=>{
-  if(raf) return
-  raf = requestAnimationFrame(()=>{
-    updateActive()
-    raf = 0
-  })
-},{passive:true})
-
-window.addEventListener('load', updateActive)
-window.addEventListener('resize', updateActive)
-updateActive()
+cardSlider.addEventListener('pointerup', endDrag)
+cardSlider.addEventListener('pointercancel', endDrag)
+cardSlider.addEventListener('pointerleave', endDrag)
 
 
   </script>
