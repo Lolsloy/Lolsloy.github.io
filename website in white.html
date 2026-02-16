@@ -3,46 +3,67 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SetHub Sale</title>
-  <meta name="description" content="SetHub Sale – Deals von Amazon, LEGO, Alternate" />
+  <title>SetHub</title>
+  <meta name="description" content="SetHub – Enjoy your sets" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png" />
+  <link rel="icon" type="image/png" href="Bilder/lagos.png">
 
   <style>
     :root{
       --bg:#0E141A;
+      --bg-light:#1C2731;
       --fg-on:#E6E9ED;
       --muted:#9AA4AE;
-      --shadow:0 26px 90px rgba(0,0,0,.55);
-      --r2:23px;
+
+      --glass2:rgba(16,24,32,.7);
+      --glassSoft:rgba(16,24,32,.55);
 
       --border:#1f2a35;
       --border2:#0f1a22;
+      --glass-border:#213140;
 
       --pink:#cf64e5;
-      --cyan:#00E5FF;
+
+      --brandBgO:1;
+      --glassO:0;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    img{max-width:100%;display:block;height:auto}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--fg-on);
       background:var(--bg);
       overflow-x:hidden;
       min-height:100vh;
+      transition:background .4s ease;
     }
-    img{max-width:100%;display:block;height:auto}
-    a{color:inherit;text-decoration:none}
-    button,input,select{font:inherit}
+
+    :focus-visible{
+      outline:3px solid rgba(0,229,255,.55);
+      outline-offset:4px;
+      border-radius:14px;
+    }
 
     header.site{
-      position:fixed;
-      left:0; right:0; top:0;
-      height:78px;
+      position:fixed; left:0; right:0; top:0; height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
       border-bottom:1px solid var(--border2);
+      transform:translateY(-100%);
+      opacity:0;
+      transition:transform .4s ease, opacity .4s ease;
       z-index:50;
+      pointer-events:none;
+    }
+    body.header-on header.site{
+      transform:translateY(0);
+      opacity:1;
+      pointer-events:auto;
     }
 
     .topbar-inner{
@@ -51,7 +72,7 @@
       margin:0 auto;
       padding:0 14px;
       display:grid;
-      grid-template-columns:56px 1fr 56px;
+      grid-template-columns:1fr auto 1fr;
       align-items:center;
     }
 
@@ -88,6 +109,7 @@
       font-size:1.6rem;
       white-space:nowrap;
     }
+    .nav-text span{cursor:default}
 
     .burger{
       position:fixed;
@@ -97,30 +119,40 @@
       width:46px;
       height:46px;
       border-radius:12px;
-      background:rgba(16,24,32,.7);
+      background:var(--glass2);
       border:1px solid var(--border);
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
       cursor:pointer;
+
+      opacity:0;
+      pointer-events:none;
+      transform:translateX(-18px) scale(.95);
+      transition:transform .28s ease, opacity .28s ease, filter .12s ease;
+    }
+    body.header-on .burger{
+      transform:translateX(0) scale(1);
       opacity:1;
       pointer-events:auto;
-      transition:transform .12s ease, filter .12s ease;
     }
-    .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .burger:hover{transform:translateX(0) translateY(-1px) scale(1);filter:brightness(1.06)}
 
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
-      position:absolute;left:0;right:0;
-      height:2px;background:#e8eef4;border-radius:2px;
+      position:absolute;
+      left:0; right:0;
+      height:2px;
+      background:#e8eef4;
+      border-radius:2px;
       transition:transform .25s ease, opacity .2s ease, top .25s ease;
     }
     .burger .lines span:nth-child(1){top:0}
     .burger .lines span:nth-child(2){top:6px}
     .burger .lines span:nth-child(3){top:12px}
-    body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
+    body.drawer-open .burger .lines span:nth-child(1){top:6px; transform:rotate(45deg)}
     body.drawer-open .burger .lines span:nth-child(2){opacity:0}
-    body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
+    body.drawer-open .burger .lines span:nth-child(3){top:6px; transform:rotate(-45deg)}
 
     .top-links{
       position:fixed;
@@ -129,6 +161,13 @@
       z-index:59;
       display:flex;
       gap:10px;
+
+      opacity:0;
+      pointer-events:none;
+      transform:translateX(-10px);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    body.header-on .top-links{
       opacity:1;
       pointer-events:auto;
       transform:none;
@@ -138,7 +177,7 @@
       height:46px;
       padding:0 14px;
       border-radius:12px;
-      background:rgba(16,24,32,.7);
+      background:var(--glass2);
       border:1px solid var(--border);
       backdrop-filter:blur(10px);
       display:flex;
@@ -146,26 +185,92 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
-      font-weight:800;
+      font-weight:900;
       color:#fff;
       letter-spacing:.02em;
       white-space:nowrap;
+      transition:transform .12s ease, filter .12s ease, background .12s ease;
     }
-    .top-link:hover{background:rgba(19,32,42,.85)}
-    .top-link span{color:#b7c2cc;font-weight:700}
+    .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .top-link span{color:#b7c2cc;font-weight:800}
+
+    .login-float{
+      position:fixed;
+      top:16px;
+      right:14px;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      gap:10px;
+
+      opacity:0;
+      pointer-events:none;
+      transform:translateX(10px);
+      transition:opacity .25s ease, transform .25s ease;
+    }
+    body.header-on .login-float{
+      opacity:1;
+      pointer-events:auto;
+      transform:none;
+    }
+
+    .status-pill{
+      height:46px;
+      padding:0 14px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:var(--glassSoft);
+      display:none;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color:#fff;
+      max-width:280px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      backdrop-filter:blur(10px);
+    }
+    .status-pill span{color:#94a3b8;font-weight:800}
+
+    body.user-on #loginOpen{display:none}
+    body.user-on #statusPill{display:flex}
+
+    .login-icon-btn{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:var(--glass2);
+      border:1px solid var(--border);
+      backdrop-filter:blur(10px);
+      display:none;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .login-icon-btn svg{width:22px;height:22px;color:#fff}
 
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
       .nav-text{font-size:1.45rem}
-      .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;gap:8px}
+      .burger{width:44px;height:44px;top:14px;left:12px}
+      .top-links{top:14px;left:62px;gap:8px}
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
+      .login-float{top:14px;right:12px}
+      .status-pill{height:44px}
+      .login-icon-btn{height:44px;width:44px;border-radius:12px}
     }
 
     @media (max-width:520px){
       .top-links{display:none}
+      .status-pill{display:none}
+      #loginOpen{display:none}
+      .login-icon-btn{display:grid}
+      body.user-on .login-icon-btn{display:none}
     }
 
     .drawer{
@@ -184,7 +289,8 @@
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
-    .drawer a{
+    .drawer a,
+    .drawer button{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -192,11 +298,15 @@
       border-radius:12px;
       background:#0f1820;
       border:1px solid #1a2530;
-      font-weight:700;
+      font-weight:900;
       letter-spacing:.02em;
+      color:#fff;
+      width:100%;
+      cursor:pointer;
     }
-    .drawer a:hover{background:#13202a}
-    .drawer small{color:#94a3b8;font-weight:600}
+    .drawer a:hover,
+    .drawer button:hover{background:#13202a}
+    .drawer small{color:#94a3b8;font-weight:800}
 
     .drawer-backdrop{
       position:fixed;
@@ -209,397 +319,985 @@
     }
     body.drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
 
-    main{
-      padding:92px 5% 60px;
-      width:min(1240px,100%);
-      margin:0 auto;
+    .brand-fixed{
+      position:fixed; inset:0;
+      background:rgba(14,20,26,var(--brandBgO));
+      display:flex; align-items:center; justify-content:center;
+      z-index:20;
+      pointer-events:auto;
+      transition:opacity .35s ease;
     }
-    @media (max-width:720px){ main{padding-top:84px} }
-    @media (max-width:420px){ main{padding-inline:4%} }
+    .brand-fixed.hidden{opacity:0; pointer-events:none}
 
-    .panel{
-      border-radius:var(--r2);
-      background:
-        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.22), transparent 70%),
-        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.18), transparent 65%),
-        rgba(15,22,30,.68);
+    .brand-fixed::before{
+      content:""; position:fixed; left:0; right:0; top:0; height:78px;
+      backdrop-filter:blur(10px);
+      background:rgba(16,24,32,.55);
+      border-bottom:1px solid var(--border2);
+      opacity:var(--glassO);
+      pointer-events:none;
+    }
+
+    .brand-line{
+      position:fixed;
+      top:50vh;
+      left:50vw;
+      transform:translate(-50%,-50%) scale(1);
+      transform-origin:center center;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      gap:.45rem;
+      will-change:transform, top, left;
+      text-align:center;
+      padding-inline:1.2rem;
+    }
+
+    .brand-logo{
+      height:clamp(210px,30vw,360px);
+      width:auto;
+      display:grid;
+      place-items:center;
+      margin-bottom:0;
+    }
+
+    .brand-big{
+      font-size:clamp(5.5rem,16vw,11rem);
+      font-weight:800;
+      letter-spacing:.08em;
+      line-height:1;
+      display:flex;
+      flex-wrap:nowrap;
+      gap:.18em;
+      justify-content:center;
+      color:#fff;
+      white-space:nowrap;
+    }
+
+    .brand-big span{cursor:default;transition:transform .12s}
+    .brand-big span:hover{transform:translateY(-1px)}
+
+    body.theme-light{background:var(--bg-light)}
+
+    @media (max-width:900px){
+      .brand-line{gap:.35rem}
+      .brand-logo{height:clamp(190px,52vw,300px)}
+      .brand-big{
+        font-size:clamp(3.2rem,10vw,4.2rem);
+        letter-spacing:.12em;
+      }
+      header.site{height:72px}
+    }
+
+    @media (max-width:380px){
+      .brand-big{font-size:2.6rem; letter-spacing:.14em}
+      .brand-logo{height:clamp(175px,60vw,260px)}
+    }
+
+    main{position:relative; z-index:5; margin-top:72vh}
+    .section{padding:clamp(2rem,4vw,5rem) 5%}
+    .container{width:min(1400px,100%);margin:0 auto}
+
+    .quick-wrap{
+      width:min(1400px,100%);
+      margin:0 auto 4.5rem;
+      display:flex;
+      justify-content:center;
+      padding:3.2rem 5% 3.6rem;
+    }
+
+    .quick-cards{
+      width:100%;
+      max-width:1280px;
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:2rem;
+
+      opacity:0;
+      transform:translateY(18px);
+      pointer-events:none;
+      transition:opacity .35s ease, transform .35s ease;
+    }
+    body.header-on .quick-cards{
+      opacity:1;
+      transform:none;
+      pointer-events:auto;
+    }
+
+    .qcard{
+      position:relative;
+      overflow:hidden;
+      border-radius:28px;
       border:1px solid #223041;
-      box-shadow:var(--shadow);
-      padding:clamp(14px,2.2vw,20px);
+      background:rgba(16,24,32,.42);
+      backdrop-filter:blur(12px);
+      box-shadow:0 40px 140px rgba(0,0,0,.65);
+      padding:30px 28px 26px;
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+      min-height:320px;
+      transition:transform .18s ease, filter .18s ease;
+    }
+    .qcard:hover{
+      transform:translateY(-8px);
+      filter:brightness(1.08);
     }
 
-    .head{
+    .qcard::before{
+      content:"";
+      position:absolute;
+      inset:-60%;
+      transform:rotate(12deg);
+      pointer-events:none;
+      animation:qDrift 7.4s ease-in-out infinite;
+      opacity:.95;
+    }
+
+    .qcard.news::before{
+      background:
+        radial-gradient(560px 380px at 20% 25%, rgba(0,229,255,.38), transparent 60%),
+        radial-gradient(560px 380px at 80% 75%, rgba(59,130,246,.26), transparent 62%),
+        radial-gradient(560px 380px at 60% 10%, rgba(207,100,229,.18), transparent 58%);
+    }
+    .qcard.events::before{
+      background:
+        radial-gradient(560px 380px at 20% 25%, rgba(59,130,246,.36), transparent 60%),
+        radial-gradient(560px 380px at 80% 75%, rgba(0,229,255,.20), transparent 62%),
+        radial-gradient(560px 380px at 60% 10%, rgba(207,100,229,.14), transparent 58%);
+    }
+    .qcard.sale::before{
+      background:
+        radial-gradient(560px 380px at 20% 25%, rgba(255,211,0,.30), transparent 60%),
+        radial-gradient(560px 380px at 80% 75%, rgba(0,229,255,.16), transparent 62%),
+        radial-gradient(560px 380px at 65% 10%, rgba(207,100,229,.16), transparent 58%);
+    }
+    .qcard.sets::before{
+      background:
+        radial-gradient(560px 380px at 20% 25%, rgba(207,100,229,.38), transparent 60%),
+        radial-gradient(560px 380px at 80% 75%, rgba(0,229,255,.18), transparent 62%),
+        radial-gradient(560px 380px at 70% 15%, rgba(255,94,160,.16), transparent 58%);
+    }
+
+    @keyframes qDrift{
+      0%{transform:rotate(12deg) translate3d(0,0,0) scale(1)}
+      50%{transform:rotate(12deg) translate3d(18px,-12px,0) scale(1.03)}
+      100%{transform:rotate(12deg) translate3d(0,0,0) scale(1)}
+    }
+
+    .q-head{
+      position:relative;
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:14px;
+    }
+
+    .q-title{
+      position:relative;
+      font-weight:950;
+      letter-spacing:.02em;
+      color:#fff;
+      font-size:2.05rem;
+      line-height:1.05;
+      text-align:left;
+    }
+
+    .q-sub{
+      position:relative;
+      margin-top:.35rem;
+      font-size:.88rem;
+      color:#b7c2cc;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      text-align:left;
+    }
+
+    .q-ico{
+      position:relative;
+      width:70px;
+      height:70px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(12,18,24,.55);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      overflow:hidden;
+    }
+    .q-ico svg{
+      width:34px;
+      height:34px;
+      color:#fff;
+    }
+
+    .q-ico::after{
+      content:"";
+      position:absolute;
+      inset:-70%;
+      background:linear-gradient(90deg, rgba(207,100,229,0), rgba(207,100,229,.55), rgba(0,229,255,.55), rgba(207,100,229,0));
+      transform:rotate(20deg);
+      animation:qScan 2.7s linear infinite;
+      opacity:.85;
+      pointer-events:none;
+    }
+
+    @keyframes qScan{
+      0%{transform:rotate(20deg) translateX(-55%)}
+      100%{transform:rotate(20deg) translateX(55%)}
+    }
+
+    .q-desc{
+      position:relative;
+      color:#d7dde3;
+      font-weight:800;
+      line-height:1.35;
+      max-width:46ch;
+      opacity:.92;
+      font-size:1.15rem;
+    }
+
+    .q-arrow{
+      position:relative;
+      margin-top:auto;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      font-weight:950;
+      letter-spacing:.03em;
+      color:#fff;
+      font-size:1.15rem;
+    }
+    .q-arrow svg{
+      width:20px;
+      height:20px;
+      color:#fff;
+    }
+
+    @media (max-width:1100px){
+      .quick-wrap{padding:2.8rem 5% 3.2rem}
+      .qcard{min-height:290px}
+      .q-title{font-size:1.9rem}
+    }
+
+    @media (max-width:760px){
+      .quick-cards{gap:1.1rem}
+      .qcard{min-height:240px;padding:20px}
+      .q-title{font-size:1.55rem}
+      .q-desc{font-size:1rem}
+      .q-ico{width:56px;height:56px;border-radius:18px}
+      .q-ico svg{width:28px;height:28px}
+    }
+
+    @media (max-width:420px){
+      .quick-wrap{padding:2.4rem 4% 3rem}
+      .quick-cards{gap:.9rem}
+      .qcard{min-height:220px;padding:16px;border-radius:22px}
+      .q-title{font-size:1.35rem}
+      .q-sub{font-size:.78rem}
+      .q-desc{font-size:.92rem}
+      .q-arrow{font-size:1rem}
+      .q-ico{width:50px;height:50px;border-radius:16px}
+      .q-ico svg{width:25px;height:25px}
+    }
+
+    .feature{
+      position:relative;
+      min-height:82vh;
+      display:grid;
+      align-items:center;
+      gap:2.8rem;
+      padding:clamp(1.8rem,3vw,2.6rem);
+    }
+    @media(min-width:1024px){.feature{grid-template-columns:1.05fr 1.1fr}}
+
+    .stage{
+      position:absolute;
+      inset:0;
+      border-radius:28px;
+      background:
+        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.40), transparent 70%),
+        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.35), transparent 65%),
+        rgba(15,22,30,.65);
+      backdrop-filter:blur(14px);
+      border:1px solid #223041;
+      box-shadow:0 30px 120px rgba(0,0,0,.55);
+      z-index:-1;
+    }
+
+    .copy{position:relative;z-index:1;max-width:720px;text-align:center;margin-inline:auto}
+    .copy .kicker{color:#fff;font-weight:900;font-size:clamp(4.1rem,6.8vw,5.6rem);margin-bottom:.4rem}
+    .copy .mega{
+      font-weight:900;line-height:1.02;letter-spacing:.06em;
+      font-size:clamp(3.8rem,6.4vw,5.2rem);
+      margin-bottom:1.1rem;color:var(--pink)
+    }
+    .copy .mega .row{display:block}
+    .copy .sub{
+      margin-top:.6rem;color:#d7dde3;font-size:clamp(.8rem,1vw,.95rem);
+      text-transform:uppercase;letter-spacing:.2em;opacity:.9
+    }
+
+    .countdown{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.05rem;justify-content:center}
+    .cd-box{
+      background:rgba(16,24,32,.42);
+      border:1px solid var(--glass-border);
+      border-radius:1.1rem;
+      backdrop-filter:blur(12px);
+      padding:1rem 1.4rem;
+      flex:1 1 0;
+      min-width:140px;
+      text-align:center;
+    }
+    .cd-num{font-size:clamp(2.8rem,4.4vw,3.3rem);font-weight:800}
+    .cd-label{
+      font-size:.85rem;color:var(--muted);
+      text-transform:uppercase;letter-spacing:.14em;margin-top:.15rem
+    }
+
+    @media (max-width:900px){.feature{grid-template-columns:1fr}.copy{max-width:100%}}
+    @media (max-width:600px){
+      .copy .kicker{font-size:3.3rem}
+      .copy .mega{font-size:2.9rem}
+      .countdown{gap:.7rem}
+      .cd-box{padding:.85rem 1.1rem;flex:1 1 calc(50% - .7rem);min-width:0}
+      .cd-num{font-size:2.2rem}
+    }
+
+    .preview-wrap{
+      position:relative;
+      width:100%;
+      max-width:720px;
+      margin-inline:auto;
+      z-index:1;
+      align-self:stretch;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .preview{width:100%; border-radius:18px}
+
+    .team-title{
+      font-weight:900;
+      font-size:clamp(2.6rem,4.2vw,3.6rem);
+      letter-spacing:.01em;
+      margin-bottom:1.4rem;
+      text-align:left;
+    }
+
+    .team-grid{
+      display:grid;
+      gap:1.1rem;
+      grid-template-columns:repeat(2,minmax(180px,1fr));
+      justify-content:center;
+      align-items:stretch;
+    }
+
+    .card-wrap{
+      border-radius:18px;
+      border:1px solid #16212a;
+      background:linear-gradient(180deg,#101820,#0b1218);
+      box-shadow:0 18px 70px rgba(0,0,0,.55);
+      padding:12px;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .card-wrap:hover{transform:translateY(-2px);filter:brightness(1.03)}
+
+    .card{
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #223041;
+      background:linear-gradient(180deg,#111b23,#0b1218);
+      min-height:260px;
+      display:flex;
+    }
+
+    .card-face.front{
+      width:100%;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      gap:10px;
+      padding:12px;
+    }
+
+    .avatar{
+      width:100%;
+      border-radius:12px;
+      object-fit:cover;
+      max-height:240px;
+      border:1px solid #1a2530;
+      background:#0b1218;
+    }
+
+    .name{
+      margin-top:2px;
+      font-weight:900;
+      letter-spacing:.02em;
+      text-align:center;
+      color:#fff;
+      font-size:1.05rem;
+    }
+
+    @media (max-width:600px){
+      .section{padding-inline:4%}
+      .team-grid{gap:1rem}
+      .card-wrap{padding:10px}
+      .card{min-height:240px}
+      .avatar{max-height:220px}
+    }
+
+    @media (min-width:1024px){
+      .team-grid{grid-template-columns:repeat(3,minmax(220px,1fr));gap:1.1rem}
+      .card{min-height:420px}
+      .avatar{max-height:none}
+    }
+
+    .footer-cta{background:#12181e;padding:3.5rem 0 0}
+    .cta-inner{width:min(1400px,100%);margin:0 auto;padding:0 5% 2rem}
+    .cta-head{display:flex;align-items:center;justify-content:flex-start;gap:.1rem;margin-bottom:0}
+    .cta-title{font-size:2rem;font-weight:800}
+    .logo-small{height:58px;width:auto;display:grid;place-items:center;transform:translateY(1px)}
+
+    .signup{display:flex;gap:.6rem;max-width:520px;position:relative}
+    .signup input{
+      flex:1;
+      padding:.9rem 1rem;
+      border-radius:.6rem;
+      border:1px solid #223041;
+      background:rgba(16,24,32,.55);
+      color:#e8eef4;
+      outline:none;
+      font-weight:800;
+      letter-spacing:.01em;
+    }
+    .signup input::placeholder{color:#9aa4ae}
+    .signup input:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
+    .signup button{
+      padding:.9rem 1.1rem;
+      border-radius:.6rem;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+    }
+    .signup button:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .signup button:disabled{opacity:.6;cursor:default;transform:none;filter:none}
+
+    .impressum{
+      padding:1.6rem 5% 2.2rem;
+      color:#cfd6dd;
+      border-top:1px solid #1a242e;
+      background:#0f151b;
+      font-size:.95rem;
+      line-height:1.5;
+    }
+    .impressum h3{font-size:1.2rem;margin-bottom:.6rem;font-weight:800}
+
+    .cookie-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:60;
+    }
+    .cookie-modal{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%) translateY(24px) scale(.98);
+      width:min(560px,92vw);
+      opacity:0;
+      pointer-events:none;
+      z-index:61;
+      transition:transform .35s ease, opacity .35s ease;
+    }
+    .cookie-card{
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.30), transparent 60%),
+        radial-gradient(800px 520px at 92% 120%, rgba(59,130,246,.28), transparent 60%),
+        rgba(12,18,24,.96);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:16px 16px 12px;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      backdrop-filter:blur(14px);
+    }
+    .cookie-head{display:flex;gap:12px;align-items:flex-start}
+    .cookie-icon{
+      width:52px;height:52px;border-radius:14px;
+      background:rgba(16,24,32,.42);
+      border:1px solid var(--glass-border);
+      display:grid;place-items:center;color:#fff;flex:0 0 auto;
+      animation:cookieFloat 3.6s ease-in-out infinite;
+    }
+    .cookie-icon svg{width:30px;height:30px;color:var(--pink);filter:drop-shadow(0 6px 18px rgba(207,100,229,.55))}
+    .cookie-card h3{font-size:1.25rem;font-weight:900;margin-bottom:6px;letter-spacing:.04em;color:#fff}
+    .cookie-text{font-size:.95rem;color:#cfd6dd;line-height:1.45}
+    .cookie-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:12px}
+    .cookie-btn{
+      padding:.72rem 1rem;border-radius:.6rem;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;font-weight:900;letter-spacing:.02em;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+    }
+    .cookie-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .cookie-btn.ghost{background:#111b23;border:1px solid #2a3641;color:#d9e1e8}
+    .cookie-links{display:flex;gap:8px;align-items:center;justify-content:flex-start;margin-top:8px;font-size:.85rem;color:var(--muted)}
+    .cookie-links a:hover{color:#fff}
+    body.cookie-open .cookie-backdrop{opacity:1;pointer-events:auto}
+    body.cookie-open .cookie-modal{
+      opacity:1;pointer-events:auto;
+      transform:translateX(-50%) translateY(0) scale(1);
+      animation:cookiePop .5s ease;
+    }
+    @keyframes cookiePop{
+      0%{transform:translateX(-50%) translateY(30px) scale(.96)}
+      60%{transform:translateX(-50%) translateY(-4px) scale(1.01)}
+      100%{transform:translateX(-50%) translateY(0) scale(1)}
+    }
+    @keyframes cookieFloat{
+      0%{transform:translateY(0)}
+      50%{transform:translateY(-4px)}
+      100%{transform:translateY(0)}
+    }
+
+    .toast-wrap{
+      position:fixed; inset:0;
+      display:grid; place-items:center;
+      pointer-events:none;
+      z-index:80;
+      opacity:0;
+      transition:opacity .25s ease;
+    }
+    .toast{
+      width:min(520px,90vw);
+      background:
+        radial-gradient(900px 420px at 10% -10%, rgba(236,72,153,.28), transparent 60%),
+        radial-gradient(800px 520px at 90% 120%, rgba(59,130,246,.25), transparent 60%),
+        rgba(12,18,24,.98);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:18px;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      backdrop-filter:blur(14px);
+      transform:translateY(10px) scale(.98);
+      transition:transform .25s ease, opacity .25s ease;
+      pointer-events:auto;
+    }
+    .toast h4{font-size:1.2rem;font-weight:900;letter-spacing:.03em;color:#fff;margin-bottom:6px}
+    .toast p{color:#cfd6dd;font-size:.98rem;line-height:1.5}
+    .toast .ok{
+      margin-top:12px;
+      padding:.72rem 1rem;
+      border-radius:.6rem;
+      border:1px solid rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      color:#fff;font-weight:900;cursor:pointer;width:100%;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .toast .ok:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
+    body.toast-on .toast{transform:translateY(0) scale(1);animation:toastPop .45s ease}
+    @keyframes toastPop{
+      0%{transform:translateY(16px) scale(.96)}
+      60%{transform:translateY(-4px) scale(1.01)}
+      100%{transform:translateY(0) scale(1)}
+    }
+
+    .ai-fab{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      z-index:75;
+      width:58px;
+      height:58px;
+      border-radius:999px;
+      border:1px solid #2a3641;
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      opacity:0;
+      pointer-events:none;
+      transform:translateY(18px);
+      transition:transform .18s ease, filter .12s ease, opacity .18s ease;
+    }
+    body.ai-fab-on .ai-fab{opacity:1;pointer-events:auto;transform:translateY(0)}
+    .ai-fab:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .ai-fab svg{width:22px;height:22px;color:#fff}
+
+    .ai-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .2s ease;
+      z-index:90;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      padding:22px;
+    }
+    body.ai-open .ai-overlay{opacity:1;pointer-events:auto}
+
+    .ai-phone{
+      width:390px;
+      height:844px;
+      max-width:92vw;
+      max-height:86vh;
+      border-radius:26px;
+      border:1px solid #223041;
+      background:rgba(12,18,24,.98);
+      box-shadow:0 30px 120px rgba(0,0,0,.6);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+
+      opacity:0;
+      transform:translateX(28px) translateY(-10px) scale(.985);
+      will-change:transform, opacity;
+    }
+    body.ai-open .ai-phone{animation:aiIn .36s cubic-bezier(.2,.9,.2,1) forwards}
+    body.ai-closing .ai-phone{animation:aiOutDown .36s cubic-bezier(.2,.0,.2,1) forwards}
+
+    @keyframes aiIn{
+      0%{opacity:0;transform:translateX(28px) translateY(-10px) scale(.985)}
+      55%{opacity:1;transform:translateX(-4px) translateY(2px) scale(1.01)}
+      100%{opacity:1;transform:translateX(0) translateY(0) scale(1)}
+    }
+    @keyframes aiOutDown{
+      0%{opacity:1;transform:translateX(0) translateY(0) scale(1)}
+      40%{opacity:1;transform:translateX(2px) translateY(14px) scale(.995)}
+      100%{opacity:0;transform:translateX(2px) translateY(90px) scale(.985)}
+    }
+
+    .ai-top{
+      height:54px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 12px;
+      border-bottom:1px solid #1a2530;
+      background:rgba(16,24,32,.75);
+      backdrop-filter:blur(12px);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .ai-top::before{
+      content:"";
+      position:absolute;
+      left:-60%;
+      top:0;
+      height:3px;
+      width:60%;
+      background:linear-gradient(90deg, rgba(207,100,229,0), rgba(207,100,229,.95), rgba(0,229,255,.95), rgba(255,94,160,.95), rgba(207,100,229,0));
+      animation:aiBar 1.1s linear infinite;
+    }
+    @keyframes aiBar{
+      0%{transform:translateX(0)}
+      100%{transform:translateX(280%)}
+    }
+
+    .ai-top-title{font-weight:900;letter-spacing:.04em;color:#fff}
+
+    .ai-close{
+      height:36px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid #2a3641;
+      background:#111b23;
+      color:#d9e1e8;
+      font-weight:900;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .ai-close:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .ai-frame{width:100%;height:100%;border:0;background:#0b1218}
+
+    .login-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:95;
+    }
+
+    .login-modal{
+      position:fixed;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%) translateY(18px) scale(.985);
+      width:min(520px,92vw);
+      opacity:0;
+      pointer-events:none;
+      z-index:96;
+      transition:transform .28s ease, opacity .28s ease;
+    }
+
+    .login-card{
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.30), transparent 60%),
+        radial-gradient(800px 520px at 92% 120%, rgba(59,130,246,.28), transparent 60%),
+        rgba(12,18,24,.96);
+      border:1px solid var(--glass-border);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      backdrop-filter:blur(14px);
+      max-height:86vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .login-head{
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
       gap:12px;
-      flex-wrap:wrap;
       margin-bottom:12px;
     }
 
-    .tblock{min-width:240px}
-    .title{
+    .login-card h3{
+      font-size:1.25rem;
       font-weight:900;
-      font-size:clamp(2rem,3.4vw,2.7rem);
-      letter-spacing:.01em;
-      line-height:1.05;
+      letter-spacing:.04em;
+      color:#fff;
     }
-    .sub{
-      margin-top:8px;
+
+    .login-text{
+      margin-top:4px;
       color:#cfd6dd;
-      font-weight:800;
-      letter-spacing:.14em;
-      text-transform:uppercase;
-      font-size:.85rem;
-      opacity:.95;
+      font-size:.95rem;
+      line-height:1.45;
     }
 
-    .stats{
+    .login-foot{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:flex-end;
-    }
-    .pill{
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.35);
-      border-radius:999px;
-      padding:10px 12px;
-      font-weight:900;
-      display:flex;
-      align-items:center;
       gap:8px;
-      white-space:nowrap;
-    }
-    .pill span{color:var(--muted);font-weight:800}
-
-    .controls{
-      display:flex;
-      gap:10px;
       align-items:center;
-      flex-wrap:wrap;
-      margin-top:10px;
-    }
-
-    .searchwrap{
-      flex:1 1 280px;
-      display:flex;
-      gap:10px;
-      align-items:center;
-      min-width:240px;
-    }
-
-    .field{
-      height:46px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.42);
-      color:#e8eef4;
-      outline:none;
-      padding:0 12px;
-      font-weight:850;
-      width:100%;
-    }
-    .field:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
-    .field::placeholder{color:#9aa4ae}
-
-    .iconbtn{
-      height:46px;
-      width:46px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.42);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      transition:transform .12s ease, filter .12s ease;
-      flex:0 0 auto;
-    }
-    .iconbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .iconbtn svg{width:20px;height:20px;color:#fff}
-
-    .filters{
-      display:none;
-      width:100%;
-      margin-top:10px;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-    }
-    .filters.on{display:flex}
-
-    .btn{
-      height:46px;
-      border-radius:14px;
-      border:1px solid rgba(207,100,229,.65);
-      background:linear-gradient(180deg,#7a3bd0,#572B87);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-      padding:0 14px;
-      transition:transform .12s ease, filter .12s ease;
-    }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .btn:disabled{opacity:.6;cursor:default;transform:none;filter:none}
-
-    .grid{
-      display:grid;
-      gap:12px;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      margin-top:14px;
-    }
-
-    @media (min-width:700px){
-      .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-    }
-    @media (min-width:1100px){
-      .grid{grid-template-columns:repeat(5,minmax(0,1fr))}
-    }
-
-    .card{
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg,#101820,#0b1218);
-      box-shadow:0 18px 70px rgba(0,0,0,.55);
-      cursor:pointer;
-      transform:translateY(0);
-      transition:transform .15s ease, border-color .15s ease, filter .15s ease;
-      display:flex;
-      flex-direction:column;
-      min-height:320px;
-    }
-    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.03)}
-    .card.expanded{min-height:420px}
-
-    .thumb{
-      position:relative;
-      aspect-ratio:1/1;
-      background:#0b1218;
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover}
-
-    .heart{
-      position:absolute;
-      right:10px;
-      top:10px;
-      height:42px;
-      width:42px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.45);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      z-index:2;
-      color:#e8eef4;
-    }
-    .heart:hover{filter:brightness(1.06)}
-    .heart svg{width:20px;height:20px}
-    .heart .hfill{opacity:0}
-    .heart.on{border-color:rgba(207,100,229,.65);color:var(--pink)}
-    .heart.on .hfill{opacity:1}
-
-    .txt{
-      padding:12px 10px 14px;
-      text-align:center;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      flex:1;
-    }
-
-    .name{
-      font-weight:900;
-      font-size:.98rem;
-      line-height:1.2;
-      display:-webkit-box;
-      -webkit-line-clamp:2;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-      min-height:2.4em;
-    }
-
-    .meta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:2px;
-    }
-    .setno{
+      margin-top:12px;
       color:var(--muted);
-      font-weight:900;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      font-size:.78rem;
+      font-size:.85rem;
+      flex-wrap:wrap;
     }
-    .price{
-      font-weight:900;
-      font-size:1.1rem;
-      letter-spacing:.01em;
-      color:#fff;
-      white-space:nowrap;
+    .login-foot a:hover{color:#fff}
+
+    body.login-open .login-backdrop{opacity:1;pointer-events:auto}
+    body.login-open .login-modal{
+      opacity:1;
+      pointer-events:auto;
+      transform:translate(-50%,-50%) translateY(0) scale(1);
     }
 
-    .chips{
+    #gsiButton{
+      width:100%;
       display:flex;
       justify-content:center;
-      gap:6px;
-      flex-wrap:wrap;
-      margin-top:2px;
-    }
-    .chip{
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.35);
-      border-radius:999px;
-      padding:7px 9px;
-      font-weight:900;
-      font-size:.78rem;
-      color:#d9e1e8;
-      display:flex;
       align-items:center;
-      gap:6px;
-      white-space:nowrap;
     }
-    .chip span{color:var(--muted);font-weight:800}
-    .chip.best{border-color:rgba(0,229,255,.40)}
-    .chip.best span{color:#bff7ff}
-    .chip.sale{border-color:rgba(207,100,229,.65)}
-    .chip.sale span{color:#f2c9ff}
 
-    .openbtn{
-      margin-top:auto;
-      height:42px;
-      border-radius:14px;
-      border:1px solid rgba(207,100,229,.65);
-      background:linear-gradient(180deg,#7a3bd0,#572B87);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-      width:100%;
-      transition:transform .12s ease, filter .12s ease;
+    @media (max-width:520px){
+      .login-modal{
+        left:0;
+        top:auto;
+        bottom:0;
+        width:100vw;
+        transform:translateY(14px) scale(.985);
+        padding:0 10px 10px;
+      }
+
+      body.login-open .login-modal{
+        transform:translateY(0) scale(1);
+      }
+
+      .login-card{
+        border-radius:18px 18px 0 0;
+        padding:14px;
+        max-height:78vh;
+      }
+
+      .login-card h3{font-size:1.1rem}
+      .login-text{font-size:.9rem}
+
+      #gsiButton > div,
+      #gsiButton iframe{
+        width:100% !important;
+        min-width:0 !important;
+      }
+
+      .login-card .ai-close{
+        height:34px;
+        padding:0 10px;
+        border-radius:10px;
+      }
     }
-    .openbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
-    .details{
-      display:none;
-      margin-top:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.28);
-      border-radius:16px;
-      padding:10px;
-      text-align:left;
-      gap:10px;
+    @media (max-width:360px){
+      .login-modal{padding:0 8px 8px}
+      .login-card{padding:12px}
+      .login-card h3{font-size:1.05rem}
     }
-    .card.expanded .details{display:grid}
 
-    .store-row{
+    /* SLIDER HEAD + BUTTONS */
+    .slider-head{
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:space-between;
-      gap:10px;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.30);
+      gap:12px;
+      margin-bottom:14px;
     }
 
-    .store-left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width:0;
-    }
-    .store-name{
+    .slider-title{
       font-weight:900;
-      letter-spacing:.02em;
-    }
-    .store-sub{
-      color:var(--muted);
-      font-weight:850;
-      font-size:.82rem;
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:220px;
+      letter-spacing:.01em;
+      font-size:clamp(1.8rem,3vw,2.4rem);
     }
 
-    .store-right{
+    .slider-actions{
       display:flex;
-      align-items:center;
       gap:10px;
-      flex:0 0 auto;
     }
 
-    .buybtn{
-      height:40px;
-      padding:0 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.40);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .buybtn:hover{filter:brightness(1.06)}
-    .buybtn.primary{
-      border-color:rgba(0,229,255,.40);
-    }
-
-    .empty{
-      margin-top:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.35);
-      border-radius:18px;
-      padding:14px;
-      color:#cfd6dd;
-      font-weight:850;
-      line-height:1.5;
-      text-align:center;
-    }
-
-    .pager{
-      margin-top:14px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .pagebtn{
+    .sbtn{
       height:44px;
-      padding:0 12px;
+      width:44px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.42);
-      color:#fff;
-      font-weight:900;
+      background:rgba(16,24,32,.55);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(12px);
+      color:#e8eef4;
+      display:grid;
+      place-items:center;
       cursor:pointer;
-      transition:transform .12s ease, filter .12s ease;
+      transition:transform .12s ease, filter .12s ease, background .12s ease;
     }
-    .pagebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .pagebtn:disabled{opacity:.5;cursor:default;transform:none;filter:none}
+    .sbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .sbtn svg{width:22px;height:22px}
 
-    .pinfo{
-      color:var(--muted);
-      font-weight:900;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      font-size:.8rem;
-    }
+    /* SLIDER */
+    .slider-wrap{position:relative}
+.slider{
+  display:flex;
+  gap:28px;
+  overflow-x:auto;
 
-    .skeleton{
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(16,24,32,.35);
-      height:320px;
-    }
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+
+  scrollbar-width:none;
+
+  padding:40px 5% 60px;
+  scroll-padding-left:5%;
+  scroll-padding-right:5%;
+
+  touch-action:pan-x;
+  overscroll-behavior-x:contain;
+}
+.slider::-webkit-scrollbar{display:none}
+
+/* CARD */
+.pcard{
+  flex:0 0 auto;
+  width:min(560px,78vw);
+  height:520px;
+
+  border-radius:28px;
+  border:1px solid #223041;
+
+  background:
+    radial-gradient(1200px 700px at 10% -10%, rgba(0,229,255,.10), transparent 60%),
+    radial-gradient(1200px 700px at 90% 120%, rgba(207,100,229,.10), transparent 60%),
+    rgba(16,24,32,.55);
+
+  backdrop-filter:blur(18px);
+  box-shadow:0 60px 180px rgba(0,0,0,.65);
+
+  scroll-snap-align:center;
+
+  position:relative;
+  overflow:hidden;
+
+  padding:28px;
+  padding-top:34px;
+
+  transform:scale(.92);
+  filter:brightness(.75);
+
+  transition:transform .35s ease, filter .35s ease, box-shadow .35s ease;
+}
+
+/* keep text always above */
+.pcard-top{
+  position:relative;
+  z-index:3;
+  max-width:26ch;
+}
+
+/* IMAGE */
+.pcard-img{
+  position:absolute;
+  right:-10px;
+  bottom:-36px;
+
+  width:78%;
+  max-width:520px;
+  max-height:68%;
+
+  object-fit:contain;
+
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+
+  opacity:.95;
+
+  filter:drop-shadow(0 40px 90px rgba(0,0,0,.7));
+  transition:transform .6s ease;
+}
+
+.pcard.is-active .pcard-img{
+  transform:translateY(-10px) scale(1.03);
+}
+
+@media (max-width:720px){
+  .slider{
+    gap:20px;
+    padding:28px 4% 44px;
+    scroll-padding-left:4%;
+    scroll-padding-right:4%;
+  }
+
+  .pcard{
+    width:86vw;
+    height:460px;
+    padding:22px;
+    padding-top:28px;
+  }
+
+  .pcard-title{font-size:1.55rem}
+
+  .pcard-img{
+    right:-8px;
+    bottom:-30px;
+    width:84%;
+    max-height:66%;
+  }
+}
   </style>
 </head>
 
@@ -622,14 +1320,67 @@
     </a>
   </div>
 
+  <div class="login-float" aria-label="Account">
+    <div class="status-pill" id="statusPill" aria-live="polite">
+      <strong id="userName">User</strong><span id="userEmail">Email</span>
+    </div>
+
+    <button class="top-link" id="loginOpen" type="button" aria-label="Anmelden">
+      <strong>Anmelden</strong><span>Google</span>
+    </button>
+
+    <button class="login-icon-btn" id="loginIconBtn" type="button" aria-label="Anmelden">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
   <nav class="drawer" id="drawer" aria-label="Menü">
-    <a href="/index.html" class="drawer-link">Home<small>Start</small></a>
-    <a href="/news.html" class="drawer-link">News<small>Updates</small></a>
-    <a href="/events.html" class="drawer-link">Events<small>Dates</small></a>
-    <a href="/sale.html" class="drawer-link">Sale<small>Deals</small></a>
-    <a href="/index.html#impressum" class="drawer-link">Impressum<small>Legal</small></a>
+    <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
+    <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
+    <a href="/sale.html" class="drawer-link">Sale <small>Deals</small></a>
+    <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
+    <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden <small>Google</small></button>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <div class="cookie-backdrop" id="cookieBackdrop" aria-hidden="true"></div>
+  <div class="cookie-modal" id="cookieModal" role="dialog" aria-modal="true" aria-labelledby="cookieTitle">
+    <div class="cookie-card">
+      <div class="cookie-head">
+        <div class="cookie-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2a10 10 0 1 0 10 10c0-.6-.06-1.2-.18-1.77a6.5 6.5 0 0 1-8.05-8.05C13.2 2.06 12.6 2 12 2Z" fill="currentColor"></path>
+            <circle cx="9" cy="9" r="1.6" fill="#0E141A"></circle>
+            <circle cx="15.2" cy="12.2" r="1.2" fill="#0E141A"></circle>
+            <circle cx="10.8" cy="15.4" r="1.3" fill="#0E141A"></circle>
+          </svg>
+        </div>
+
+        <div>
+          <h3 id="cookieTitle">Cookies</h3>
+          <p class="cookie-text">
+            Wir nutzen Cookies um SetHub besser zu machen
+            Du kannst zustimmen oder ablehnen
+          </p>
+        </div>
+      </div>
+
+      <div class="cookie-actions">
+        <button class="cookie-btn ghost" id="cookieDecline" type="button">Ablehnen</button>
+        <button class="cookie-btn" id="cookieAccept" type="button">Akzeptieren</button>
+      </div>
+
+      <div class="cookie-links">
+        <a href="#impressum">Impressum</a>
+        <span>•</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
 
   <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
     <symbol id="sethub-logo" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
@@ -675,7 +1426,7 @@
     </symbol>
   </svg>
 
-  <header class="site" aria-label="Navigation">
+  <header class="site" id="topBar" aria-label="Navigation">
     <div class="topbar-inner">
       <div class="nav-brand">
         <div class="nav-logo" aria-hidden="true">
@@ -690,601 +1441,752 @@
     </div>
   </header>
 
-  <main>
-    <div class="panel">
-      <div class="head">
-        <div class="tblock">
-          <div class="title">Sale</div>
-          <div class="sub">Amazon · LEGO · Alternate</div>
-        </div>
-
-        <div class="stats">
-          <div class="pill"><span>Sets</span><strong id="statSets">0</strong></div>
-          <div class="pill"><span>Wishlist</span><strong id="statWish">0</strong></div>
-        </div>
+  <div class="brand-fixed" id="brandFixed">
+    <div class="brand-line" id="brandLine" aria-label="SetHub Intro">
+      <div class="brand-logo" role="img" aria-label="SetHub Logo">
+        <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+          <use href="#sethub-logo"></use>
+        </svg>
       </div>
-
-      <div class="controls" role="search">
-        <div class="searchwrap">
-          <input class="field" id="q" placeholder="Suche Name oder Set Number" autocomplete="off" />
-          <button class="iconbtn" id="filterBtn" type="button" aria-label="Filter öffnen">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M4 6h16M7 12h10M10 18h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            </svg>
-          </button>
-        </div>
-
-        <button class="btn" id="reload" type="button">Reload</button>
-      </div>
-
-      <div class="filters" id="filters">
-        <select class="field" id="sort" aria-label="Sortierung">
-          <option value="best">Billigste zuerst</option>
-          <option value="worst">Teuerste zuerst</option>
-          <option value="name_az">Name A bis Z</option>
-          <option value="name_za">Name Z bis A</option>
-          <option value="set_asc">Set Number aufsteigend</option>
-          <option value="set_desc">Set Number absteigend</option>
-          <option value="sale_desc">Rabatt hoch zuerst</option>
-        </select>
-
-        <select class="field" id="source" aria-label="Quelle">
-          <option value="all">Alle Quellen</option>
-          <option value="amazon">Nur Amazon</option>
-          <option value="lego">Nur LEGO</option>
-          <option value="alternate">Nur Alternate</option>
-        </select>
-      </div>
-
-      <div class="grid" id="grid" aria-label="Sale Sets">
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div>
-      </div>
-
-      <div class="empty" id="empty" hidden>Keine Treffer</div>
-
-      <div class="pager" id="pager" hidden>
-        <button class="pagebtn" id="prev" type="button">Zurück</button>
-        <div class="pinfo" id="pinfo">Seite 1</div>
-        <button class="pagebtn" id="next" type="button">Weiter</button>
-      </div>
+      <h1 class="brand-big">
+        <span>S</span><span>e</span><span>t</span><span>H</span><span>u</span><span>b</span>
+      </h1>
     </div>
+  </div>
+
+  <main>
+    <section class="section">
+      <div class="quick-wrap">
+        <div class="quick-cards" aria-label="Quick Navigation">
+          <a class="qcard news" href="/news.html" aria-label="News öffnen">
+            <div class="q-head">
+              <div>
+                <div class="q-title">News</div>
+                <div class="q-sub">Updates</div>
+              </div>
+              <div class="q-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6 6h12M6 10h10M6 14h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6 18h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M5 4h14a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3V7a3 3 0 0 1 3-3Z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+              </div>
+            </div>
+            <div class="q-desc">Neue Updates. Releases. Infos.</div>
+            <div class="q-arrow">
+              Open
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+
+          <a class="qcard events" href="/events.html" aria-label="Events öffnen">
+            <div class="q-head">
+              <div>
+                <div class="q-title">Events</div>
+                <div class="q-sub">Dates</div>
+              </div>
+              <div class="q-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M7 3v3M17 3v3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M4 8h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M6 6h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="2"/>
+                  <path d="M8 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M8 16h7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="q-desc">Messen. Store Dates. Kalender.</div>
+            <div class="q-arrow">
+              Open
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+
+          <a class="qcard sale" href="/sale.html" aria-label="Sale öffnen">
+            <div class="q-head">
+              <div>
+                <div class="q-title">Sale</div>
+                <div class="q-sub">Deals</div>
+              </div>
+              <div class="q-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M6 7h12l-1 14H7L6 7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M9 7a3 3 0 0 1 6 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9.5 12.5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M10 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="q-desc">Preis Drops. Bundles. Aktionen.</div>
+            <div class="q-arrow">
+              Open
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+
+          <a class="qcard sets" href="/news.html#new-sets" aria-label="New Sets öffnen">
+            <div class="q-head">
+              <div>
+                <div class="q-title">New Sets</div>
+                <div class="q-sub">News</div>
+              </div>
+              <div class="q-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M12 3l8 4-8 4-8-4 8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M4 7v10l8 4 8-4V7" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+                  <path d="M12 11v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+            </div>
+            <div class="q-desc">Neue Sets. Leaks. Drops.</div>
+            <div class="q-arrow">
+              Open
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                <path d="M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <section class="section" id="featured">
+        <div class="container">
+          <div class="slider-head">
+            <h2 class="slider-title">Featured</h2>
+
+            <div class="slider-actions" aria-label="Slider Steuerung">
+              <button class="sbtn" type="button" id="slidePrev" aria-label="Nach links">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="sbtn" type="button" id="slideNext" aria-label="Nach rechts">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="slider-wrap">
+            <div class="slider" id="cardSlider" tabindex="0" aria-label="Karten Slider">
+              <a class="pcard pcard-dark" href="/info.html?id=theme-page" aria-label="Theme Page">
+                <div class="pcard-top">
+                  <div class="pcard-title">Theme Page<br>All Your Sets in One Place</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider1.png" alt="">
+              </a>
+
+              <a class="pcard" href="/info.html?id=wishlists" aria-label="Wishlists">
+                <div class="pcard-top">
+                  <div class="pcard-title">Wishlists<br>Highlight your future Sets</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider2.png" alt="">
+              </a>
+
+              <a class="pcard" href="/info.html?id=boxes" aria-label="Boxes">
+                <div class="pcard-top">
+                  <div class="pcard-title">Boxes<br>Manage Sets in Boxes</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider3.png" alt="">
+              </a>
+
+              <a class="pcard pcard-dark" href="/info.html?id=news" aria-label="News">
+                <div class="pcard-top">
+                  <div class="pcard-title">News<br>Recent LEGO news in one place</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider4.png" alt="">
+              </a>
+
+              <a class="pcard pcard-sky" href="/info.html?id=scan" aria-label="Scan">
+                <div class="pcard-top">
+                  <div class="pcard-title">Scan<br>Add Sets with one scan</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/sl" alt="">
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container feature">
+        <div class="stage" aria-hidden="true"></div>
+
+        <div class="copy">
+          <div class="kicker">SetHub</div>
+          <h2 class="mega">
+            <span class="row">Enjoy</span>
+            <span class="row">your Sets</span>
+          </h2>
+          <p class="sub">Release Countdown</p>
+
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div class="cd-box">
+              <div class="cd-num" id="cd-d">00</div>
+              <div class="cd-label">Days</div>
+            </div>
+            <div class="cd-box">
+              <div class="cd-num" id="cd-h">00</div>
+              <div class="cd-label">Hours</div>
+            </div>
+            <div class="cd-box">
+              <div class="cd-num" id="cd-m">00</div>
+              <div class="cd-label">Minutes</div>
+            </div>
+            <div class="cd-box">
+              <div class="cd-num" id="cd-s">00</div>
+              <div class="cd-label">Seconds</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="preview-wrap">
+          <img class="preview" src="/Bilder/real1.png" alt="SetHub Vorschau" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="team">
+      <div class="container">
+        <h2 class="team-title">The Team</h2>
+
+        <div class="team-grid">
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="/Bilder/niklas.png" alt="Profil Niklas Hack">
+            <div class="name">Niklas</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Fabian.png" alt="Profil Fabian">
+            <div class="name">Fabian</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/kurz.png" alt="Profil Christoph Kurz">
+            <div class="name">Christoph</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Michell.png" alt="Profil Michelle">
+            <div class="name">Michelle</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Mert.png" alt="Profil Mert Aydin">
+            <div class="name">Mert</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
+            <div class="name">Ibrahim</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/lukas.png" alt="Profil Lukas Zlavinker">
+            <div class="name">Lukas</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/Hannes.png" alt="Profil Hannes Porhacka">
+            <div class="name">Hannes</div>
+          </div></div></div>
+
+          <div class="card-wrap"><div class="card"><div class="card-face front">
+            <img class="avatar" src="Bilder/hund.png" alt="Profil Loki">
+            <div class="name">Loki</div>
+          </div></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer-cta" id="contact">
+      <div class="cta-inner">
+        <div class="cta-head">
+          <div class="cta-title">SetHub</div>
+          <div class="logo-small" aria-hidden="true">
+            <svg class="logo-svg" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
+              <use href="#sethub-logo"></use>
+            </svg>
+          </div>
+        </div>
+
+        <form class="signup" id="signupForm"
+          action="https://sethub.us15.list-manage.com/subscribe/post?u=7ec946cee576bceb6230c39d1&amp;id=f9515cb6c5&amp;f_id=00f1c2e1f0"
+          method="post"
+          target="mcHiddenFrame"
+          novalidate>
+          <input type="email" name="EMAIL" id="signupEmail" placeholder="Enter Email Address" required />
+
+          <div aria-hidden="true" style="position:absolute; left:-5000px;">
+            <input type="text" name="b_7ec946cee576bceb6230c39d1_f9515cb6c5" tabindex="-1" value="">
+          </div>
+
+          <button type="submit" id="signupBtn">Sign Up</button>
+        </form>
+
+        <iframe name="mcHiddenFrame" id="mcHiddenFrame" style="display:none"></iframe>
+      </div>
+
+      <section class="impressum" id="impressum">
+        <h3>Impressum</h3>
+        <div>SetHub Projekt</div>
+        <div>ITFS e.U. - Fabian Seewald</div>
+        <div>Schulweg 2 2340 Mödling</div>
+        <div>office@sethub.io</div>
+      </section>
+    </section>
   </main>
 
+  <div class="toast-wrap" id="toastWrap" aria-hidden="true">
+    <div class="toast" role="status" aria-live="polite">
+      <h4 id="toastTitle">Info</h4>
+      <p id="toastText">...</p>
+      <button class="ok" id="toastOk" type="button">Ok</button>
+    </div>
+  </div>
+
+  <button class="ai-fab" id="aiFab" aria-label="AI öffnen" type="button">
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M12 2a5 5 0 0 0-5 5v1H6a3 3 0 0 0-3 3v2a3 3 0 0 0 3 3h1v1a5 5 0 0 0 10 0v-1h1a3 3 0 0 0 3-3v-2a3 3 0 0 0-3-3h-1V7a5 5 0 0 0-5-5Z" stroke="currentColor" stroke-width="2"/>
+      <path d="M9 12h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      <path d="M10 16h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </button>
+
+  <div class="ai-overlay" id="aiOverlay" aria-hidden="true">
+    <div class="ai-phone" role="dialog" aria-modal="true" aria-label="AI">
+      <div class="ai-top">
+        <div class="ai-top-title">SetHub AI</div>
+        <button class="ai-close" id="aiClose" type="button">Close</button>
+      </div>
+      <iframe class="ai-frame" id="aiFrame" title="AI" loading="lazy"></iframe>
+    </div>
+  </div>
+
+  <div class="login-backdrop" id="loginBackdrop" aria-hidden="true"></div>
+  <div class="login-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="login-card">
+      <div class="login-head">
+        <div>
+          <h3 id="loginTitle">Anmelden</h3>
+          <p class="login-text">Mit Google anmelden</p>
+        </div>
+        <button class="ai-close" id="loginClose" type="button">Close</button>
+      </div>
+
+      <div id="gsiButton"></div>
+
+      <div class="login-foot">
+        <a href="#impressum">Impressum</a>
+        <span>•</span>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <script>
-    const API = {
-      amazon: "https://sethub.ddnsfree.com/SaleScraper/api/Amazon/sales",
-      lego: "https://sethub.ddnsfree.com/SaleScraper/api/Lego",
-      alternate: "https://sethub.ddnsfree.com/SaleScraper/api/Alternate"
+    const GOOGLE_CLIENT_ID = '890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com'
+    const SUBSCRIBE_URL = 'https://YOUR_BACKEND_DOMAIN/api/subscribe'
+
+    const brandLine = document.getElementById('brandLine')
+    const brandFixed = document.getElementById('brandFixed')
+
+    function lerp(a,b,t){return a+(b-a)*t}
+    function clamp01(x){return Math.min(1,Math.max(0,x))}
+
+    function updateBrand(){
+      const h = innerHeight
+      const w = innerWidth
+      const y = scrollY
+
+      const startTop = h/2
+      const endTop = 39
+
+      const startLeft = w/2
+      const endLeft = w/2
+
+      const t = clamp01(y/(h*0.6))
+
+      const curTop = lerp(startTop, endTop, t)
+      const curLeft = lerp(startLeft, endLeft, t)
+      const scale = lerp(1, 0.22, t)
+
+      brandLine.style.top = curTop + 'px'
+      brandLine.style.left = curLeft + 'px'
+      brandLine.style.transform = `translate(-50%,-50%) scale(${scale})`
+
+      document.documentElement.style.setProperty('--brandBgO', String(1 - t))
+      document.documentElement.style.setProperty('--glassO', String(t))
+
+      document.body.classList.toggle('theme-light', t > 0.2)
+
+      const done = t >= 1
+      brandFixed.classList.toggle('hidden', done)
+      document.body.classList.toggle('header-on', done)
+      document.body.classList.toggle('ai-fab-on', done)
+
+      rafPending = false
     }
 
-    const MAX_SETS = 200
+    let rafPending=false
+    addEventListener('scroll',()=>{
+      if(!rafPending){
+        requestAnimationFrame(updateBrand)
+        rafPending=true
+      }
+    },{passive:true})
+    addEventListener('resize',updateBrand)
+    updateBrand()
 
-    const els = {
-      burgerBtn: document.getElementById("burgerBtn"),
-      drawerBackdrop: document.getElementById("drawerBackdrop"),
-      filterBtn: document.getElementById("filterBtn"),
-      filters: document.getElementById("filters"),
+    const target=new Date('2026-05-01T23:59:59')
+    const elD=document.getElementById('cd-d')
+    const elH=document.getElementById('cd-h')
+    const elM=document.getElementById('cd-m')
+    const elS=document.getElementById('cd-s')
 
-      q: document.getElementById("q"),
-      sort: document.getElementById("sort"),
-      source: document.getElementById("source"),
-      reload: document.getElementById("reload"),
+    function tick(){
+      const now=new Date()
+      let diff=Math.max(0,target-now)
 
-      grid: document.getElementById("grid"),
-      empty: document.getElementById("empty"),
-      pager: document.getElementById("pager"),
-      prev: document.getElementById("prev"),
-      next: document.getElementById("next"),
-      pinfo: document.getElementById("pinfo"),
+      const d=Math.floor(diff/86400000)
+      diff-=d*86400000
+      const h=Math.floor(diff/3600000)
+      diff-=h*3600000
+      const m=Math.floor(diff/60000)
+      diff-=m*60000
+      const s=Math.floor(diff/1000)
 
-      statSets: document.getElementById("statSets"),
-      statWish: document.getElementById("statWish")
+      elD.textContent=String(d).padStart(2,'0')
+      elH.textContent=String(h).padStart(2,'0')
+      elM.textContent=String(m).padStart(2,'0')
+      elS.textContent=String(s).padStart(2,'0')
     }
+    tick()
+    setInterval(tick,1000)
 
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+    const burgerBtn = document.getElementById('burgerBtn')
+    const drawerBackdrop = document.getElementById('drawerBackdrop')
 
-    els.burgerBtn.addEventListener("click", () => {
-      if(document.body.classList.contains("drawer-open")) closeDrawer()
-      else openDrawer()
+    function openDrawer(){ document.body.classList.add('drawer-open') }
+    function closeDrawer(){ document.body.classList.remove('drawer-open') }
+
+    burgerBtn.addEventListener('click',()=>{
+      document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
     })
-    els.drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
-    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+    drawerBackdrop.addEventListener('click', closeDrawer)
 
-    els.filterBtn.addEventListener("click", () => {
-      els.filters.classList.toggle("on")
-    })
+    function scrollToHash(hash){
+      if(!hash || hash === '#') return false
+      const el = document.querySelector(hash)
+      if(!el) return false
 
-    let PAGE_SIZE = pickPageSize()
-    let raw = []
-    let view = []
-    let page = 1
-    let wishlist = loadWishlist()
+      const headerH = document.body.classList.contains('header-on')
+        ? document.getElementById('topBar').offsetHeight
+        : 0
 
-    updateWishStat()
-
-    function pickPageSize(){
-      const w = window.innerWidth || 1200
-      if(w <= 520) return 10
-      if(w <= 900) return 15
-      return 20
+      const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
+      window.scrollTo({ top: y, behavior: 'smooth' })
+      return true
     }
 
-    function loadWishlist(){
-      try{
-        const x = JSON.parse(localStorage.getItem("sethub_wishlist") || "[]")
-        if(Array.isArray(x)) return new Set(x.map(String))
-        return new Set()
-      }catch{
-        return new Set()
-      }
-    }
-
-    function saveWishlist(){
-      localStorage.setItem("sethub_wishlist", JSON.stringify([...wishlist]))
-      updateWishStat()
-    }
-
-    function updateWishStat(){
-      els.statWish.textContent = String(wishlist.size)
-    }
-
-    function parsePrice(v){
-      if(v === null || v === undefined) return null
-      if(typeof v === "number" && isFinite(v)) return v
-      const s = String(v).replace(",", ".").replace(/[^\d.]/g, "")
-      const n = Number(s)
-      return isFinite(n) ? n : null
-    }
-
-    function formatEUR(n){
-      try{
-        return new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" }).format(n)
-      }catch{
-        return (Math.round(n * 100) / 100).toFixed(2) + " €"
-      }
-    }
-
-    function calcDiscountPercent(price, oldPrice){
-      if(!isFinite(price) || !isFinite(oldPrice)) return null
-      if(oldPrice <= 0) return null
-      if(oldPrice <= price) return null
-      const pct = (1 - (price / oldPrice)) * 100
-      if(!isFinite(pct) || pct <= 0) return null
-      return Math.round(pct)
-    }
-
-    function cleanSetNumber(v){
-      const s = String(v ?? "").trim()
-      if(!s) return ""
-      if(s === "0") return ""
-      return s
-    }
-
-    function guessLegoSetNumberFromText(s){
-      const m = String(s || "").match(/\b\d{4,6}\b/)
-      return m ? m[0] : ""
-    }
-
-    function guessSetNumberFromUrl(u){
-      const s = String(u || "")
-      const m = s.match(/(?:\/|product\/)(\d{4,6})(?:\D|$)/)
-      if(m && m[1]) return m[1]
-      const m2 = s.match(/\b(\d{4,6})\b/)
-      return m2 ? m2[1] : ""
-    }
-
-    function firstText(o, keys){
-      for(const k of keys){
-        const v = o && o[k]
-        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
-      }
-      return ""
-    }
-
-    function ensureArrayFromApi(data){
-      if(Array.isArray(data)) return data
-      if(data && Array.isArray(data.$values)) return data.$values
-      if(data && Array.isArray(data.items)) return data.items
-      if(data && Array.isArray(data.data)) return data.data
-      if(data && Array.isArray(data.results)) return data.results
-      if(data && Array.isArray(data.value)) return data.value
-      if(data && typeof data === "object") return [data]
-      return []
-    }
-
-    function normItem(source, item){
-      const it = item || {}
-
-      const name = firstText(it, ["name","title","setName","productName","product","headline","description"])
-      const url = firstText(it, ["url","link","productUrl","href","detailUrl","page"])
-      const image = firstText(it, ["imageUrl","image","img","image_url","thumbnail","thumb","picture","photo"])
-
-      const price = firstText(it, ["price","currentPrice","salePrice","now","value","bestPrice","lowestPrice"])
-      const oldPrice = firstText(it, ["originalPrice","oldPrice","wasPrice","regularPrice","listPrice","before","msrp"])
-
-      let setNumber = ""
-      setNumber =
-        cleanSetNumber(it.setNumber) ||
-        cleanSetNumber(it.setnumber) ||
-        cleanSetNumber(it.set_no) ||
-        cleanSetNumber(it.setNo) ||
-        cleanSetNumber(it.number) ||
-        cleanSetNumber(it.set) ||
-        cleanSetNumber(it.setId)
-
-      if(!setNumber) setNumber = cleanSetNumber(guessSetNumberFromUrl(url))
-      if(!setNumber) setNumber = guessLegoSetNumberFromText(name)
-
-      const p = parsePrice(price)
-      const op = parsePrice(oldPrice)
-
-      return {
-        source,
-        setNumber,
-        name: String(name || "").trim(),
-        url: String(url || "").trim(),
-        image: String(image || "").trim(),
-        price: p,
-        oldPrice: op,
-        discountPct: calcDiscountPercent(p, op)
-      }
-    }
-
-    function mergeBySetNumber(list){
-      const map = new Map()
-
-      for(const x of list){
-        if(x.price === null) continue
-
-        const key = x.setNumber
-          ? "set:" + x.setNumber
-          : "fallback:" + (x.url || x.name || "").slice(0,180)
-
-        const cur = map.get(key) || {
-          setNumber: x.setNumber || "",
-          name: x.name || "",
-          sources: {},
-          best: null,
-          bestSale: null
+    document.querySelectorAll('.drawer-link').forEach(link=>{
+      link.addEventListener('click',(e)=>{
+        const href = link.getAttribute('href') || ''
+        if(href.startsWith('#')){
+          e.preventDefault()
+          closeDrawer()
+          setTimeout(()=>scrollToHash(href), 30)
+          return
         }
-
-        if(!cur.name && x.name) cur.name = x.name
-
-        cur.sources[x.source] = {
-          price: x.price,
-          oldPrice: x.oldPrice,
-          discountPct: x.discountPct,
-          url: x.url,
-          image: x.image,
-          name: x.name
-        }
-
-        if(!cur.best || x.price < cur.best.price){
-          cur.best = { source:x.source, price:x.price, url:x.url }
-        }
-
-        if(x.discountPct !== null){
-          if(!cur.bestSale || x.discountPct > cur.bestSale.pct){
-            cur.bestSale = { source:x.source, pct:x.discountPct, price:x.price, oldPrice:x.oldPrice }
-          }
-        }
-
-        map.set(key, cur)
-      }
-
-      return [...map.values()]
-    }
-
-    async function fetchJson(url){
-      const res = await fetch(url, {
-        method:"GET",
-        mode:"cors",
-        cache:"no-store",
-        headers:{ "Accept":"application/json" }
+        closeDrawer()
       })
-      if(!res.ok) throw new Error("bad status " + res.status)
-      return await res.json()
+    })
+
+    const cookieBackdrop = document.getElementById('cookieBackdrop')
+    const cookieAccept = document.getElementById('cookieAccept')
+    const cookieDecline = document.getElementById('cookieDecline')
+
+    function openCookie(){ document.body.classList.add('cookie-open') }
+    function closeCookie(){ document.body.classList.remove('cookie-open') }
+    function saveCookie(choice){
+      localStorage.setItem('sethub_cookie_choice', choice)
+      localStorage.setItem('sethub_cookie_time', String(Date.now()))
     }
 
-    async function fetchSource(source, url){
-      const data = await fetchJson(url)
-      const arr = ensureArrayFromApi(data)
-      return arr.map(it => normItem(source, it)).filter(x => x.name || x.url || x.setNumber)
+    const existingChoice = localStorage.getItem('sethub_cookie_choice')
+    if(!existingChoice){ setTimeout(openCookie, 700) }
+
+    cookieAccept.addEventListener('click', ()=>{ saveCookie('accepted'); closeCookie() })
+    cookieDecline.addEventListener('click', ()=>{ saveCookie('declined'); closeCookie() })
+    cookieBackdrop.addEventListener('click', closeCookie)
+
+    const toastWrap = document.getElementById('toastWrap')
+    const toastOk = document.getElementById('toastOk')
+    const toastTitle = document.getElementById('toastTitle')
+    const toastText = document.getElementById('toastText')
+
+    function toast(msg, title){
+      toastTitle.textContent = title || 'Info'
+      toastText.textContent = msg || ''
+      document.body.classList.add('toast-on')
+      toastWrap.setAttribute('aria-hidden','false')
+    }
+    function closeToast(){
+      document.body.classList.remove('toast-on')
+      toastWrap.setAttribute('aria-hidden','true')
+    }
+    toastOk.addEventListener('click', closeToast)
+    toastWrap.addEventListener('click', e=>{
+      if(e.target === toastWrap) closeToast()
+    })
+
+    const signupForm = document.getElementById('signupForm')
+    const signupEmail = document.getElementById('signupEmail')
+    const signupBtn = document.getElementById('signupBtn')
+
+    signupForm.addEventListener('submit', ()=>{
+      const email = signupEmail.value.trim()
+      if(!email) return
+      signupBtn.disabled = true
+      signupBtn.textContent = 'Sending'
+      setTimeout(()=>{
+        signupForm.reset()
+        signupBtn.disabled = false
+        signupBtn.textContent = 'Sign Up'
+        toast('Deine Email wurde geschickt Danke für dein Interesse','Gesendet')
+      }, 900)
+    })
+
+    const aiFab = document.getElementById('aiFab')
+    const aiOverlay = document.getElementById('aiOverlay')
+    const aiClose = document.getElementById('aiClose')
+    const aiFrame = document.getElementById('aiFrame')
+
+    const AI_URL = 'https://lego.sethub.ddnsfree.com/'
+    let aiBusy = false
+
+    function openAI(){
+      if(aiBusy) return
+      if(!aiFrame.src) aiFrame.src = AI_URL
+      document.body.classList.remove('ai-closing')
+      document.body.classList.add('ai-open')
+      aiOverlay.setAttribute('aria-hidden','false')
     }
 
-    function escapeHtml(str){
-      return String(str)
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;")
+    function closeAI(){
+      if(aiBusy) return
+      if(!document.body.classList.contains('ai-open')) return
+
+      aiBusy = true
+      document.body.classList.add('ai-closing')
+
+      setTimeout(()=>{
+        document.body.classList.remove('ai-open')
+        document.body.classList.remove('ai-closing')
+        aiOverlay.setAttribute('aria-hidden','true')
+        aiBusy = false
+      }, 360)
     }
 
-    function sourceLabel(source){
-      if(source === "amazon") return "Amazon"
-      if(source === "lego") return "LEGO"
-      return "Alternate"
+    aiFab.addEventListener('click', openAI)
+    aiClose.addEventListener('click', closeAI)
+    aiOverlay.addEventListener('click', e => { if(e.target === aiOverlay) closeAI() })
+
+    const loginOpen = document.getElementById('loginOpen')
+    const loginIconBtn = document.getElementById('loginIconBtn')
+    const loginOpenDrawer = document.getElementById('loginOpenDrawer')
+    const loginBackdrop = document.getElementById('loginBackdrop')
+    const loginModal = document.getElementById('loginModal')
+    const loginClose = document.getElementById('loginClose')
+
+    function openLogin(){
+      document.body.classList.add('login-open')
+      loginBackdrop.setAttribute('aria-hidden','false')
+      loginModal.setAttribute('aria-hidden','false')
+      setTimeout(renderGsiFit, 0)
     }
 
-    function pickCardName(x){
-      const order = ["lego","amazon","alternate"]
-      for(const k of order){
-        const s = x.sources[k]
-        if(s && s.name) return s.name
-      }
-      return x.name || "Set"
+    function closeLogin(){
+      document.body.classList.remove('login-open')
+      loginBackdrop.setAttribute('aria-hidden','true')
+      loginModal.setAttribute('aria-hidden','true')
     }
 
-    function pickCardImage(x){
-      const order = ["lego","amazon","alternate"]
-      for(const k of order){
-        const s = x.sources[k]
-        if(s && s.image) return s.image
-      }
-      return ""
+    loginOpen.addEventListener('click', openLogin)
+    loginIconBtn.addEventListener('click', openLogin)
+    loginOpenDrawer.addEventListener('click', ()=>{ closeDrawer(); openLogin() })
+    loginClose.addEventListener('click', closeLogin)
+    loginBackdrop.addEventListener('click', closeLogin)
+
+    const userName = document.getElementById('userName')
+    const userEmail = document.getElementById('userEmail')
+
+    function setUserUI(u){
+      if(!u) return
+      document.body.classList.add('user-on')
+      userName.textContent = u.name || 'User'
+      userEmail.textContent = u.email || ''
     }
 
-    function chipHtml(source, x){
-      const s = x.sources[source]
-      if(!s || !isFinite(s.price)) return ""
-      const cls = "chip" + (x.best && source === x.best.source ? " best" : "")
-      return "<div class=\"" + cls + "\">" +
-        escapeHtml(sourceLabel(source)) +
-        "<span>" + escapeHtml(formatEUR(s.price)) + "</span>" +
-      "</div>"
+    function onGoogleCredential(resp){
+      fetch(SUBSCRIBE_URL, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          credential: resp.credential,
+          origin: location.origin
+        })
+      })
+      .then(async r=>{
+        const text = await r.text()
+        const data = (()=>{ try{return JSON.parse(text)}catch{return null} })()
+        if(!r.ok || !data || !data.ok) throw new Error('subscribe_failed')
+        closeLogin()
+        setUserUI({ name: data.name, email: data.email })
+        toast('Angemeldet und eingetragen','Erfolg')
+      })
+      .catch(()=>{
+        closeLogin()
+        toast('Anmelden fehlgeschlagen','Fehler')
+      })
     }
 
-    function saleChipHtml(x){
-      if(!x.bestSale) return ""
-      const label = x.bestSale.source === "lego" || x.bestSale.source === "amazon"
-        ? "Sale"
-        : "Sale"
+    function initGSI(){
+      if(!window.google || !google.accounts || !google.accounts.id) return
 
-      return "<div class=\"chip sale\">" +
-        escapeHtml(label) +
-        "<span>" + escapeHtml(String(x.bestSale.pct)) + "%</span>" +
-      "</div>"
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: onGoogleCredential,
+        auto_select: false,
+        cancel_on_tap_outside: true
+      })
+
+      renderGsiFit()
     }
 
-    function storeRowHtml(source, s, primary){
-      if(!s || !s.url || !isFinite(s.price)) return ""
-      const pct = isFinite(s.discountPct) ? s.discountPct : null
-      const oldTxt = isFinite(s.oldPrice) ? formatEUR(s.oldPrice) : ""
-      const sub = pct ? (formatEUR(s.price) + "  " + oldTxt + "  " + pct + "%") : formatEUR(s.price)
-      return "<div class=\"store-row\" data-store=\"" + escapeHtml(source) + "\">" +
-        "<div class=\"store-left\">" +
-          "<div class=\"store-name\">" + escapeHtml(sourceLabel(source)) + "</div>" +
-          "<div class=\"store-sub\">" + escapeHtml(sub) + "</div>" +
-        "</div>" +
-        "<div class=\"store-right\">" +
-          "<button class=\"buybtn " + (primary ? "primary" : "") + "\" type=\"button\" data-url=\"" + escapeHtml(s.url) + "\">Open</button>" +
-        "</div>" +
-      "</div>"
+    function renderGsiFit(){
+      const btn = document.getElementById('gsiButton')
+      if(!btn || !window.google || !google.accounts || !google.accounts.id) return
+
+      btn.innerHTML = ''
+
+      const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
+
+      google.accounts.id.renderButton(btn, {
+        theme: 'filled_black',
+        size: 'large',
+        type: 'standard',
+        shape: 'pill',
+        text: 'signin_with',
+        logo_alignment: 'left',
+        width: w
+      })
     }
 
-    async function loadAll(){
-      els.reload.disabled = true
-
-      try{
-        const results = await Promise.allSettled([
-          fetchSource("amazon", API.amazon),
-          fetchSource("lego", API.lego),
-          fetchSource("alternate", API.alternate)
-        ])
-
-        const all = []
-        for(const r of results){
-          if(r.status === "fulfilled") all.push(...r.value)
+    window.addEventListener('load', ()=>{
+      const start = Date.now()
+      const t = setInterval(()=>{
+        if(window.google && google.accounts && google.accounts.id){
+          clearInterval(t)
+          initGSI()
+          return
         }
-
-        const merged = mergeBySetNumber(all)
-
-        merged.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
-
-        raw = merged.slice(0, MAX_SETS)
-        els.statSets.textContent = String(raw.length)
-
-        page = 1
-        apply()
-      }catch{
-        raw = []
-        view = []
-        render()
-      }finally{
-        els.reload.disabled = false
-      }
-    }
-
-    function apply(){
-      const q = (els.q.value || "").trim().toLowerCase()
-      const s = els.source.value
-      const sort = els.sort.value
-
-      let out = raw
-
-      if(s !== "all"){
-        out = out.filter(x => x.sources[s] && isFinite(x.sources[s].price))
-      }
-
-      if(q){
-        out = out.filter(x => {
-          const n = (pickCardName(x) || "").toLowerCase()
-          const id = (x.setNumber || "").toLowerCase()
-          return n.includes(q) || id.includes(q)
-        })
-      }
-
-      out = out.slice()
-
-      if(sort === "best"){
-        out.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
-      }else if(sort === "worst"){
-        out.sort((a,b)=> (b.best?.price ?? -1) - (a.best?.price ?? -1))
-      }else if(sort === "name_az"){
-        out.sort((a,b)=> (pickCardName(a) || "").localeCompare((pickCardName(b) || ""), "de", { sensitivity:"base" }))
-      }else if(sort === "name_za"){
-        out.sort((a,b)=> (pickCardName(b) || "").localeCompare((pickCardName(a) || ""), "de", { sensitivity:"base" }))
-      }else if(sort === "set_asc"){
-        out.sort((a,b)=> (a.setNumber || "").localeCompare((b.setNumber || ""), "de", { numeric:true }))
-      }else if(sort === "set_desc"){
-        out.sort((a,b)=> (b.setNumber || "").localeCompare((a.setNumber || ""), "de", { numeric:true }))
-      }else if(sort === "sale_desc"){
-        out.sort((a,b)=> (b.bestSale?.pct ?? -1) - (a.bestSale?.pct ?? -1))
-      }
-
-      view = out
-      render()
-    }
-
-    function render(){
-      const total = view.length
-      const pages = Math.max(1, Math.ceil(total / PAGE_SIZE))
-      page = Math.min(page, pages)
-
-      const start = (page - 1) * PAGE_SIZE
-      const items = view.slice(start, start + PAGE_SIZE)
-
-      els.grid.innerHTML = ""
-      els.empty.hidden = items.length !== 0
-
-      els.pager.hidden = total <= PAGE_SIZE
-      els.prev.disabled = page <= 1
-      els.next.disabled = page >= pages
-      els.pinfo.textContent = "Seite " + page + " von " + pages
-
-      for(const x of items){
-        const name = pickCardName(x)
-        const img = pickCardImage(x)
-        const setNumber = x.setNumber || ""
-
-        const bestPrice = x.best?.price
-        const priceTxt = isFinite(bestPrice) ? formatEUR(bestPrice) : "-"
-
-        const card = document.createElement("div")
-        card.className = "card"
-        card.tabIndex = 0
-        card.setAttribute("role","group")
-        card.setAttribute("aria-label", name)
-
-        const heartKey = setNumber ? setNumber : ("fallback:" + ((x.best && x.best.url) || name))
-        const heartOn = wishlist.has(heartKey)
-
-        const sL = x.sources.lego || null
-        const sA = x.sources.amazon || null
-        const sAlt = x.sources.alternate || null
-
-        const primarySource =
-          (x.bestSale && (x.bestSale.source === "lego" || x.bestSale.source === "amazon"))
-            ? x.bestSale.source
-            : (x.best ? x.best.source : "alternate")
-
-        const detailsHtml =
-          "<div class=\"details\" role=\"group\" aria-label=\"Details\">" +
-            storeRowHtml("lego", sL, primarySource === "lego") +
-            storeRowHtml("amazon", sA, primarySource === "amazon") +
-            storeRowHtml("alternate", sAlt, primarySource === "alternate") +
-          "</div>"
-
-        card.innerHTML =
-          "<div class=\"thumb\">" +
-            "<img loading=\"lazy\" src=\"" + escapeHtml(img || "/Bilder/real1.png") + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" +
-            "<button class=\"heart " + (heartOn ? "on" : "") + "\" type=\"button\" aria-label=\"Wishlist\">" +
-              "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">" +
-                "<path d=\"M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z\" fill=\"currentColor\" class=\"hfill\"/>" +
-                "<path d=\"M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linejoin=\"round\"/>" +
-              "</svg>" +
-            "</button>" +
-          "</div>" +
-          "<div class=\"txt\">" +
-            "<div class=\"name\">" + escapeHtml(name) + "</div>" +
-            "<div class=\"meta\">" +
-              "<div class=\"setno\">" + (setNumber ? ("Set " + escapeHtml(setNumber)) : "Kein Set") + "</div>" +
-              "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
-            "</div>" +
-            "<div class=\"chips\">" +
-              saleChipHtml(x) +
-              chipHtml("lego", x) +
-              chipHtml("amazon", x) +
-              chipHtml("alternate", x) +
-            "</div>" +
-            "<button class=\"openbtn\" type=\"button\">Open Deal</button>" +
-            detailsHtml +
-          "</div>"
-
-        const heart = card.querySelector(".heart")
-        heart.addEventListener("click", (e) => {
-          e.stopPropagation()
-          if(wishlist.has(heartKey)) wishlist.delete(heartKey)
-          else wishlist.add(heartKey)
-          heart.classList.toggle("on")
-          saveWishlist()
-        })
-
-        const openBtn = card.querySelector(".openbtn")
-        openBtn.addEventListener("click", (e) => {
-          e.stopPropagation()
-          card.classList.toggle("expanded")
-        })
-
-        card.querySelectorAll(".buybtn").forEach(btn => {
-          btn.addEventListener("click", (e) => {
-            e.stopPropagation()
-            const url = btn.getAttribute("data-url") || ""
-            if(url) window.open(url, "_blank", "noopener")
-          })
-        })
-
-        card.addEventListener("keydown", (e) => {
-          if(e.key === "Enter"){
-            e.preventDefault()
-            card.classList.toggle("expanded")
-          }
-        })
-
-        els.grid.appendChild(card)
-      }
-    }
-
-    function debounce(fn, ms){
-      let t = 0
-      return (...args) => {
-        clearTimeout(t)
-        t = setTimeout(() => fn(...args), ms)
-      }
-    }
-
-    els.prev.addEventListener("click", () => {
-      page = Math.max(1, page - 1)
-      render()
-      window.scrollTo({ top:0, behavior:"smooth" })
+        if(Date.now() - start > 4000) clearInterval(t)
+      }, 50)
     })
 
-    els.next.addEventListener("click", () => {
-      page = page + 1
-      render()
-      window.scrollTo({ top:0, behavior:"smooth" })
+    window.addEventListener('resize', ()=>{
+      if(document.body.classList.contains('login-open')){
+        renderGsiFit()
+      }
     })
 
-    els.sort.addEventListener("change", () => { page = 1; apply() })
-    els.source.addEventListener("change", () => { page = 1; apply() })
-    els.q.addEventListener("input", debounce(() => { page = 1; apply() }, 140))
-    els.reload.addEventListener("click", loadAll)
-
-    window.addEventListener("resize", debounce(() => {
-      const n = pickPageSize()
-      if(n !== PAGE_SIZE){
-        PAGE_SIZE = n
-        page = 1
-        render()
+    addEventListener('keydown', e => {
+      if(e.key === 'Escape'){
+        document.body.classList.remove('drawer-open')
+        document.body.classList.remove('cookie-open')
+        document.body.classList.remove('ai-open')
+        document.body.classList.remove('login-open')
+        document.body.classList.remove('toast-on')
       }
-    }, 250))
+    })
 
-    loadAll()
+    const cardSlider = document.getElementById('cardSlider')
+    const slidePrev = document.getElementById('slidePrev')
+    const slideNext = document.getElementById('slideNext')
+
+    function getCards(){
+      return Array.from(cardSlider.querySelectorAll('.pcard'))
+    }
+
+    function getStep(){
+      const cards = getCards()
+      const first = cards[0]
+      if(!first) return 320
+      const gap = parseFloat(getComputedStyle(cardSlider).gap || '28')
+      return first.getBoundingClientRect().width + gap
+    }
+
+    function slideBy(dir){
+      const step = getStep()
+      cardSlider.scrollBy({ left: step * dir, behavior: 'smooth' })
+    }
+
+    slidePrev.addEventListener('click', ()=> slideBy(-1))
+    slideNext.addEventListener('click', ()=> slideBy(1))
+
+    cardSlider.addEventListener('keydown', e=>{
+      if(e.key === 'ArrowLeft') slideBy(-1)
+      if(e.key === 'ArrowRight') slideBy(1)
+    })
+
+   function updateActive(){
+  const cards = Array.from(cardSlider.querySelectorAll('.pcard'))
+  const r = cardSlider.getBoundingClientRect()
+  const center = r.left + r.width / 2
+
+  let closest = null
+  let closestDist = Infinity
+
+  for(const card of cards){
+    const cr = card.getBoundingClientRect()
+    const cardCenter = cr.left + cr.width / 2
+    const dist = Math.abs(center - cardCenter)
+    if(dist < closestDist){
+      closestDist = dist
+      closest = card
+    }
+  }
+
+  for(const c of cards) c.classList.remove('is-active')
+  if(closest) closest.classList.add('is-active')
+}
+
+    let raf = 0
+   cardSlider.addEventListener('pointerdown', () => {
+  cardSlider.style.scrollSnapType = 'none'
+}, {passive:true})
+
+addEventListener('pointerup', () => {
+  cardSlider.style.scrollSnapType = 'x mandatory'
+  requestAnimationFrame(updateActive)
+}, {passive:true})
+
+    window.addEventListener('load', updateActive)
+    window.addEventListener('resize', updateActive)
+    updateActive()
   </script>
 </body>
 </html>

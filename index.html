@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#0E141A" />
   <link rel="icon" type="image/png" href="Bilder/lagos.png">
 
-  <style>
+   <style>
     :root{
       --bg:#0E141A;
       --bg-light:#1C2731;
@@ -41,6 +41,12 @@
       overflow-x:hidden;
       min-height:100vh;
       transition:background .4s ease;
+    }
+
+    :focus-visible{
+      outline:3px solid rgba(0,229,255,.55);
+      outline-offset:4px;
+      border-radius:14px;
     }
 
     header.site{
@@ -1020,7 +1026,6 @@
     .ai-close:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .ai-frame{width:100%;height:100%;border:0;background:#0b1218}
 
-    /* LOGIN */
     .login-backdrop{
       position:fixed;
       inset:0;
@@ -1145,6 +1150,224 @@
       .login-modal{padding:0 8px 8px}
       .login-card{padding:12px}
       .login-card h3{font-size:1.05rem}
+    }
+
+    /* SLIDER HEAD + BUTTONS */
+    .slider-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .slider-title{
+      font-weight:900;
+      letter-spacing:.01em;
+      font-size:clamp(1.8rem,3vw,2.4rem);
+    }
+
+    .slider-actions{
+      display:flex;
+      gap:10px;
+    }
+
+    .sbtn{
+      height:44px;
+      width:44px;
+      border-radius:14px;
+      background:rgba(16,24,32,.55);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(12px);
+      color:#e8eef4;
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, background .12s ease;
+    }
+    .sbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .sbtn svg{width:22px;height:22px}
+
+    /* SLIDER */
+/* replace ONLY your slider + card css with this */
+
+.slider-wrap{
+  position:relative;
+  width:100%;
+}
+
+.slider{
+  display:flex;
+  gap:22px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  scroll-snap-type:x mandatory;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+
+  padding:26px 5% 46px;
+  scroll-padding-left:5%;
+  scroll-padding-right:5%;
+
+  touch-action:pan-x;
+  overscroll-behavior-x:contain;
+
+  scrollbar-width:none;
+}
+.slider::-webkit-scrollbar{display:none}
+
+.pcard{
+  flex:0 0 auto;
+
+  width:min(520px,78vw);
+  height:460px;
+
+  border-radius:26px;
+  border:1px solid #223041;
+
+  background:
+    radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 60%),
+    radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.10), transparent 60%),
+    rgba(16,24,32,.46);
+
+  backdrop-filter:blur(16px);
+  box-shadow:0 34px 140px rgba(0,0,0,.60);
+
+  scroll-snap-align:start;
+
+  position:relative;
+  overflow:hidden;
+
+  padding:22px 22px 18px;
+  color:#fff;
+
+  transform:none;
+  filter:none;
+
+  transition:transform .18s ease, filter .18s ease;
+}
+
+.pcard:hover{
+  transform:translateY(-6px);
+  filter:brightness(1.06);
+}
+
+.pcard-top{
+  position:relative;
+  z-index:3;
+  max-width:28ch;
+}
+
+.pcard-title{
+  margin-top:2px;
+  font-size:1.55rem;
+  line-height:1.1;
+  font-weight:950;
+  letter-spacing:.01em;
+}
+
+.pcard-img{
+  position:absolute;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+
+  width:68%;
+  max-width:360px;
+  max-height:78%;
+
+  object-fit:contain;
+
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+
+  filter:drop-shadow(0 26px 70px rgba(0,0,0,.65));
+}
+
+.pcard-dark{
+  background:
+    radial-gradient(900px 520px at 20% 10%, rgba(0,229,255,.08), transparent 60%),
+    radial-gradient(900px 520px at 85% 90%, rgba(255,94,160,.10), transparent 62%),
+    rgba(8,12,16,.92);
+  border:1px solid #1a2530;
+}
+
+.pcard-sky{
+  background:
+    radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 62%),
+    radial-gradient(900px 520px at 92% 120%, rgba(59,130,246,.12), transparent 62%),
+    rgba(14,20,26,.58);
+}
+
+@media (max-width:720px){
+  .slider{
+    padding:22px 4% 40px;
+    scroll-padding-left:4%;
+    scroll-padding-right:4%;
+    gap:16px;
+  }
+
+  .pcard{
+    width:84vw;
+    height:420px;
+    padding:18px;
+  }
+
+  .pcard-title{
+    font-size:1.35rem;
+  }
+
+  .pcard-img{
+    position:absolute;
+  left:50%;
+  bottom:10px;
+  transform:translateX(-50%);
+
+  width:82%;
+  max-width:420px;
+  max-height:84%;
+
+  object-fit:contain;
+
+  z-index:1;
+  pointer-events:none;
+  user-select:none;
+
+  filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
+  }
+}
+
+
+    .pcard.is-active .pcard-img{
+      transform:translateY(-12px) scale(1.04);
+    }
+
+    @media (max-width:720px){
+      .sbtn{height:42px;width:42px}
+        .pcard-img{
+    width:88%;
+    max-width:380px;
+    bottom:8px;
+  }
+      .slider{
+        gap:20px;
+        padding-top:28px;
+        padding-bottom:44px;
+        padding-left:calc(50vw - (86vw / 2));
+        padding-right:calc(50vw - (86vw / 2));
+      }
+
+      .pcard{width:86vw;height:460px;padding:22px}
+      .pcard-title{font-size:1.55rem}
+      .pcard-img{right:-18px;bottom:-48px;width:96%}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .pcard,.pcard-img,.qcard::before,.q-ico::after{animation:none;transition:none}
     }
   </style>
 </head>
@@ -1406,6 +1629,73 @@
           </a>
         </div>
       </div>
+
+
+         <section class="section" id="featured">
+  <div class="container">
+    <div class="slider-head">
+      <h2 class="slider-title">Featured Products</h2>
+
+      <div class="slider-actions" aria-label="Slider Steuerung">
+        <button class="sbtn" type="button" id="slidePrev" aria-label="Nach links">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="sbtn" type="button" id="slideNext" aria-label="Nach rechts">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider" id="cardSlider" tabindex="0" aria-label="Karten Slider">
+        <a class="pcard pcard-dark" href="/info.html?id=apple-watch-black-unity" aria-label="Apple Watch Black Unity">
+          <div class="pcard-top">
+           
+            <div class="pcard-title">Theme Page - All Your Sets in One Place </div>
+          </div>
+          <img class="pcard-img" src="/Bilder/slider1.png" alt="">
+        </a>
+
+        <a class="pcard" href="/info.html?id=watch-series-11" aria-label="Apple Watch Series 11">
+          <div class="pcard-top">
+            <div class="pcard-title">Wishlists - Highlight  your future Sets</div>
+          </div>
+          <img class="pcard-img" src="/Bilder/slider2.png" alt">
+        </a>
+
+        <a class="pcard" href="/info.html?id=airtag" aria-label="AirTag">
+          <div class="pcard-top">
+            <div class="pcard-title">Convinient -  Manage Sets in Boxes</div>
+          </div>
+          <img class="pcard-img" src="/Bilder/slider3.png" alt="">
+        </a>
+
+        <a class="pcard pcard-dark" href="/info.html?id=ipad-pro" aria-label="iPad Pro">
+          <div class="pcard-top">
+            <div class="pcard-title">Informative - Recent LEGO news all in one place</div>
+          </div>
+          <img class="pcard-img" src="/Bilder/slider4.png" alt="">
+      
+        </a>
+
+        <a class="pcard" href="/info.html?id=iphone-17" aria-label="iPhone 17">
+          <div class="pcard-top">
+            <div class="pcard-title">Simple - Add Sets  with just one scan</div>
+          </div>
+          <img class="pcard-img" src="/Bilder/slider5.png" alt="">
+        </a>
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
       <div class="container feature">
         <div class="stage" aria-hidden="true"></div>
@@ -1910,6 +2200,64 @@
         document.body.classList.remove('toast-on')
       }
     })
+
+
+const cardSlider = document.getElementById('cardSlider')
+const slidePrev = document.getElementById('slidePrev')
+const slideNext = document.getElementById('slideNext')
+
+function step(){
+  const first = cardSlider.querySelector('.pcard')
+  if(!first) return 320
+  const gap = parseFloat(getComputedStyle(cardSlider).gap || '22')
+  return first.getBoundingClientRect().width + gap
+}
+
+function slideBy(dir){
+  cardSlider.scrollBy({ left: step() * dir, behavior:'smooth' })
+}
+
+slidePrev.addEventListener('click', ()=> slideBy(-1))
+slideNext.addEventListener('click', ()=> slideBy(1))
+
+cardSlider.addEventListener('keydown', e=>{
+  if(e.key === 'ArrowLeft') slideBy(-1)
+  if(e.key === 'ArrowRight') slideBy(1)
+})
+
+function updateActive(){
+  const center = window.innerWidth / 2
+  let closest = null
+  let closestDist = Infinity
+
+  for(const card of cards){
+    const r = card.getBoundingClientRect()
+    const cardCenter = r.left + r.width / 2
+    const dist = Math.abs(center - cardCenter)
+    if(dist < closestDist){
+      closestDist = dist
+      closest = card
+    }
+  }
+
+  for(const c of cards) c.classList.remove('is-active')
+  if(closest) closest.classList.add('is-active')
+}
+
+let raf = 0
+cardSlider.addEventListener('scroll', ()=>{
+  if(raf) return
+  raf = requestAnimationFrame(()=>{
+    updateActive()
+    raf = 0
+  })
+},{passive:true})
+
+window.addEventListener('load', updateActive)
+window.addEventListener('resize', updateActive)
+updateActive()
+
+
   </script>
 </body>
 </html>
