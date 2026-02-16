@@ -378,74 +378,50 @@
       .thumb{height:200px}
     }
 
-    .thumb img{
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      object-position:center;
-      filter:drop-shadow(0 16px 40px rgba(0,0,0,.45));
-      transform:translateY(2px);
-    }
+    .thumb{
+  position:relative;
+  width:100%;
 
-    .fade{
-      position:absolute;
-      left:0;
-      right:0;
-      bottom:0;
-      height:76px;
-      background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
-      pointer-events:none;
-    }
+  overflow:hidden;
 
-    .badge{
-      position:absolute;
-      left:10px;
-      top:10px;
-      padding:8px 10px;
-      border-radius:999px;
-      background:rgba(12,18,24,.72);
-      border:1px solid rgba(255,255,255,.14);
-      color:#fff;
-      font-weight:950;
-      letter-spacing:.02em;
-      font-size:.78rem;
-      backdrop-filter:blur(10px);
-      max-width:calc(100% - 20px);
-      overflow:hidden;
-      white-space:nowrap;
-      text-overflow:ellipsis;
-    }
+  background:
+    radial-gradient(520px 280px at 60% 15%, rgba(255,255,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
 
-    .wish{
-      position:absolute;
-      right:10px;
-      top:10px;
-      height:38px;
-      width:38px;
-      border-radius:14px;
-      background:rgba(12,18,24,.65);
-      border:1px solid rgba(255,255,255,.14);
-      backdrop-filter:blur(10px);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      transition:transform .12s ease, filter .12s ease;
-    }
-    .wish:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .wish svg{width:18px;height:18px;color:#fff}
+  border-bottom:1px solid rgba(255,255,255,.06);
 
-    .wish.is-on{
-      border-color:rgba(207,100,229,.65);
-      background:linear-gradient(180deg,#7a3bd0,#572B87);
-    }
+  display:grid;
+  place-items:center;
 
-    .card-body{
-      padding:12px 12px 14px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-      flex:1;
-    }
+  padding:12px;
+
+  aspect-ratio: 4 / 3;
+}
+
+@media (max-width:860px){
+  .thumb{ aspect-ratio: 1 / 1; }
+}
+
+.thumb img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+
+  transform:none;
+
+  filter:drop-shadow(0 16px 40px rgba(0,0,0,.45));
+}
+
+/* OPTIONAL: keeps every card same visual height */
+.card-body{
+  padding:12px 12px 14px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  flex:1;
+  min-height:140px;
+}
 
     .t1{
       font-weight:950;
