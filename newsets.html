@@ -16,12 +16,15 @@
 
       --glass:rgba(16,24,32,.72);
       --glass2:rgba(16,24,32,.55);
-      --border:rgba(255,255,255,.10);
+
+      --border:#223041;
       --border2:#1f2a35;
 
       --shadow:0 26px 90px rgba(0,0,0,.55);
+
       --r1:18px;
       --r2:23px;
+
       --gap:16px;
 
       --pink:#cf64e5;
@@ -72,6 +75,7 @@
     }
 
     .logo-svg{width:100%;height:100%;display:block}
+
     .nav-logo{
       height:48px;
       width:auto;
@@ -80,6 +84,7 @@
       transform:translateY(10px);
       flex:0 0 auto;
     }
+
     .nav-text{
       display:flex;
       align-items:center;
@@ -109,6 +114,7 @@
       transition:transform .12s ease, filter .12s ease;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
+
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
       position:absolute;left:0;right:0;
@@ -118,6 +124,7 @@
     .burger .lines span:nth-child(1){top:0}
     .burger .lines span:nth-child(2){top:6px}
     .burger .lines span:nth-child(3){top:12px}
+
     body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
     body.drawer-open .burger .lines span:nth-child(2){opacity:0}
     body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
@@ -130,6 +137,7 @@
       display:flex;
       gap:10px;
     }
+
     .top-link{
       height:46px;
       padding:0 14px;
@@ -220,7 +228,7 @@
         radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.18), transparent 70%),
         radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.16), transparent 65%),
         rgba(15,22,30,.70);
-      border:1px solid #223041;
+      border:1px solid var(--border);
       box-shadow:var(--shadow);
       padding:clamp(14px,2.2vw,20px);
     }
@@ -331,19 +339,26 @@
       flex-direction:column;
       min-height:100%;
     }
-    .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.02)}
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(255,255,255,.16);
+      filter:brightness(1.02);
+    }
 
     .thumb{
       position:relative;
       width:100%;
-      aspect-ratio: 16 / 10;
+      aspect-ratio: 4 / 3;
       background:#0b1218;
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
+
     .thumb img{
       width:100%;
       height:100%;
-      object-fit:cover;
+      object-fit:contain;
       object-position:center;
+      background:#fff;
     }
 
     .badge{
@@ -352,16 +367,13 @@
       top:10px;
       padding:8px 10px;
       border-radius:999px;
-      background:rgba(12,18,24,.70);
+      background:rgba(12,18,24,.72);
       border:1px solid rgba(255,255,255,.14);
       color:#fff;
       font-weight:950;
       letter-spacing:.02em;
       font-size:.78rem;
       backdrop-filter:blur(10px);
-      display:flex;
-      align-items:center;
-      gap:8px;
       max-width:calc(100% - 20px);
       overflow:hidden;
       white-space:nowrap;
@@ -385,6 +397,7 @@
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
+      min-height:2.4em;
     }
 
     .t2{
@@ -397,6 +410,7 @@
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
+      min-height:2.2em;
     }
 
     .meta-row{
@@ -427,7 +441,7 @@
       border-radius:18px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(16,24,32,.35);
-      aspect-ratio: 16 / 14;
+      height:260px;
     }
 
     .empty{
@@ -439,6 +453,56 @@
       color:#cfd6dd;
       font-weight:800;
       line-height:1.4;
+      display:none;
+    }
+
+    .pager{
+      margin-top:16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .pager-left{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .pager-right{
+      color:#cfd6dd;
+      font-weight:900;
+      letter-spacing:.02em;
+      opacity:.92;
+    }
+
+    .page-list{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+
+    .pbtn{
+      height:38px;
+      min-width:38px;
+      padding:0 12px;
+      border-radius:14px;
+      background:rgba(16,24,32,.55);
+      border:1px solid #1f2a35;
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+    }
+    .pbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .pbtn[disabled]{opacity:.5;cursor:default;transform:none;filter:none}
+    .pbtn.active{
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      border-color:rgba(207,100,229,.65);
     }
   </style>
 </head>
@@ -466,8 +530,7 @@
     <a href="/index.html" class="drawer-link">Home<small>Start</small></a>
     <a href="/news.html" class="drawer-link">News<small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events<small>Dates</small></a>
-    <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
-    <a href="/sale.html" class="drawer-link">Sale<small>Sale</small></a>
+    <a href="/sets.html" class="drawer-link">New Sets<small>List</small></a>
     <a href="/index.html#impressum" class="drawer-link">Impressum<small>Legal</small></a>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
@@ -495,18 +558,18 @@
         <linearGradient id="gradA" x1="-20%" y1="0%" x2="120%" y2="0%" spreadMethod="reflect">
           <stop offset="0%">
             <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#00E5FF; #FF5EA0; #FFD300; #00FF87; #00E5FF"></animate>
+              values="#00E5FF, #FF5EA0, #FFD300, #00FF87, #00E5FF"></animate>
           </stop>
           <stop offset="50%">
             <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#7A5CFF; #00FF87; #FF5EA0; #00E5FF; #7A5CFF"></animate>
+              values="#7A5CFF, #00FF87, #FF5EA0, #00E5FF, #7A5CFF"></animate>
           </stop>
           <stop offset="100%">
             <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#FF5EA0; #FFD300; #00E5FF; #7A5CFF; #FF5EA0"></animate>
+              values="#FF5EA0, #FFD300, #00E5FF, #7A5CFF, #FF5EA0"></animate>
           </stop>
           <animateTransform attributeName="gradientTransform" type="translate" dur="12s"
-            repeatCount="indefinite" values="-0.4 0; 0.4 0; -0.4 0"></animateTransform>
+            repeatCount="indefinite" values="-0.4 0, 0.4 0, -0.4 0"></animateTransform>
         </linearGradient>
       </defs>
 
@@ -565,114 +628,135 @@
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
       </div>
 
-      <div class="empty" id="empty" style="display:none">
-        Nichts gefunden
+      <div class="empty" id="empty">Nichts gefunden</div>
+
+      <div class="pager" id="pager" style="display:none">
+        <div class="pager-left">
+          <button class="pbtn" id="prevPage" type="button">Prev</button>
+          <div class="page-list" id="pageList" aria-label="Seiten"></div>
+          <button class="pbtn" id="nextPage" type="button">Next</button>
+        </div>
+        <div class="pager-right" id="pageInfo">Page</div>
       </div>
     </div>
   </main>
 
   <script>
-    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
-    const FALLBACK_IMG = "/Bilder/real1.png"
-    const MAX_ITEMS = 50
+    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/";
+    const FALLBACK_IMG = "/Bilder/real1.png";
 
-    const burgerBtn = document.getElementById("burgerBtn")
-    const drawerBackdrop = document.getElementById("drawerBackdrop")
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+    const PER_PAGE = 28;
+
+    const burgerBtn = document.getElementById("burgerBtn");
+    const drawerBackdrop = document.getElementById("drawerBackdrop");
+
+    function openDrawer(){ document.body.classList.add("drawer-open"); }
+    function closeDrawer(){ document.body.classList.remove("drawer-open"); }
+
     burgerBtn.addEventListener("click", () => {
-      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
-    })
-    drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
-    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer();
+    });
+    drawerBackdrop.addEventListener("click", closeDrawer);
+    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer));
+    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer(); });
 
     function safeText(s){
-      return String(s || "").replaceAll("<","").replaceAll(">","")
+      return String(s || "").replaceAll("<","").replaceAll(">","");
     }
 
     function firstText(o, keys){
       for(const k of keys){
-        const v = o && o[k]
-        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
+        const v = o && o[k];
+        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v);
       }
-      return ""
+      return "";
     }
 
     function formatDate(iso){
-      const d = new Date(iso)
-      if(Number.isNaN(d.getTime())) return ""
-      const day = String(d.getDate()).padStart(2,"0")
-      const mon = String(d.getMonth() + 1).padStart(2,"0")
-      const yr = String(d.getFullYear())
-      return `${day}.${mon}.${yr}`
+      const d = new Date(iso);
+      if(Number.isNaN(d.getTime())) return "";
+      const day = String(d.getDate()).padStart(2,"0");
+      const mon = String(d.getMonth() + 1).padStart(2,"0");
+      const yr = String(d.getFullYear());
+      return `${day}.${mon}.${yr}`;
     }
 
     function dedupeSets(items){
-      const seen = new Set()
-      const out = []
+      const seen = new Set();
+      const out = [];
       for(const it of items){
-        const name = firstText(it, ["name","title","setName"]).trim()
-        const num = firstText(it, ["setNumber","number","id"]).trim()
-        const key = `${name}__${num}`
-        if(seen.has(key)) continue
-        seen.add(key)
-        out.push(it)
+        const name = firstText(it, ["name","title","setName"]).trim();
+        const num = firstText(it, ["setNumber","number","id"]).trim();
+        const key = `${name}__${num}`;
+        if(seen.has(key)) continue;
+        seen.add(key);
+        out.push(it);
       }
-      return out
+      return out;
     }
 
     function guessStamp(it){
-      const d = firstText(it, ["publishedAt","date","createdAt","releaseDate"])
-      const t = new Date(d || 0).getTime()
-      return Number.isFinite(t) ? t : 0
+      const d = firstText(it, ["publishedAt","date","createdAt","releaseDate"]);
+      const t = new Date(d || 0).getTime();
+      return Number.isFinite(t) ? t : 0;
     }
 
     function guessPrice(it){
-      const p = firstText(it, ["price","msrp","eur","usd"])
-      const n = Number(String(p).replace(",",".").replace(/[^0-9.]/g,""))
-      return Number.isFinite(n) ? n : 0
+      const p = firstText(it, ["price","msrp","eur","usd"]);
+      const n = Number(String(p).replace(",",".").replace(/[^0-9.]/g,""));
+      return Number.isFinite(n) ? n : 0;
     }
 
     const SORTS = [
       { key:"new", label:"New", fn:(a,b)=> guessStamp(b) - guessStamp(a) },
       { key:"name", label:"Name", fn:(a,b)=> (firstText(a,["name","title","setName"]).localeCompare(firstText(b,["name","title","setName"]))) },
       { key:"price", label:"Price", fn:(a,b)=> guessPrice(b) - guessPrice(a) }
-    ]
+    ];
 
-    let raw = []
-    let view = []
-    let sortIdx = 0
+    let raw = [];
+    let filtered = [];
+    let sortIdx = 0;
 
-    const grid = document.getElementById("grid")
-    const empty = document.getElementById("empty")
-    const q = document.getElementById("q")
-    const sortBtn = document.getElementById("sortBtn")
-    const sortLabel = document.getElementById("sortLabel")
-    const reloadBtn = document.getElementById("reloadBtn")
-    const countLabel = document.getElementById("countLabel")
-    const subLine = document.getElementById("subLine")
+    let page = 1;
+    let pages = 1;
+
+    const grid = document.getElementById("grid");
+    const empty = document.getElementById("empty");
+    const q = document.getElementById("q");
+    const sortBtn = document.getElementById("sortBtn");
+    const sortLabel = document.getElementById("sortLabel");
+    const reloadBtn = document.getElementById("reloadBtn");
+    const countLabel = document.getElementById("countLabel");
+    const subLine = document.getElementById("subLine");
+
+    const pager = document.getElementById("pager");
+    const prevPage = document.getElementById("prevPage");
+    const nextPage = document.getElementById("nextPage");
+    const pageList = document.getElementById("pageList");
+    const pageInfo = document.getElementById("pageInfo");
 
     function buildCard(it){
-      const name = safeText(firstText(it, ["name","title","setName"]) || "Set")
-      const num = safeText(firstText(it, ["setNumber","number","id"]))
-      const theme = safeText(firstText(it, ["theme","category","line"]))
-      const price = safeText(firstText(it, ["price","msrp","eur","usd"]))
-      const date = formatDate(firstText(it, ["publishedAt","date","createdAt","releaseDate"]))
+      const name = safeText(firstText(it, ["name","title","setName"]) || "Set");
+      const num = safeText(firstText(it, ["setNumber","number","id"]));
+      const theme = safeText(firstText(it, ["theme","category","line"]));
+      const price = safeText(firstText(it, ["price","msrp","eur","usd"]));
+      const date = formatDate(firstText(it, ["publishedAt","date","createdAt","releaseDate"]));
 
-      const img = firstText(it, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG
-      const href = firstText(it, ["productUrl","url","link","sourceUrl"]) || "#"
+      const img = firstText(it, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG;
+      const href = firstText(it, ["productUrl","url","link","sourceUrl"]) || "#";
 
       const badgeText =
         num ? `${num}${theme ? " · " + theme : ""}` :
         theme ? theme :
-        "Set"
+        "Set";
 
       const line2 =
         date ? date :
         price ? price :
         theme ? theme :
-        ""
+        "";
+
+      const leftMeta = price ? price : (date ? date : " ");
 
       return `
         <a class="card" href="${href}" target="_blank" rel="noopener" aria-label="${name}">
@@ -684,7 +768,7 @@
             <div class="t1">${name}</div>
             <div class="t2">${line2}</div>
             <div class="meta-row">
-              <div>${price ? price : (date ? date : " " )}</div>
+              <div>${leftMeta}</div>
               <div class="open" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
                   <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -694,43 +778,121 @@
             </div>
           </div>
         </a>
-      `
+      `;
+    }
+
+    function setPage(newPage){
+      page = Math.max(1, Math.min(newPage, pages));
+      render();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function buildPageButtons(){
+      pageList.innerHTML = "";
+
+      const maxBtns = 7;
+      let start = Math.max(1, page - Math.floor(maxBtns / 2));
+      let end = start + maxBtns - 1;
+
+      if(end > pages){
+        end = pages;
+        start = Math.max(1, end - maxBtns + 1);
+      }
+
+      function addBtn(n){
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "pbtn" + (n === page ? " active" : "");
+        btn.textContent = String(n);
+        btn.addEventListener("click", () => setPage(n));
+        pageList.appendChild(btn);
+      }
+
+      if(start > 1){
+        addBtn(1);
+        if(start > 2){
+          const dots = document.createElement("button");
+          dots.type = "button";
+          dots.className = "pbtn";
+          dots.textContent = "...";
+          dots.disabled = true;
+          pageList.appendChild(dots);
+        }
+      }
+
+      for(let n = start; n <= end; n++) addBtn(n);
+
+      if(end < pages){
+        if(end < pages - 1){
+          const dots = document.createElement("button");
+          dots.type = "button";
+          dots.className = "pbtn";
+          dots.textContent = "...";
+          dots.disabled = true;
+          pageList.appendChild(dots);
+        }
+        addBtn(pages);
+      }
     }
 
     function render(){
-      grid.innerHTML = view.map(buildCard).join("")
-      empty.style.display = view.length ? "none" : "block"
-      countLabel.textContent = String(view.length)
-      subLine.textContent = `${view.length} items`
+      const total = filtered.length;
+      pages = Math.max(1, Math.ceil(total / PER_PAGE));
+      page = Math.min(page, pages);
+
+      const start = (page - 1) * PER_PAGE;
+      const slice = filtered.slice(start, start + PER_PAGE);
+
+      grid.innerHTML = slice.map(buildCard).join("");
+      empty.style.display = slice.length ? "none" : "block";
+
+      countLabel.textContent = String(total);
+      sortLabel.textContent = SORTS[sortIdx].label;
+
+      if(total){
+        subLine.textContent = `${total} items`;
+        pager.style.display = pages > 1 ? "flex" : "none";
+      }else{
+        subLine.textContent = "0 items";
+        pager.style.display = "none";
+      }
+
+      prevPage.disabled = page <= 1;
+      nextPage.disabled = page >= pages;
+
+      pageInfo.textContent = `Page ${page} of ${pages}`;
+      if(pages > 1) buildPageButtons();
     }
 
     function apply(){
-      const term = q.value.trim().toLowerCase()
-      const f = term
-        ? raw.filter(it => {
-            const name = firstText(it, ["name","title","setName"]).toLowerCase()
-            const num = firstText(it, ["setNumber","number","id"]).toLowerCase()
-            const theme = firstText(it, ["theme","category","line"]).toLowerCase()
-            const price = firstText(it, ["price","msrp","eur","usd"]).toLowerCase()
-            return name.includes(term) || num.includes(term) || theme.includes(term) || price.includes(term)
-          })
-        : raw.slice()
+      const term = q.value.trim().toLowerCase();
 
-      const sorter = SORTS[sortIdx]
-      view = f.sort(sorter.fn).slice(0, MAX_ITEMS)
-      sortLabel.textContent = sorter.label
-      render()
+      const base = term
+        ? raw.filter(it => {
+            const name = firstText(it, ["name","title","setName"]).toLowerCase();
+            const num = firstText(it, ["setNumber","number","id"]).toLowerCase();
+            const theme = firstText(it, ["theme","category","line"]).toLowerCase();
+            const price = firstText(it, ["price","msrp","eur","usd"]).toLowerCase();
+            return name.includes(term) || num.includes(term) || theme.includes(term) || price.includes(term);
+          })
+        : raw.slice();
+
+      const sorter = SORTS[sortIdx];
+      filtered = base.sort(sorter.fn);
+
+      page = 1;
+      render();
     }
 
     function withTimeout(ms){
-      const controller = new AbortController()
-      const t = setTimeout(() => controller.abort(), ms)
-      return { signal: controller.signal, clear: () => clearTimeout(t) }
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), ms);
+      return { signal: controller.signal, clear: () => clearTimeout(t) };
     }
 
     async function fetchJson(url){
-      const { signal, clear } = withTimeout(14000)
-      let res
+      const { signal, clear } = withTimeout(14000);
+      let res;
       try{
         res = await fetch(url, {
           method:"GET",
@@ -738,46 +900,51 @@
           cache:"no-store",
           headers:{ "Accept":"application/json" },
           signal
-        })
+        });
       } finally {
-        clear()
+        clear();
       }
-      if(!res.ok) throw new Error("bad status")
-      return await res.json()
+      if(!res.ok) throw new Error("bad status");
+      return await res.json();
     }
 
     async function load(){
-      subLine.textContent = "Lädt"
+      subLine.textContent = "Lädt";
       grid.innerHTML = `
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-      `
-      empty.style.display = "none"
+      `;
+      empty.style.display = "none";
+      pager.style.display = "none";
 
-      const data = await fetchJson(SETS_API_URL)
-      const list = Array.isArray(data) ? data : []
-      raw = dedupeSets(list)
+      const data = await fetchJson(SETS_API_URL);
+      const list = Array.isArray(data) ? data : [];
+      raw = dedupeSets(list);
 
-      apply()
+      apply();
     }
 
-    q.addEventListener("input", () => apply())
+    q.addEventListener("input", () => apply());
 
     sortBtn.addEventListener("click", () => {
-      sortIdx = (sortIdx + 1) % SORTS.length
-      apply()
-    })
+      sortIdx = (sortIdx + 1) % SORTS.length;
+      apply();
+    });
 
-    reloadBtn.addEventListener("click", () => load())
+    reloadBtn.addEventListener("click", () => load());
+
+    prevPage.addEventListener("click", () => setPage(page - 1));
+    nextPage.addEventListener("click", () => setPage(page + 1));
 
     load().catch(() => {
-      raw = []
-      view = []
-      grid.innerHTML = ""
-      empty.style.display = "block"
-      subLine.textContent = "Keine Verbindung"
-      countLabel.textContent = "0"
-    })
+      raw = [];
+      filtered = [];
+      grid.innerHTML = "";
+      empty.style.display = "block";
+      subLine.textContent = "Keine Verbindung";
+      countLabel.textContent = "0";
+      pager.style.display = "none";
+    });
   </script>
 </body>
 </html>
