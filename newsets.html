@@ -28,6 +28,7 @@
       --gap:16px;
 
       --pink:#cf64e5;
+      --cyan:#00e5ff;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -45,7 +46,9 @@
 
     header.site{
       position:fixed;
-      left:0; right:0; top:0;
+      left:0;
+      right:0;
+      top:0;
       height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
@@ -117,8 +120,12 @@
 
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
-      position:absolute;left:0;right:0;
-      height:2px;background:#e8eef4;border-radius:2px;
+      position:absolute;
+      left:0;
+      right:0;
+      height:2px;
+      background:#e8eef4;
+      border-radius:2px;
       transition:transform .25s ease, opacity .2s ease, top .25s ease;
     }
     .burger .lines span:nth-child(1){top:0}
@@ -174,7 +181,9 @@
 
     .drawer{
       position:fixed;
-      top:0; left:0; bottom:0;
+      top:0;
+      left:0;
+      bottom:0;
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid #16212a;
@@ -329,15 +338,19 @@
     }
 
     .card{
-      border-radius:18px;
+      border-radius:22px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg,#101820,#0b1218);
+      background:
+        radial-gradient(900px 520px at 15% -10%, rgba(0,229,255,.10), transparent 62%),
+        radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.12), transparent 62%),
+        linear-gradient(180deg,#101820,#0b1218);
       transform:translateY(0);
       transition:transform .15s ease, border-color .15s ease, filter .15s ease;
       display:flex;
       flex-direction:column;
       min-height:100%;
+      box-shadow:0 18px 70px rgba(0,0,0,.45);
     }
     .card:hover{
       transform:translateY(-2px);
@@ -348,9 +361,21 @@
     .thumb{
       position:relative;
       width:100%;
-      aspect-ratio: 4 / 3;
-      background:#0b1218;
+      height:210px;
+      background:
+        radial-gradient(520px 280px at 60% 15%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0));
       border-bottom:1px solid rgba(255,255,255,.06);
+      display:grid;
+      place-items:center;
+      padding:12px;
+    }
+
+    @media (max-width:860px){
+      .thumb{height:220px}
+    }
+    @media (max-width:520px){
+      .thumb{height:200px}
     }
 
     .thumb img{
@@ -358,7 +383,18 @@
       height:100%;
       object-fit:contain;
       object-position:center;
-      background:#fff;
+      filter:drop-shadow(0 16px 40px rgba(0,0,0,.45));
+      transform:translateY(2px);
+    }
+
+    .fade{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      height:76px;
+      background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.55));
+      pointer-events:none;
     }
 
     .badge{
@@ -380,12 +416,34 @@
       text-overflow:ellipsis;
     }
 
+    .wish{
+      position:absolute;
+      right:10px;
+      top:10px;
+      height:38px;
+      width:38px;
+      border-radius:14px;
+      background:rgba(12,18,24,.65);
+      border:1px solid rgba(255,255,255,.14);
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .wish:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .wish svg{width:18px;height:18px;color:#fff}
+
+    .wish.is-on{
+      border-color:rgba(207,100,229,.65);
+      background:linear-gradient(180deg,#7a3bd0,#572B87);
+    }
+
     .card-body{
       padding:12px 12px 14px;
       display:flex;
       flex-direction:column;
       gap:10px;
-      text-align:left;
       flex:1;
     }
 
@@ -420,8 +478,8 @@
       justify-content:space-between;
       gap:10px;
       color:#cfd6dd;
-      font-weight:900;
-      font-size:.86rem;
+      font-weight:950;
+      font-size:.88rem;
       opacity:.92;
     }
 
@@ -438,10 +496,10 @@
     .open svg{width:18px;height:18px;color:#fff}
 
     .skeleton{
-      border-radius:18px;
+      border-radius:22px;
       border:1px solid rgba(255,255,255,.08);
       background:rgba(16,24,32,.35);
-      height:260px;
+      height:320px;
     }
 
     .empty{
@@ -474,7 +532,7 @@
 
     .pager-right{
       color:#cfd6dd;
-      font-weight:900;
+      font-weight:950;
       letter-spacing:.02em;
       opacity:.92;
     }
@@ -550,32 +608,8 @@
             <path fill="#04d5eb" d="M1640,1605l765-450v-585l-765,459v576Z"></path>
           </g>
         </g>
-
-        <mask id="logoMask" maskUnits="userSpaceOnUse" x="0" y="0" width="3326" height="2408">
-          <use href="#logo-geometry"></use>
-        </mask>
-
-        <linearGradient id="gradA" x1="-20%" y1="0%" x2="120%" y2="0%" spreadMethod="reflect">
-          <stop offset="0%">
-            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#00E5FF, #FF5EA0, #FFD300, #00FF87, #00E5FF"></animate>
-          </stop>
-          <stop offset="50%">
-            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#7A5CFF, #00FF87, #FF5EA0, #00E5FF, #7A5CFF"></animate>
-          </stop>
-          <stop offset="100%">
-            <animate attributeName="stop-color" dur="12s" repeatCount="indefinite"
-              values="#FF5EA0, #FFD300, #00E5FF, #7A5CFF, #FF5EA0"></animate>
-          </stop>
-          <animateTransform attributeName="gradientTransform" type="translate" dur="12s"
-            repeatCount="indefinite" values="-0.4 0, 0.4 0, -0.4 0"></animateTransform>
-        </linearGradient>
       </defs>
-
-      <g mask="url(#logoMask)">
-        <rect x="0" y="0" width="3326" height="2408" fill="url(#gradA)"></rect>
-      </g>
+      <use href="#logo-geometry"></use>
     </symbol>
   </svg>
 
@@ -605,8 +639,8 @@
         <div class="tools">
           <div class="search" role="search" aria-label="Suche">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M10.5 19a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17Z" stroke="currentColor" stroke-width="2"/>
-              <path d="M16.8 16.8 22 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <path d="M10.5 19a8.5 8.5 0 1 1 0-17 8.5 8.5 0 0 1 0 17Z" stroke="currentColor" stroke-width="2"></path>
+              <path d="M16.8 16.8 22 22" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
             </svg>
             <input id="q" type="search" placeholder="Search name, theme, number" autocomplete="off" />
           </div>
@@ -642,128 +676,176 @@
   </main>
 
   <script>
-    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/";
-    const FALLBACK_IMG = "/Bilder/real1.png";
+    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
+    const FALLBACK_IMG = "/Bilder/real1.png"
+    const PER_PAGE = 28
 
-    const PER_PAGE = 28;
+    const WISHLIST_KEY = "sethub_wishlist_v1"
 
-    const burgerBtn = document.getElementById("burgerBtn");
-    const drawerBackdrop = document.getElementById("drawerBackdrop");
+    const burgerBtn = document.getElementById("burgerBtn")
+    const drawerBackdrop = document.getElementById("drawerBackdrop")
 
-    function openDrawer(){ document.body.classList.add("drawer-open"); }
-    function closeDrawer(){ document.body.classList.remove("drawer-open"); }
+    function openDrawer(){ document.body.classList.add("drawer-open") }
+    function closeDrawer(){ document.body.classList.remove("drawer-open") }
 
     burgerBtn.addEventListener("click", () => {
-      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer();
-    });
-    drawerBackdrop.addEventListener("click", closeDrawer);
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer));
-    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer(); });
+      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
+    })
+    drawerBackdrop.addEventListener("click", closeDrawer)
+    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
+    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
 
     function safeText(s){
-      return String(s || "").replaceAll("<","").replaceAll(">","");
+      return String(s || "").replaceAll("<","").replaceAll(">","")
     }
 
     function firstText(o, keys){
       for(const k of keys){
-        const v = o && o[k];
-        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v);
+        const v = o && o[k]
+        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
       }
-      return "";
+      return ""
     }
 
     function formatDate(iso){
-      const d = new Date(iso);
-      if(Number.isNaN(d.getTime())) return "";
-      const day = String(d.getDate()).padStart(2,"0");
-      const mon = String(d.getMonth() + 1).padStart(2,"0");
-      const yr = String(d.getFullYear());
-      return `${day}.${mon}.${yr}`;
+      const d = new Date(iso)
+      if(Number.isNaN(d.getTime())) return ""
+      const day = String(d.getDate()).padStart(2,"0")
+      const mon = String(d.getMonth() + 1).padStart(2,"0")
+      const yr = String(d.getFullYear())
+      return `${day}.${mon}.${yr}`
     }
 
     function dedupeSets(items){
-      const seen = new Set();
-      const out = [];
+      const seen = new Set()
+      const out = []
       for(const it of items){
-        const name = firstText(it, ["name","title","setName"]).trim();
-        const num = firstText(it, ["setNumber","number","id"]).trim();
-        const key = `${name}__${num}`;
-        if(seen.has(key)) continue;
-        seen.add(key);
-        out.push(it);
+        const name = firstText(it, ["name","title","setName"]).trim()
+        const num = firstText(it, ["setNumber","number","id"]).trim()
+        const key = `${name}__${num}`
+        if(seen.has(key)) continue
+        seen.add(key)
+        out.push(it)
       }
-      return out;
+      return out
     }
 
     function guessStamp(it){
-      const d = firstText(it, ["publishedAt","date","createdAt","releaseDate"]);
-      const t = new Date(d || 0).getTime();
-      return Number.isFinite(t) ? t : 0;
+      const d = firstText(it, ["publishedAt","date","createdAt","releaseDate"])
+      const t = new Date(d || 0).getTime()
+      return Number.isFinite(t) ? t : 0
     }
 
     function guessPrice(it){
-      const p = firstText(it, ["price","msrp","eur","usd"]);
-      const n = Number(String(p).replace(",",".").replace(/[^0-9.]/g,""));
-      return Number.isFinite(n) ? n : 0;
+      const p = firstText(it, ["price","msrp","eur","usd"])
+      const n = Number(String(p).replace(",",".").replace(/[^0-9.]/g,""))
+      return Number.isFinite(n) ? n : 0
     }
 
     const SORTS = [
       { key:"new", label:"New", fn:(a,b)=> guessStamp(b) - guessStamp(a) },
       { key:"name", label:"Name", fn:(a,b)=> (firstText(a,["name","title","setName"]).localeCompare(firstText(b,["name","title","setName"]))) },
       { key:"price", label:"Price", fn:(a,b)=> guessPrice(b) - guessPrice(a) }
-    ];
+    ]
 
-    let raw = [];
-    let filtered = [];
-    let sortIdx = 0;
+    function loadWishlist(){
+      try{
+        const v = JSON.parse(localStorage.getItem(WISHLIST_KEY) || "[]")
+        return Array.isArray(v) ? new Set(v.map(String)) : new Set()
+      }catch{
+        return new Set()
+      }
+    }
 
-    let page = 1;
-    let pages = 1;
+    function saveWishlist(set){
+      localStorage.setItem(WISHLIST_KEY, JSON.stringify(Array.from(set)))
+    }
 
-    const grid = document.getElementById("grid");
-    const empty = document.getElementById("empty");
-    const q = document.getElementById("q");
-    const sortBtn = document.getElementById("sortBtn");
-    const sortLabel = document.getElementById("sortLabel");
-    const reloadBtn = document.getElementById("reloadBtn");
-    const countLabel = document.getElementById("countLabel");
-    const subLine = document.getElementById("subLine");
+    let wishlist = loadWishlist()
 
-    const pager = document.getElementById("pager");
-    const prevPage = document.getElementById("prevPage");
-    const nextPage = document.getElementById("nextPage");
-    const pageList = document.getElementById("pageList");
-    const pageInfo = document.getElementById("pageInfo");
+    function itemKey(it){
+      const num = firstText(it, ["setNumber","number","id"]).trim()
+      const name = firstText(it, ["name","title","setName"]).trim()
+      return num ? `n:${num}` : `t:${name}`
+    }
+
+    let raw = []
+    let filtered = []
+    let sortIdx = 0
+
+    let page = 1
+    let pages = 1
+
+    const grid = document.getElementById("grid")
+    const empty = document.getElementById("empty")
+    const q = document.getElementById("q")
+    const sortBtn = document.getElementById("sortBtn")
+    const sortLabel = document.getElementById("sortLabel")
+    const reloadBtn = document.getElementById("reloadBtn")
+    const countLabel = document.getElementById("countLabel")
+    const subLine = document.getElementById("subLine")
+
+    const pager = document.getElementById("pager")
+    const prevPage = document.getElementById("prevPage")
+    const nextPage = document.getElementById("nextPage")
+    const pageList = document.getElementById("pageList")
+    const pageInfo = document.getElementById("pageInfo")
+
+    function heartSvg(filled){
+      if(filled){
+        return `
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 21s-7.2-4.35-9.6-8.7C.6 8.85 2.4 5.7 5.7 5.1c1.95-.36 3.75.45 4.8 1.77 1.05-1.32 2.85-2.13 4.8-1.77 3.3.6 5.1 3.75 3.3 7.2C19.2 16.65 12 21 12 21Z"></path>
+          </svg>
+        `
+      }
+      return `
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 21s-7.2-4.35-9.6-8.7C.6 8.85 2.4 5.7 5.7 5.1c1.95-.36 3.75.45 4.8 1.77 1.05-1.32 2.85-2.13 4.8-1.77 3.3.6 5.1 3.75 3.3 7.2C19.2 16.65 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"></path>
+        </svg>
+      `
+    }
 
     function buildCard(it){
-      const name = safeText(firstText(it, ["name","title","setName"]) || "Set");
-      const num = safeText(firstText(it, ["setNumber","number","id"]));
-      const theme = safeText(firstText(it, ["theme","category","line"]));
-      const price = safeText(firstText(it, ["price","msrp","eur","usd"]));
-      const date = formatDate(firstText(it, ["publishedAt","date","createdAt","releaseDate"]));
+      const name = safeText(firstText(it, ["name","title","setName"]) || "Set")
+      const num = safeText(firstText(it, ["setNumber","number","id"]))
+      const theme = safeText(firstText(it, ["theme","category","line"]))
+      const price = safeText(firstText(it, ["price","msrp","eur","usd"]))
+      const date = formatDate(firstText(it, ["publishedAt","date","createdAt","releaseDate"]))
 
-      const img = firstText(it, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG;
-      const href = firstText(it, ["productUrl","url","link","sourceUrl"]) || "#";
+      const img = firstText(it, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG
+      const href = firstText(it, ["productUrl","url","link","sourceUrl"]) || "#"
 
       const badgeText =
         num ? `${num}${theme ? " · " + theme : ""}` :
         theme ? theme :
-        "Set";
+        "Set"
 
       const line2 =
-        date ? date :
-        price ? price :
         theme ? theme :
-        "";
+        date ? date :
+        ""
 
-      const leftMeta = price ? price : (date ? date : " ");
+      const leftMeta =
+        price ? price :
+        date ? date :
+        " "
+
+      const key = itemKey(it)
+      const on = wishlist.has(key)
 
       return `
         <a class="card" href="${href}" target="_blank" rel="noopener" aria-label="${name}">
           <div class="thumb">
             <img src="${img}" alt="${name}" loading="lazy" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+            <div class="fade" aria-hidden="true"></div>
             <div class="badge">${badgeText}</div>
+
+            <button class="wish ${on ? "is-on" : ""}" type="button" data-wish="${key}" aria-label="Wishlist">
+              ${heartSvg(on)}
+            </button>
           </div>
+
           <div class="card-body">
             <div class="t1">${name}</div>
             <div class="t2">${line2}</div>
@@ -771,128 +853,147 @@
               <div>${leftMeta}</div>
               <div class="open" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                  <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
                 </svg>
               </div>
             </div>
           </div>
         </a>
-      `;
+      `
     }
 
     function setPage(newPage){
-      page = Math.max(1, Math.min(newPage, pages));
-      render();
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      page = Math.max(1, Math.min(newPage, pages))
+      render()
+      window.scrollTo({ top: 0, behavior: "smooth" })
     }
 
     function buildPageButtons(){
-      pageList.innerHTML = "";
+      pageList.innerHTML = ""
 
-      const maxBtns = 7;
-      let start = Math.max(1, page - Math.floor(maxBtns / 2));
-      let end = start + maxBtns - 1;
+      const maxBtns = 7
+      let start = Math.max(1, page - Math.floor(maxBtns / 2))
+      let end = start + maxBtns - 1
 
       if(end > pages){
-        end = pages;
-        start = Math.max(1, end - maxBtns + 1);
+        end = pages
+        start = Math.max(1, end - maxBtns + 1)
       }
 
       function addBtn(n){
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "pbtn" + (n === page ? " active" : "");
-        btn.textContent = String(n);
-        btn.addEventListener("click", () => setPage(n));
-        pageList.appendChild(btn);
+        const btn = document.createElement("button")
+        btn.type = "button"
+        btn.className = "pbtn" + (n === page ? " active" : "")
+        btn.textContent = String(n)
+        btn.addEventListener("click", () => setPage(n))
+        pageList.appendChild(btn)
       }
 
       if(start > 1){
-        addBtn(1);
+        addBtn(1)
         if(start > 2){
-          const dots = document.createElement("button");
-          dots.type = "button";
-          dots.className = "pbtn";
-          dots.textContent = "...";
-          dots.disabled = true;
-          pageList.appendChild(dots);
+          const dots = document.createElement("button")
+          dots.type = "button"
+          dots.className = "pbtn"
+          dots.textContent = "..."
+          dots.disabled = true
+          pageList.appendChild(dots)
         }
       }
 
-      for(let n = start; n <= end; n++) addBtn(n);
+      for(let n = start; n <= end; n++) addBtn(n)
 
       if(end < pages){
         if(end < pages - 1){
-          const dots = document.createElement("button");
-          dots.type = "button";
-          dots.className = "pbtn";
-          dots.textContent = "...";
-          dots.disabled = true;
-          pageList.appendChild(dots);
+          const dots = document.createElement("button")
+          dots.type = "button"
+          dots.className = "pbtn"
+          dots.textContent = "..."
+          dots.disabled = true
+          pageList.appendChild(dots)
         }
-        addBtn(pages);
+        addBtn(pages)
       }
+    }
+
+    function wireWishlistButtons(){
+      const btns = Array.from(grid.querySelectorAll("button[data-wish]"))
+      btns.forEach(btn => {
+        btn.addEventListener("click", e => {
+          e.preventDefault()
+          e.stopPropagation()
+
+          const key = String(btn.getAttribute("data-wish") || "")
+          if(!key) return
+
+          if(wishlist.has(key)) wishlist.delete(key)
+          else wishlist.add(key)
+
+          saveWishlist(wishlist)
+
+          const on = wishlist.has(key)
+          btn.classList.toggle("is-on", on)
+          btn.innerHTML = heartSvg(on)
+        })
+      })
     }
 
     function render(){
-      const total = filtered.length;
-      pages = Math.max(1, Math.ceil(total / PER_PAGE));
-      page = Math.min(page, pages);
+      const total = filtered.length
+      pages = Math.max(1, Math.ceil(total / PER_PAGE))
+      page = Math.min(page, pages)
 
-      const start = (page - 1) * PER_PAGE;
-      const slice = filtered.slice(start, start + PER_PAGE);
+      const start = (page - 1) * PER_PAGE
+      const slice = filtered.slice(start, start + PER_PAGE)
 
-      grid.innerHTML = slice.map(buildCard).join("");
-      empty.style.display = slice.length ? "none" : "block";
+      grid.innerHTML = slice.map(buildCard).join("")
+      empty.style.display = slice.length ? "none" : "block"
 
-      countLabel.textContent = String(total);
-      sortLabel.textContent = SORTS[sortIdx].label;
+      countLabel.textContent = String(total)
+      sortLabel.textContent = SORTS[sortIdx].label
 
-      if(total){
-        subLine.textContent = `${total} items`;
-        pager.style.display = pages > 1 ? "flex" : "none";
-      }else{
-        subLine.textContent = "0 items";
-        pager.style.display = "none";
-      }
+      subLine.textContent = total ? `${total} items` : "0 items"
 
-      prevPage.disabled = page <= 1;
-      nextPage.disabled = page >= pages;
+      prevPage.disabled = page <= 1
+      nextPage.disabled = page >= pages
 
-      pageInfo.textContent = `Page ${page} of ${pages}`;
-      if(pages > 1) buildPageButtons();
+      pageInfo.textContent = `Page ${page} of ${pages}`
+      pager.style.display = pages > 1 ? "flex" : "none"
+
+      if(pages > 1) buildPageButtons()
+      wireWishlistButtons()
     }
 
     function apply(){
-      const term = q.value.trim().toLowerCase();
+      const term = q.value.trim().toLowerCase()
 
       const base = term
         ? raw.filter(it => {
-            const name = firstText(it, ["name","title","setName"]).toLowerCase();
-            const num = firstText(it, ["setNumber","number","id"]).toLowerCase();
-            const theme = firstText(it, ["theme","category","line"]).toLowerCase();
-            const price = firstText(it, ["price","msrp","eur","usd"]).toLowerCase();
-            return name.includes(term) || num.includes(term) || theme.includes(term) || price.includes(term);
+            const name = firstText(it, ["name","title","setName"]).toLowerCase()
+            const num = firstText(it, ["setNumber","number","id"]).toLowerCase()
+            const theme = firstText(it, ["theme","category","line"]).toLowerCase()
+            const price = firstText(it, ["price","msrp","eur","usd"]).toLowerCase()
+            return name.includes(term) || num.includes(term) || theme.includes(term) || price.includes(term)
           })
-        : raw.slice();
+        : raw.slice()
 
-      const sorter = SORTS[sortIdx];
-      filtered = base.sort(sorter.fn);
+      const sorter = SORTS[sortIdx]
+      filtered = base.sort(sorter.fn)
 
-      page = 1;
-      render();
+      page = 1
+      render()
     }
 
     function withTimeout(ms){
-      const controller = new AbortController();
-      const t = setTimeout(() => controller.abort(), ms);
-      return { signal: controller.signal, clear: () => clearTimeout(t) };
+      const controller = new AbortController()
+      const t = setTimeout(() => controller.abort(), ms)
+      return { signal: controller.signal, clear: () => clearTimeout(t) }
     }
 
     async function fetchJson(url){
-      const { signal, clear } = withTimeout(14000);
-      let res;
+      const { signal, clear } = withTimeout(14000)
+      let res
       try{
         res = await fetch(url, {
           method:"GET",
@@ -900,51 +1001,51 @@
           cache:"no-store",
           headers:{ "Accept":"application/json" },
           signal
-        });
+        })
       } finally {
-        clear();
+        clear()
       }
-      if(!res.ok) throw new Error("bad status");
-      return await res.json();
+      if(!res.ok) throw new Error("bad status")
+      return await res.json()
     }
 
     async function load(){
-      subLine.textContent = "Lädt";
+      subLine.textContent = "Lädt"
       grid.innerHTML = `
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-      `;
-      empty.style.display = "none";
-      pager.style.display = "none";
+      `
+      empty.style.display = "none"
+      pager.style.display = "none"
 
-      const data = await fetchJson(SETS_API_URL);
-      const list = Array.isArray(data) ? data : [];
-      raw = dedupeSets(list);
+      const data = await fetchJson(SETS_API_URL)
+      const list = Array.isArray(data) ? data : []
+      raw = dedupeSets(list)
 
-      apply();
+      apply()
     }
 
-    q.addEventListener("input", () => apply());
+    q.addEventListener("input", () => apply())
 
     sortBtn.addEventListener("click", () => {
-      sortIdx = (sortIdx + 1) % SORTS.length;
-      apply();
-    });
+      sortIdx = (sortIdx + 1) % SORTS.length
+      apply()
+    })
 
-    reloadBtn.addEventListener("click", () => load());
+    reloadBtn.addEventListener("click", () => load())
 
-    prevPage.addEventListener("click", () => setPage(page - 1));
-    nextPage.addEventListener("click", () => setPage(page + 1));
+    prevPage.addEventListener("click", () => setPage(page - 1))
+    nextPage.addEventListener("click", () => setPage(page + 1))
 
     load().catch(() => {
-      raw = [];
-      filtered = [];
-      grid.innerHTML = "";
-      empty.style.display = "block";
-      subLine.textContent = "Keine Verbindung";
-      countLabel.textContent = "0";
-      pager.style.display = "none";
-    });
+      raw = []
+      filtered = []
+      grid.innerHTML = ""
+      empty.style.display = "block"
+      subLine.textContent = "Keine Verbindung"
+      countLabel.textContent = "0"
+      pager.style.display = "none"
+    })
   </script>
 </body>
 </html>
