@@ -14,19 +14,15 @@
       --fg:#E6E9ED;
       --muted:#9AA4AE;
 
-      --panel:#0f161e;
-      --card:#0b1218;
-      --card2:#101820;
-
       --border:rgba(255,255,255,.10);
-      --border2:rgba(255,255,255,.14);
+      --border2:rgba(255,255,255,.16);
 
       --shadow:0 22px 70px rgba(0,0,0,.55);
       --shadow2:0 10px 30px rgba(0,0,0,.45);
 
       --r1:14px;
       --r2:18px;
-      --r3:22px;
+      --r3:23px;
 
       --pink:#cf64e5;
       --cyan:#00E5FF;
@@ -219,7 +215,7 @@
     @media (max-width:420px){ main{padding-inline:4%} }
 
     .panel{
-      border-radius:23px;
+      border-radius:var(--r3);
       background:
         radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.20), transparent 70%),
         radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.16), transparent 65%),
@@ -356,7 +352,7 @@
       border-radius:18px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg,var(--card2),var(--card));
+      background:linear-gradient(180deg,#101820,#0b1218);
       box-shadow:var(--shadow2);
       cursor:pointer;
       transition:transform .15s ease, border-color .15s ease, filter .15s ease;
@@ -388,7 +384,7 @@
       display:grid;
       place-items:center;
       cursor:pointer;
-      z-index:2;
+      z-index:3;
       color:#e8eef4;
       transition:transform .12s ease, filter .12s ease;
     }
@@ -414,6 +410,7 @@
       letter-spacing:.02em;
       user-select:none;
       backdrop-filter:blur(8px);
+      z-index:2;
     }
     .badge .bsub{color:var(--muted);font-weight:850}
     .badge.sale{border-color:var(--sale)}
@@ -502,7 +499,8 @@
       transition:transform .12s ease, filter .12s ease, border-color .12s ease;
     }
     .toggle:hover{transform:translateY(-1px);filter:brightness(1.06)}
-    .card.expanded .toggle{border-color:rgba(0,229,255,.24)}
+    .card.expanded .toggle{display:none}
+    .card.expanded .chips{display:none}
 
     .details{
       overflow:hidden;
@@ -522,46 +520,55 @@
       padding:10px;
     }
 
-    .details-title{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      margin-bottom:8px;
-      padding:0 2px;
-    }
-    .details-title .t1{font-weight:900;letter-spacing:.02em}
-    .details-title .t2{color:var(--muted);font-weight:850;font-size:.85rem;white-space:nowrap}
-
     .stores{
       display:grid;
       gap:10px;
     }
 
-    .store-row{
+    .store-btn{
+      width:100%;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.30);
+      border-radius:14px;
+      padding:10px 12px;
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
-      padding:10px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.30);
-      box-shadow:0 0 0 0 rgba(0,0,0,0);
-      transition:filter .12s ease, transform .12s ease, border-color .12s ease;
+      cursor:pointer;
+      color:#fff;
+      font-weight:900;
+      transition:transform .12s ease, filter .12s ease, border-color .12s ease;
+      text-align:left;
     }
-    .store-row:hover{filter:brightness(1.05);transform:translateY(-1px)}
-    .store-row.primary{border-color:rgba(0,229,255,.26)}
-    .store-left{min-width:0;display:flex;flex-direction:column;gap:4px}
-    .store-name{font-weight:900;letter-spacing:.02em}
-    .store-sub{
-      color:var(--muted);
-      font-weight:850;
-      font-size:.86rem;
+    .store-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+    .store-btn:focus-visible{box-shadow:0 0 0 4px rgba(0,229,255,.12)}
+    .store-btn.primary{border-color:rgba(0,229,255,.26)}
+
+    .store-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width:0;
+    }
+
+    .store-ic{
+      width:34px;
+      height:34px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.38);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+    }
+    .store-ic svg{width:18px;height:18px}
+
+    .store-name{
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:220px;
+      max-width:150px;
     }
 
     .store-right{
@@ -569,22 +576,21 @@
       align-items:center;
       gap:10px;
       flex:0 0 auto;
-    }
-
-    .pricepill{
-      height:36px;
-      padding:0 10px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.38);
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-weight:900;
       white-space:nowrap;
     }
-    .pricepill .old{color:var(--muted);font-weight:850;text-decoration:line-through}
-    .pricepill .pct{
+
+    .store-price{
+      font-weight:900;
+    }
+
+    .store-old{
+      color:var(--muted);
+      font-weight:850;
+      text-decoration:line-through;
+      font-size:.88rem;
+    }
+
+    .store-pct{
       height:22px;
       padding:0 8px;
       border-radius:999px;
@@ -596,23 +602,6 @@
       font-weight:900;
       font-size:.78rem;
     }
-
-    .buybtn{
-      height:36px;
-      padding:0 12px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.40);
-      color:#fff;
-      font-weight:900;
-      cursor:pointer;
-      transition:transform .12s ease, filter .12s ease, border-color .12s ease;
-    }
-    .buybtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .buybtn.primary{border-color:rgba(0,229,255,.30)}
-
-    .card.expanded .chips{display:none}
-    .card.expanded .toggle{display:none}
 
     .empty{
       margin-top:14px;
@@ -701,10 +690,10 @@
       <defs>
         <g id="logo-geometry">
           <g id="Ebene_3">
-            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,318.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1434.5,208.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
-            <path fill="#04d5eb" fill-rule="evenodd" d="M1826.54,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1839.5,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
-            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,799.99c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1434.5,689.83c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
-            <path fill="#04d5eb" fill-rule="evenodd" d="M1019.52,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.9-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.7-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.8-.17,22.34-.39,51.9,6.48,71.28ZM1032.48,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.2-184.74,97.2-178.14-49.15-178.14-97.2Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,318.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.3-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.90-66.46-125.71-83.15-149.73-87.13-16.28-2.7-49.47-6.70-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.80-.17,22.34-.39,51.90,6.48,71.28ZM1434.5,208.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.20-184.74,97.20-178.14-49.15-178.14-97.20Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1826.54,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.30-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.90-66.46-125.71-83.15-149.73-87.13-16.28-2.70-49.47-6.70-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.80-.17,22.34-.39,51.90,6.48,71.28ZM1839.5,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.20-184.74,97.20-178.14-49.15-178.14-97.20Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1421.54,799.99c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.30-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.90-66.46-125.71-83.15-149.73-87.13-16.28-2.70-49.47-6.70-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.80-.17,22.34-.39,51.90,6.48,71.28ZM1434.5,689.83c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.20-184.74,97.20-178.14-49.15-178.14-97.20Z"></path>
+            <path fill="#04d5eb" fill-rule="evenodd" d="M1019.52,534.24c22.25,62.73,139.85,77.99,200.88,77.76,17.07-.06,161.51-2.01,187.92-71.28,7.30-19.15,6.91-46.93,6.48-77.76-.45-31.95-.57-47.96-5.79-61.91-24.90-66.46-125.71-83.15-149.73-87.13-16.28-2.70-49.47-6.70-90.72,0-27.93,4.54-123.89,20.12-149.04,84.24-6.27,16-6.23,32.31-6.48,64.80-.17,22.34-.39,51.90,6.48,71.28ZM1032.48,424.08c0-48.05,91.62-90.72,184.74-90.72s178.14,42.67,178.14,90.72-91.62,97.20-184.74,97.20-178.14-49.15-178.14-97.20Z"></path>
           </g>
           <g id="Ebene_5">
             <path fill="#04d5eb" d="M1586,1605l-765-450v-585l765,459v576Z"></path>
@@ -930,15 +919,15 @@
     }
 
     function guessLegoSetNumberFromText(s){
-      const m = String(s || "").match(/\b\d{4,6}\b/)
+      const m = String(s || "").match(/\\b\\d{4,6}\\b/)
       return m ? m[0] : ""
     }
 
     function guessSetNumberFromUrl(u){
       const s = String(u || "")
-      const m = s.match(/(?:\/|product\/)(\d{4,6})(?:\D|$)/)
+      const m = s.match(/(?:\\/|product\\/)(\\d{4,6})(?:\\D|$)/)
       if(m && m[1]) return m[1]
-      const m2 = s.match(/\b(\d{4,6})\b/)
+      const m2 = s.match(/\\b(\\d{4,6})\\b/)
       return m2 ? m2[1] : ""
     }
 
@@ -1122,31 +1111,41 @@
       return ""
     }
 
-    function storeRowHtml(source, s, primary){
+    function storeIconSvg(source){
+      if(source === "amazon"){
+        return "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\">" +
+          "<path d=\"M7 8h10M7 12h8M7 16h6\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/>" +
+        "</svg>"
+      }
+      if(source === "lego"){
+        return "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\">" +
+          "<path d=\"M7 10c0-2 2-3 5-3s5 1 5 3v6c0 2-2 3-5 3s-5-1-5-3v-6Z\" stroke=\"currentColor\" stroke-width=\"2\"/>" +
+          "<path d=\"M9 7v-1c0-1 1-2 3-2s3 1 3 2v1\" stroke=\"currentColor\" stroke-width=\"2\"/>" +
+        "</svg>"
+      }
+      return "<svg viewBox=\"0 0 24 24\" fill=\"none\" aria-hidden=\"true\">" +
+        "<path d=\"M6 7h12v10H6V7Z\" stroke=\"currentColor\" stroke-width=\"2\"/>" +
+        "<path d=\"M9 10h6M9 14h5\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"/>" +
+      "</svg>"
+    }
+
+    function storeBtnHtml(source, s, primary){
       if(!s || !s.url || !isFinite(s.price)) return ""
       const pct = isFinite(s.discountPct) ? s.discountPct : null
       const oldTxt = isFinite(s.oldPrice) ? formatEUR(s.oldPrice) : ""
-      const primaryCls = primary ? " primary" : ""
-      const btnCls = "buybtn" + (primary ? " primary" : "")
-      const rowCls = "store-row" + primaryCls
+      const cls = "store-btn" + (primary ? " primary" : "")
 
-      const pill =
-        "<div class=\"pricepill\">" +
-          "<span>" + escapeHtml(formatEUR(s.price)) + "</span>" +
-          (oldTxt ? "<span class=\"old\">" + escapeHtml(oldTxt) + "</span>" : "") +
-          (pct ? "<span class=\"pct\">" + escapeHtml(String(pct)) + "%</span>" : "") +
-        "</div>"
-
-      return "<div class=\"" + rowCls + "\" data-store=\"" + escapeHtml(source) + "\">" +
+      return "<button class=\"" + cls + "\" type=\"button\" data-url=\"" + escapeHtml(s.url) + "\" aria-label=\"" + escapeHtml(sourceLabel(source)) + "\">" +
         "<div class=\"store-left\">" +
+          "<div class=\"store-ic\">" + storeIconSvg(source) + "</div>" +
           "<div class=\"store-name\">" + escapeHtml(sourceLabel(source)) + "</div>" +
-          "<div class=\"store-sub\">" + escapeHtml((s.name || "").trim()) + "</div>" +
         "</div>" +
         "<div class=\"store-right\">" +
-          pill +
-          "<button class=\"" + btnCls + "\" type=\"button\" data-url=\"" + escapeHtml(s.url) + "\">Open</button>" +
+          "<div class=\"store-price\">" + escapeHtml(formatEUR(s.price)) + "</div>" +
+          (oldTxt ? "<div class=\"store-old\">" + escapeHtml(oldTxt) + "</div>" : "") +
+          (pct ? "<div class=\"store-pct\">" + escapeHtml(String(pct)) + "%</div>" : "") +
         "</div>" +
-      "</div>"
+      "</button>"
     }
 
     function closeAllCardsExcept(keepCard){
@@ -1282,15 +1281,11 @@
             : (x.best ? x.best.source : "alternate")
 
         const detailsHtml =
-          "<div class=\"details\" role=\"group\" aria-label=\"Details\">" +
-            "<div class=\"details-title\">" +
-              "<div class=\"t1\">Shops</div>" +
-              "<div class=\"t2\">Preise</div>" +
-            "</div>" +
+          "<div class=\"details\" role=\"group\" aria-label=\"Shops\">" +
             "<div class=\"stores\">" +
-              storeRowHtml("lego", sL, primarySource === "lego") +
-              storeRowHtml("amazon", sA, primarySource === "amazon") +
-              storeRowHtml("alternate", sAlt, primarySource === "alternate") +
+              storeBtnHtml("lego", sL, primarySource === "lego") +
+              storeBtnHtml("amazon", sA, primarySource === "amazon") +
+              storeBtnHtml("alternate", sAlt, primarySource === "alternate") +
             "</div>" +
           "</div>"
 
@@ -1317,7 +1312,7 @@
               chipHtml("amazon", x) +
               chipHtml("alternate", x) +
             "</div>" +
-            "<button class=\"toggle\" type=\"button\">Angebote öffnen</button>" +
+            "<button class=\"toggle\" type=\"button\">Shops öffnen</button>" +
             detailsHtml +
           "</div>"
 
@@ -1338,7 +1333,7 @@
           setExpanded(card, willOpen)
         })
 
-        card.querySelectorAll(".buybtn").forEach(btn => {
+        card.querySelectorAll(".store-btn").forEach(btn => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation()
             const url = btn.getAttribute("data-url") || ""
