@@ -11,22 +11,34 @@
   <style>
     :root{
       --bg:#0E141A;
-      --fg-on:#E6E9ED;
+      --fg:#E6E9ED;
       --muted:#9AA4AE;
-      --shadow:0 26px 90px rgba(0,0,0,.55);
-      --r2:23px;
 
-      --border:#1f2a35;
-      --border2:#0f1a22;
+      --panel:#0f161e;
+      --card:#0b1218;
+      --card2:#101820;
+
+      --border:rgba(255,255,255,.10);
+      --border2:rgba(255,255,255,.14);
+
+      --shadow:0 22px 70px rgba(0,0,0,.55);
+      --shadow2:0 10px 30px rgba(0,0,0,.45);
+
+      --r1:14px;
+      --r2:18px;
+      --r3:22px;
 
       --pink:#cf64e5;
       --cyan:#00E5FF;
+
+      --good:rgba(0,229,255,.35);
+      --sale:rgba(207,100,229,.55);
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--fg-on);
+      color:var(--fg);
       background:var(--bg);
       overflow-x:hidden;
       min-height:100vh;
@@ -41,7 +53,7 @@
       height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
-      border-bottom:1px solid var(--border2);
+      border-bottom:1px solid rgba(255,255,255,.06);
       z-index:50;
     }
 
@@ -65,9 +77,7 @@
       min-width:0;
       transform:translateY(4px);
     }
-
     .logo-svg{width:100%;height:100%;display:block}
-
     .nav-logo{
       height:48px;
       width:auto;
@@ -76,7 +86,6 @@
       transform:translateY(10px);
       flex:0 0 auto;
     }
-
     .nav-text{
       display:flex;
       align-items:center;
@@ -98,17 +107,14 @@
       height:46px;
       border-radius:12px;
       background:rgba(16,24,32,.7);
-      border:1px solid var(--border);
+      border:1px solid rgba(255,255,255,.10);
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
       cursor:pointer;
-      opacity:1;
-      pointer-events:auto;
       transition:transform .12s ease, filter .12s ease;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
-
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
       position:absolute;left:0;right:0;
@@ -129,17 +135,13 @@
       z-index:59;
       display:flex;
       gap:10px;
-      opacity:1;
-      pointer-events:auto;
-      transform:none;
     }
-
     .top-link{
       height:46px;
       padding:0 14px;
       border-radius:12px;
       background:rgba(16,24,32,.7);
-      border:1px solid var(--border);
+      border:1px solid rgba(255,255,255,.10);
       backdrop-filter:blur(10px);
       display:flex;
       align-items:center;
@@ -163,17 +165,14 @@
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
     }
-
-    @media (max-width:520px){
-      .top-links{display:none}
-    }
+    @media (max-width:520px){ .top-links{display:none} }
 
     .drawer{
       position:fixed;
       top:0; left:0; bottom:0;
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
-      border-right:1px solid #16212a;
+      border-right:1px solid rgba(255,255,255,.08);
       z-index:58;
       transform:translateX(-100%);
       transition:transform .32s ease;
@@ -183,20 +182,22 @@
       gap:10px;
     }
     body.drawer-open .drawer{transform:translateX(0)}
-
-    .drawer a{
+    .drawer a, .drawer button.drawer-link{
       display:flex;
       align-items:center;
       justify-content:space-between;
       padding:14px 14px;
       border-radius:12px;
       background:#0f1820;
-      border:1px solid #1a2530;
+      border:1px solid rgba(255,255,255,.10);
       font-weight:700;
       letter-spacing:.02em;
+      cursor:pointer;
+      color:inherit;
     }
-    .drawer a:hover{background:#13202a}
+    .drawer a:hover, .drawer button.drawer-link:hover{background:#13202a}
     .drawer small{color:#94a3b8;font-weight:600}
+    .drawer button.drawer-link{appearance:none;width:100%;text-align:left}
 
     .drawer-backdrop{
       position:fixed;
@@ -218,13 +219,13 @@
     @media (max-width:420px){ main{padding-inline:4%} }
 
     .panel{
-      border-radius:var(--r2);
+      border-radius:23px;
       background:
-        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.22), transparent 70%),
-        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.18), transparent 65%),
+        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.20), transparent 70%),
+        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.16), transparent 65%),
         rgba(15,22,30,.68);
-      border:1px solid #223041;
-      box-shadow:var(--shadow);
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 26px 90px rgba(0,0,0,.55);
       padding:clamp(14px,2.2vw,20px);
     }
 
@@ -236,7 +237,6 @@
       flex-wrap:wrap;
       margin-bottom:12px;
     }
-
     .tblock{min-width:240px}
     .title{
       font-weight:900;
@@ -281,7 +281,6 @@
       flex-wrap:wrap;
       margin-top:10px;
     }
-
     .searchwrap{
       flex:1 1 280px;
       display:flex;
@@ -349,30 +348,25 @@
       grid-template-columns:repeat(2,minmax(0,1fr));
       margin-top:14px;
     }
-
-    @media (min-width:700px){
-      .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-    }
-    @media (min-width:1100px){
-      .grid{grid-template-columns:repeat(5,minmax(0,1fr))}
-    }
+    @media (min-width:700px){ .grid{grid-template-columns:repeat(3,minmax(0,1fr))} }
+    @media (min-width:1100px){ .grid{grid-template-columns:repeat(5,minmax(0,1fr))} }
 
     .card{
       position:relative;
       border-radius:18px;
       overflow:hidden;
       border:1px solid rgba(255,255,255,.08);
-      background:linear-gradient(180deg,#101820,#0b1218);
-      box-shadow:0 18px 70px rgba(0,0,0,.55);
+      background:linear-gradient(180deg,var(--card2),var(--card));
+      box-shadow:var(--shadow2);
       cursor:pointer;
-      transform:translateY(0);
       transition:transform .15s ease, border-color .15s ease, filter .15s ease;
       display:flex;
       flex-direction:column;
-      min-height:320px;
+      outline:none;
     }
     .card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16);filter:brightness(1.03)}
-    .card.expanded{min-height:420px}
+    .card:focus-visible{box-shadow:0 0 0 4px rgba(0,229,255,.12), var(--shadow2)}
+    .card.expanded{border-color:rgba(0,229,255,.22)}
 
     .thumb{
       position:relative;
@@ -396,53 +390,78 @@
       cursor:pointer;
       z-index:2;
       color:#e8eef4;
+      transition:transform .12s ease, filter .12s ease;
     }
-    .heart:hover{filter:brightness(1.06)}
+    .heart:hover{filter:brightness(1.06);transform:translateY(-1px)}
     .heart svg{width:20px;height:20px}
     .heart .hfill{opacity:0}
     .heart.on{border-color:rgba(207,100,229,.65);color:var(--pink)}
     .heart.on .hfill{opacity:1}
 
-    .txt{
-      padding:12px 10px 14px;
-      text-align:center;
+    .badge{
+      position:absolute;
+      left:10px;
+      top:10px;
+      height:28px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.55);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:900;
+      letter-spacing:.02em;
+      user-select:none;
+      backdrop-filter:blur(8px);
+    }
+    .badge .bsub{color:var(--muted);font-weight:850}
+    .badge.sale{border-color:var(--sale)}
+    .badge.best{border-color:var(--good)}
+
+    .body{
+      padding:12px 10px 12px;
       display:flex;
       flex-direction:column;
-      gap:8px;
+      gap:10px;
       flex:1;
     }
 
     .name{
       font-weight:900;
       font-size:.98rem;
-      line-height:1.2;
+      line-height:1.25;
       display:-webkit-box;
       -webkit-line-clamp:2;
       -webkit-box-orient:vertical;
       overflow:hidden;
-      min-height:2.4em;
+      min-height:2.5em;
+      text-align:center;
+      padding:0 2px;
     }
 
-    .meta{
+    .topline{
       display:flex;
       align-items:center;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
-      margin-top:2px;
+      padding:0 6px;
     }
+
     .setno{
       color:var(--muted);
       font-weight:900;
       letter-spacing:.08em;
       text-transform:uppercase;
       font-size:.78rem;
+      white-space:nowrap;
     }
+
     .price{
       font-weight:900;
-      font-size:1.1rem;
+      font-size:1.12rem;
       letter-spacing:.01em;
-      color:#fff;
       white-space:nowrap;
     }
 
@@ -451,11 +470,11 @@
       justify-content:center;
       gap:6px;
       flex-wrap:wrap;
-      margin-top:2px;
+      margin-top:-2px;
     }
     .chip{
       border:1px solid rgba(255,255,255,.12);
-      background:rgba(16,24,32,.35);
+      background:rgba(16,24,32,.30);
       border-radius:999px;
       padding:7px 9px;
       font-weight:900;
@@ -467,36 +486,57 @@
       white-space:nowrap;
     }
     .chip span{color:var(--muted);font-weight:800}
-    .chip.best{border-color:rgba(0,229,255,.40)}
-    .chip.best span{color:#bff7ff}
-    .chip.sale{border-color:rgba(207,100,229,.65)}
-    .chip.sale span{color:#f2c9ff}
+    .chip.best{border-color:var(--good)}
+    .chip.sale{border-color:var(--sale)}
 
-    .openbtn{
+    .toggle{
       margin-top:auto;
       height:42px;
       border-radius:14px;
-      border:1px solid rgba(207,100,229,.65);
-      background:linear-gradient(180deg,#7a3bd0,#572B87);
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.40);
       color:#fff;
       font-weight:900;
       cursor:pointer;
       width:100%;
-      transition:transform .12s ease, filter .12s ease;
+      transition:transform .12s ease, filter .12s ease, border-color .12s ease;
     }
-    .openbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .toggle:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .card.expanded .toggle{border-color:rgba(0,229,255,.24)}
 
     .details{
-      display:none;
-      margin-top:10px;
-      border:1px solid rgba(255,255,255,.10);
-      background:rgba(16,24,32,.28);
+      overflow:hidden;
+      max-height:0;
+      opacity:0;
+      transform:translateY(-4px);
+      transition:max-height .28s ease, opacity .18s ease, transform .18s ease;
       border-radius:16px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.22);
+      padding:0;
+    }
+    .card.expanded .details{
+      max-height:260px;
+      opacity:1;
+      transform:translateY(0);
       padding:10px;
-      text-align:left;
+    }
+
+    .details-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom:8px;
+      padding:0 2px;
+    }
+    .details-title .t1{font-weight:900;letter-spacing:.02em}
+    .details-title .t2{color:var(--muted);font-weight:850;font-size:.85rem;white-space:nowrap}
+
+    .stores{
+      display:grid;
       gap:10px;
     }
-    .card.expanded .details{display:grid}
 
     .store-row{
       display:flex;
@@ -507,22 +547,17 @@
       border-radius:14px;
       border:1px solid rgba(255,255,255,.10);
       background:rgba(16,24,32,.30);
+      box-shadow:0 0 0 0 rgba(0,0,0,0);
+      transition:filter .12s ease, transform .12s ease, border-color .12s ease;
     }
-
-    .store-left{
-      display:flex;
-      flex-direction:column;
-      gap:4px;
-      min-width:0;
-    }
-    .store-name{
-      font-weight:900;
-      letter-spacing:.02em;
-    }
+    .store-row:hover{filter:brightness(1.05);transform:translateY(-1px)}
+    .store-row.primary{border-color:rgba(0,229,255,.26)}
+    .store-left{min-width:0;display:flex;flex-direction:column;gap:4px}
+    .store-name{font-weight:900;letter-spacing:.02em}
     .store-sub{
       color:var(--muted);
       font-weight:850;
-      font-size:.82rem;
+      font-size:.86rem;
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
@@ -536,20 +571,48 @@
       flex:0 0 auto;
     }
 
+    .pricepill{
+      height:36px;
+      padding:0 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.38);
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:900;
+      white-space:nowrap;
+    }
+    .pricepill .old{color:var(--muted);font-weight:850;text-decoration:line-through}
+    .pricepill .pct{
+      height:22px;
+      padding:0 8px;
+      border-radius:999px;
+      border:1px solid rgba(207,100,229,.55);
+      background:rgba(207,100,229,.10);
+      color:#f2c9ff;
+      display:flex;
+      align-items:center;
+      font-weight:900;
+      font-size:.78rem;
+    }
+
     .buybtn{
-      height:40px;
+      height:36px;
       padding:0 12px;
       border-radius:12px;
-      border:1px solid rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.14);
       background:rgba(16,24,32,.40);
       color:#fff;
       font-weight:900;
       cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, border-color .12s ease;
     }
-    .buybtn:hover{filter:brightness(1.06)}
-    .buybtn.primary{
-      border-color:rgba(0,229,255,.40);
-    }
+    .buybtn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+    .buybtn.primary{border-color:rgba(0,229,255,.30)}
+
+    .card.expanded .chips{display:none}
+    .card.expanded .toggle{display:none}
 
     .empty{
       margin-top:14px;
@@ -623,7 +686,7 @@
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
-   <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
     <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
@@ -1043,30 +1106,63 @@
 
     function saleChipHtml(x){
       if(!x.bestSale) return ""
-      const label = x.bestSale.source === "lego" || x.bestSale.source === "amazon"
-        ? "Sale"
-        : "Sale"
-
       return "<div class=\"chip sale\">" +
-        escapeHtml(label) +
+        "Sale" +
         "<span>" + escapeHtml(String(x.bestSale.pct)) + "%</span>" +
       "</div>"
+    }
+
+    function topBadgeHtml(x){
+      if(x.bestSale){
+        return "<div class=\"badge sale\"><span>Sale</span><span class=\"bsub\">" + escapeHtml(String(x.bestSale.pct)) + "%</span></div>"
+      }
+      if(x.best && isFinite(x.best.price)){
+        return "<div class=\"badge best\"><span>Best</span><span class=\"bsub\">" + escapeHtml(sourceLabel(x.best.source)) + "</span></div>"
+      }
+      return ""
     }
 
     function storeRowHtml(source, s, primary){
       if(!s || !s.url || !isFinite(s.price)) return ""
       const pct = isFinite(s.discountPct) ? s.discountPct : null
       const oldTxt = isFinite(s.oldPrice) ? formatEUR(s.oldPrice) : ""
-      const sub = pct ? (formatEUR(s.price) + "  " + oldTxt + "  " + pct + "%") : formatEUR(s.price)
-      return "<div class=\"store-row\" data-store=\"" + escapeHtml(source) + "\">" +
+      const primaryCls = primary ? " primary" : ""
+      const btnCls = "buybtn" + (primary ? " primary" : "")
+      const rowCls = "store-row" + primaryCls
+
+      const pill =
+        "<div class=\"pricepill\">" +
+          "<span>" + escapeHtml(formatEUR(s.price)) + "</span>" +
+          (oldTxt ? "<span class=\"old\">" + escapeHtml(oldTxt) + "</span>" : "") +
+          (pct ? "<span class=\"pct\">" + escapeHtml(String(pct)) + "%</span>" : "") +
+        "</div>"
+
+      return "<div class=\"" + rowCls + "\" data-store=\"" + escapeHtml(source) + "\">" +
         "<div class=\"store-left\">" +
           "<div class=\"store-name\">" + escapeHtml(sourceLabel(source)) + "</div>" +
-          "<div class=\"store-sub\">" + escapeHtml(sub) + "</div>" +
+          "<div class=\"store-sub\">" + escapeHtml((s.name || "").trim()) + "</div>" +
         "</div>" +
         "<div class=\"store-right\">" +
-          "<button class=\"buybtn " + (primary ? "primary" : "") + "\" type=\"button\" data-url=\"" + escapeHtml(s.url) + "\">Open</button>" +
+          pill +
+          "<button class=\"" + btnCls + "\" type=\"button\" data-url=\"" + escapeHtml(s.url) + "\">Open</button>" +
         "</div>" +
       "</div>"
+    }
+
+    function closeAllCardsExcept(keepCard){
+      els.grid.querySelectorAll(".card.expanded").forEach(c => {
+        if(c !== keepCard) setExpanded(c, false)
+      })
+    }
+
+    function setExpanded(card, on){
+      if(on){
+        card.classList.add("expanded")
+        card.setAttribute("aria-expanded","true")
+      }else{
+        card.classList.remove("expanded")
+        card.setAttribute("aria-expanded","false")
+      }
     }
 
     async function loadAll(){
@@ -1085,7 +1181,6 @@
         }
 
         const merged = mergeBySetNumber(all)
-
         merged.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
 
         raw = merged.slice(0, MAX_SETS)
@@ -1172,6 +1267,7 @@
         card.tabIndex = 0
         card.setAttribute("role","group")
         card.setAttribute("aria-label", name)
+        card.setAttribute("aria-expanded","false")
 
         const heartKey = setNumber ? setNumber : ("fallback:" + ((x.best && x.best.url) || name))
         const heartOn = wishlist.has(heartKey)
@@ -1187,14 +1283,21 @@
 
         const detailsHtml =
           "<div class=\"details\" role=\"group\" aria-label=\"Details\">" +
-            storeRowHtml("lego", sL, primarySource === "lego") +
-            storeRowHtml("amazon", sA, primarySource === "amazon") +
-            storeRowHtml("alternate", sAlt, primarySource === "alternate") +
+            "<div class=\"details-title\">" +
+              "<div class=\"t1\">Shops</div>" +
+              "<div class=\"t2\">Preise</div>" +
+            "</div>" +
+            "<div class=\"stores\">" +
+              storeRowHtml("lego", sL, primarySource === "lego") +
+              storeRowHtml("amazon", sA, primarySource === "amazon") +
+              storeRowHtml("alternate", sAlt, primarySource === "alternate") +
+            "</div>" +
           "</div>"
 
         card.innerHTML =
           "<div class=\"thumb\">" +
             "<img loading=\"lazy\" src=\"" + escapeHtml(img || "/Bilder/real1.png") + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" +
+            topBadgeHtml(x) +
             "<button class=\"heart " + (heartOn ? "on" : "") + "\" type=\"button\" aria-label=\"Wishlist\">" +
               "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">" +
                 "<path d=\"M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z\" fill=\"currentColor\" class=\"hfill\"/>" +
@@ -1202,9 +1305,9 @@
               "</svg>" +
             "</button>" +
           "</div>" +
-          "<div class=\"txt\">" +
+          "<div class=\"body\">" +
             "<div class=\"name\">" + escapeHtml(name) + "</div>" +
-            "<div class=\"meta\">" +
+            "<div class=\"topline\">" +
               "<div class=\"setno\">" + (setNumber ? ("Set " + escapeHtml(setNumber)) : "Kein Set") + "</div>" +
               "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
             "</div>" +
@@ -1214,7 +1317,7 @@
               chipHtml("amazon", x) +
               chipHtml("alternate", x) +
             "</div>" +
-            "<button class=\"openbtn\" type=\"button\">Open Deal</button>" +
+            "<button class=\"toggle\" type=\"button\">Angebote öffnen</button>" +
             detailsHtml +
           "</div>"
 
@@ -1227,10 +1330,12 @@
           saveWishlist()
         })
 
-        const openBtn = card.querySelector(".openbtn")
-        openBtn.addEventListener("click", (e) => {
+        const toggle = card.querySelector(".toggle")
+        toggle.addEventListener("click", (e) => {
           e.stopPropagation()
-          card.classList.toggle("expanded")
+          const willOpen = !card.classList.contains("expanded")
+          closeAllCardsExcept(card)
+          setExpanded(card, willOpen)
         })
 
         card.querySelectorAll(".buybtn").forEach(btn => {
@@ -1241,10 +1346,18 @@
           })
         })
 
+        card.addEventListener("click", () => {
+          const willOpen = !card.classList.contains("expanded")
+          closeAllCardsExcept(card)
+          setExpanded(card, willOpen)
+        })
+
         card.addEventListener("keydown", (e) => {
-          if(e.key === "Enter"){
+          if(e.key === "Enter" || e.key === " "){
             e.preventDefault()
-            card.classList.toggle("expanded")
+            const willOpen = !card.classList.contains("expanded")
+            closeAllCardsExcept(card)
+            setExpanded(card, willOpen)
           }
         })
 
