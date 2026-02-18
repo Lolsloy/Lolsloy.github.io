@@ -16,6 +16,8 @@
       --shadow:0 26px 90px rgba(0,0,0,.55);
       --r2:23px;
       --gap:16px;
+
+      --pink:#cf64e5;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -28,6 +30,7 @@
     }
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
+    button{font:inherit}
 
     header.site{
       position:fixed;
@@ -122,12 +125,14 @@
       position:fixed;
       top:16px;
       left:68px;
+      right:140px;
       z-index:59;
       display:flex;
       gap:10px;
       opacity:1;
       pointer-events:auto;
       transform:none;
+      align-items:center;
     }
 
     .top-link{
@@ -150,18 +155,64 @@
     .top-link:hover{background:rgba(19,32,42,.85)}
     .top-link span{color:#b7c2cc;font-weight:700}
 
+    .top-icons{
+      position:fixed;
+      top:16px;
+      right:14px;
+      z-index:59;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .top-ic{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      position:relative;
+    }
+    .top-ic:hover{background:rgba(19,32,42,.85)}
+    .top-ic svg{width:20px;height:20px;color:#fff}
+
+    .badgecount{
+      position:absolute;
+      right:-6px;
+      top:-6px;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      border-radius:999px;
+      background:rgba(207,100,229,.95);
+      color:#fff;
+      font-weight:900;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 10px 24px rgba(0,0,0,.45);
+    }
+
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
       .nav-text{font-size:1.45rem}
       .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;gap:8px}
+      .top-links{top:14px;left:64px;right:118px;gap:8px}
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
+      .top-icons{top:14px;right:14px;gap:8px}
+      .top-ic{height:44px;width:44px}
     }
 
     @media (max-width:520px){
       .top-links{display:none}
+      .top-icons{display:flex}
     }
 
     .drawer{
@@ -180,7 +231,7 @@
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
-    .drawer a{
+    .drawer a, .drawer button.drawer-link{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -190,9 +241,12 @@
       border:1px solid #1a2530;
       font-weight:700;
       letter-spacing:.02em;
+      color:inherit;
+      cursor:pointer;
     }
-    .drawer a:hover{background:#13202a}
+    .drawer a:hover, .drawer button.drawer-link:hover{background:#13202a}
     .drawer small{color:#94a3b8;font-weight:600}
+    .drawer button.drawer-link{appearance:none;width:100%;text-align:left}
 
     .drawer-backdrop{
       position:fixed;
@@ -398,6 +452,25 @@
     <a class="top-link" href="/events.html" aria-label="Events">
       <strong>Events</strong><span>Dates</span>
     </a>
+    <a class="top-link" href="/sale.html" aria-label="Sale">
+      <strong>Sale</strong><span>Deals</span>
+    </a>
+  </div>
+
+  <div class="top-icons" aria-label="Icons">
+    <a class="top-ic" href="/wishlist.html" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div class="badgecount" id="wishBadgeTop" hidden>0</div>
+    </a>
+
+    <button class="top-ic" id="loginOpenTop" type="button" aria-label="Anmelden">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
+        <path d="M4 20c1.6-3.4 5-5 8-5s6.4 1.6 8 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
@@ -406,6 +479,7 @@
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
     <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
     <a href="/sale.html" class="drawer-link">Sale <small>Deals</small></a>
+    <a href="/wishlist.html" class="drawer-link">Wishlist <small>Saved</small></a>
     <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
     <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden <small>Google</small></button>
   </nav>
@@ -498,16 +572,20 @@
       </div>
 
       <div class="divider"></div>
-
-    
+    </div>
+  </main>
 
   <script>
     const NEWS_API_URL = "https://sethub.ddnsfree.com/InfoScraper/api/LegoNews"
-    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
     const FALLBACK_IMG = "/Bilder/real1.png"
+
+    const LS_WISH_KEYS = "sethub_wishlist"
 
     const burgerBtn = document.getElementById("burgerBtn")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
+    const loginOpenTop = document.getElementById("loginOpenTop")
+    const loginOpenDrawer = document.getElementById("loginOpenDrawer")
+    const wishBadgeTop = document.getElementById("wishBadgeTop")
 
     function openDrawer(){ document.body.classList.add("drawer-open") }
     function closeDrawer(){ document.body.classList.remove("drawer-open") }
@@ -519,6 +597,30 @@
     drawerBackdrop.addEventListener("click", closeDrawer)
     document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
     addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+
+    if(loginOpenTop && loginOpenDrawer){
+      loginOpenTop.addEventListener("click", () => {
+        closeDrawer()
+        loginOpenDrawer.click()
+      })
+    }
+
+    function loadWishlistKeys(){
+      try{
+        const x = JSON.parse(localStorage.getItem(LS_WISH_KEYS) || "[]")
+        if(Array.isArray(x)) return new Set(x.map(String))
+        return new Set()
+      }catch{
+        return new Set()
+      }
+    }
+
+    function updateWishBadge(){
+      const n = loadWishlistKeys().size
+      if(!wishBadgeTop) return
+      wishBadgeTop.textContent = String(n)
+      wishBadgeTop.hidden = n <= 0
+    }
 
     function formatDate(iso){
       const d = new Date(iso)
@@ -763,42 +865,9 @@
       sliderSetup()
     }
 
-    function byGuessDateDesc(a,b){
-      const da = new Date(firstText(a, ["publishedAt","date","createdAt"]) || 0).getTime()
-      const db = new Date(firstText(b, ["publishedAt","date","createdAt"]) || 0).getTime()
-      return db - da
-    }
-
-    function dedupeSets(items){
-      const seen = new Set()
-      const out = []
-      for(const it of items){
-        const name = firstText(it, ["name","title","setName"])
-        const num = firstText(it, ["setNumber","number","id"])
-        const key = `${name}__${num}`
-        if(seen.has(key)) continue
-        seen.add(key)
-        out.push(it)
-      }
-      return out
-    }
-
-  async function loadSets(){
-  const grid = document.getElementById("setsGrid")
-  if(!grid) return
-
-  const data = await fetchJson(SETS_API_URL)
-  const list = Array.isArray(data) ? data : []
-  const clean = dedupeSets(list).sort(byGuessDateDesc)
-
-  grid.innerHTML = clean.slice(0,9).map(buildCard).join("")
-}
-
-
     function showFallback(){
       const track = document.getElementById("track")
       const newsGrid = document.getElementById("newsGrid")
-      const setsGrid = document.getElementById("setsGrid")
       track.innerHTML = buildSlide({
         title:"Keine Verbindung",
         publishedAt:new Date().toISOString(),
@@ -807,11 +876,10 @@
       })
       document.getElementById("dots").innerHTML = ""
       newsGrid.innerHTML = ""
-      setsGrid.innerHTML = ""
     }
-    // sahdas
 
-    Promise.all(loadNews()).catch(showFallback)
+    updateWishBadge()
+    loadNews().catch(showFallback)
   </script>
 </body>
 </html>
