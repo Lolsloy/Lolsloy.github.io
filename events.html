@@ -12,9 +12,18 @@
     :root{
       --bg:#0E141A;
       --fg-on:#E6E9ED;
+      --muted:#94a3b8;
       --shadow:0 26px 90px rgba(0,0,0,.55);
       --r2:23px;
       --gap:16px;
+
+      --card:#0b1218;
+      --card2:#0f1820;
+      --line:#223041;
+
+      --ok:#00ff87;
+      --warn:#ffd300;
+      --bad:#ff5ea0;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -28,6 +37,8 @@
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
     button{font:inherit;color:inherit}
+    input, textarea, select{font:inherit;color:inherit}
+    ::selection{background:rgba(4,213,235,.25)}
 
     header.site{
       position:fixed;
@@ -174,8 +185,10 @@
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
-    .drawer a{
+    .drawer a,
+    .drawer button.drawer-link{
       display:flex;
+      width:100%;
       align-items:center;
       justify-content:space-between;
       padding:14px 14px;
@@ -184,8 +197,11 @@
       border:1px solid #1a2530;
       font-weight:700;
       letter-spacing:.02em;
+      cursor:pointer;
+      text-align:left;
     }
-    .drawer a:hover{background:#13202a}
+    .drawer a:hover,
+    .drawer button.drawer-link:hover{background:#13202a}
     .drawer small{color:#94a3b8;font-weight:600}
 
     .drawer-backdrop{
@@ -223,6 +239,14 @@
       font-size:clamp(2rem,3.4vw,2.7rem);
       letter-spacing:.01em;
       margin:18px 0 12px;
+    }
+
+    .section-sub{
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.4;
+      margin:0 0 14px;
+      max-width:72ch;
     }
 
     .divider{
@@ -380,6 +404,291 @@
       font-size:1.1rem;
       line-height:1.15;
       -webkit-line-clamp:3;
+    }
+
+    /* SUBMISSIONS */
+    .submit-grid{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:var(--gap);
+      align-items:start;
+      margin-top:12px;
+    }
+    @media (max-width:980px){
+      .submit-grid{grid-template-columns:1fr}
+    }
+
+    .card{
+      background:rgba(12,18,24,.78);
+      border:1px solid #16212a;
+      border-radius:18px;
+      box-shadow:0 18px 70px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+
+    .card-head{
+      padding:14px 14px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      background:rgba(16,24,32,.55);
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .card-head .h{
+      font-weight:900;
+      letter-spacing:.01em;
+      font-size:1.05rem;
+      color:#fff;
+    }
+    .pill{
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.55);
+      font-weight:850;
+      letter-spacing:.02em;
+      color:#fff;
+      font-size:.9rem;
+      white-space:nowrap;
+    }
+
+    .card-body{padding:14px}
+
+    .steps{
+      display:grid;
+      gap:10px;
+    }
+    .step{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(11,18,24,.7);
+    }
+    .n{
+      width:28px;height:28px;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.55);
+      font-weight:900;
+      flex:0 0 auto;
+    }
+    .step .t{
+      font-weight:850;
+      letter-spacing:.01em;
+      line-height:1.2;
+    }
+    .step .d{
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.35;
+      margin-top:4px;
+    }
+
+    form.set-form{
+      display:grid;
+      gap:12px;
+    }
+
+    .field{
+      display:grid;
+      gap:8px;
+    }
+    .label{
+      font-weight:850;
+      letter-spacing:.01em;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+    .hint{
+      color:var(--muted);
+      font-weight:650;
+      font-size:.95rem;
+      line-height:1.35;
+    }
+
+    .input, .textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:14px;
+      background:rgba(11,18,24,.8);
+      border:1px solid rgba(255,255,255,.10);
+      outline:none;
+      transition:border-color .14s ease, transform .14s ease, filter .14s ease;
+    }
+    .textarea{min-height:120px;resize:vertical}
+    .input:focus, .textarea:focus{border-color:rgba(4,213,235,.45)}
+    .input::placeholder, .textarea::placeholder{color:rgba(148,163,184,.7)}
+
+    .two{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width:560px){ .two{grid-template-columns:1fr} }
+
+    .drop{
+      border-radius:16px;
+      border:1px dashed rgba(255,255,255,.18);
+      background:rgba(11,18,24,.65);
+      padding:14px;
+      display:grid;
+      gap:10px;
+    }
+    .drop-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .file-btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.65);
+      font-weight:900;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+    }
+    .file-btn:hover{background:rgba(19,32,42,.85)}
+    .file-name{
+      color:var(--muted);
+      font-weight:700;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      max-width:56ch;
+    }
+
+    .preview{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:14px;
+      background:rgba(15,24,32,.6);
+      border:1px solid rgba(255,255,255,.08);
+    }
+    @media (max-width:560px){ .preview{grid-template-columns:1fr} }
+
+    .thumb{
+      width:110px;
+      height:82px;
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:#0b1218;
+    }
+    .thumb img{width:100%;height:100%;object-fit:cover}
+
+    .check{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(11,18,24,.65);
+    }
+    .check input{
+      margin-top:3px;
+      width:18px;height:18px;
+      accent-color:#04d5eb;
+    }
+    .check .text{
+      display:grid;
+      gap:6px;
+    }
+    .check .text .t{font-weight:850}
+    .check .text .d{color:var(--muted);font-weight:650;line-height:1.35}
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:2px;
+    }
+    .btn{
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(16,24,32,.65);
+      font-weight:900;
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      touch-action:manipulation;
+      transition:transform .12s ease, filter .12s ease, background .12s ease;
+    }
+    .btn:hover{background:rgba(19,32,42,.88);transform:translateY(-1px)}
+    .btn.primary{
+      border-color:rgba(4,213,235,.45);
+      background:rgba(4,213,235,.14);
+    }
+    .btn.primary:hover{filter:brightness(1.08)}
+    .btn:disabled{
+      cursor:not-allowed;
+      opacity:.55;
+      transform:none;
+    }
+
+    .status{
+      color:var(--muted);
+      font-weight:700;
+      line-height:1.3;
+      min-height:1.3em;
+    }
+    .status.ok{color:rgba(0,255,135,.9)}
+    .status.bad{color:rgba(255,94,160,.95)}
+
+    .mini-gallery{
+      display:grid;
+      gap:12px;
+    }
+    .sample{
+      display:grid;
+      grid-template-columns:110px 1fr;
+      gap:12px;
+      align-items:center;
+      padding:12px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(11,18,24,.70);
+    }
+    @media (max-width:560px){ .sample{grid-template-columns:1fr} }
+    .sample .thumb{width:110px;height:82px}
+    .sample .h{
+      font-weight:900;
+      letter-spacing:.01em;
+      line-height:1.2;
+    }
+    .sample .d{
+      color:var(--muted);
+      font-weight:650;
+      margin-top:6px;
+      line-height:1.35;
+    }
+    .small-note{
+      color:var(--muted);
+      font-weight:650;
+      line-height:1.35;
+      margin-top:10px;
     }
 
     /* MODAL */
@@ -565,7 +874,7 @@
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
-     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
     <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
@@ -575,7 +884,6 @@
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 
-  <!-- LOGO DEFINITIONS -->
   <svg width="0" height="0" style="position:absolute;left:-9999px;top:-9999px" aria-hidden="true" focusable="false">
     <symbol id="sethub-logo" viewBox="0 0 3326 2408" preserveAspectRatio="xMidYMid meet">
       <defs>
@@ -708,6 +1016,194 @@
           </div>
         </a>
       </div>
+
+      <div class="divider"></div>
+
+      <div class="section-title" id="sets-einsenden" style="margin-top:18px">Dein Set einsenden</div>
+      <p class="section-sub">
+        Schick uns Bilder von deinem Set und ein paar Infos.
+        Wir wählen Beiträge aus und posten sie auf SetHub.
+        Du bekommst Credit mit deinem Namen oder deinem Nick.
+      </p>
+
+      <div class="submit-grid" aria-label="Set Einsenden">
+        <div class="card">
+          <div class="card-head">
+            <div class="h">Upload</div>
+            <div class="pill">1 bis 5 Bilder</div>
+          </div>
+
+          <div class="card-body">
+            <form class="set-form" id="setForm" novalidate>
+              <div class="two">
+                <div class="field">
+                  <div class="label">
+                    <span>Dein Name oder Nick</span>
+                  </div>
+                  <input class="input" id="uName" name="name" type="text" placeholder="Zum Beispiel Lara oder BrickMax" autocomplete="nickname" required />
+                </div>
+
+                <div class="field">
+                  <div class="label">
+                    <span>Kontakt Mail</span>
+                  </div>
+                  <input class="input" id="uMail" name="email" type="email" placeholder="optional" autocomplete="email" />
+                  <div class="hint">Nur für Rückfragen</div>
+                </div>
+              </div>
+
+              <div class="field">
+                <div class="label">
+                  <span>Set Titel</span>
+                </div>
+                <input class="input" id="uTitle" name="title" type="text" placeholder="Zum Beispiel Space Base MOC" required />
+              </div>
+
+              <div class="field">
+                <div class="label">
+                  <span>Beschreibung</span>
+                </div>
+                <textarea class="textarea" id="uDesc" name="desc" placeholder="Was soll man wissen. Teile. Technik. Story. Maße." required></textarea>
+              </div>
+
+              <div class="field">
+                <div class="label">
+                  <span>Bilder</span>
+                  <span class="file-name" id="fileName">Noch kein Bild</span>
+                </div>
+
+                <div class="drop" id="dropZone" tabindex="0" aria-label="Upload Bereich">
+                  <div class="drop-top">
+                    <label class="file-btn" for="uFiles">Bilder wählen</label>
+                    <input id="uFiles" name="files" type="file" accept="image/*" multiple hidden />
+                    <div class="hint">JPG PNG WEBP</div>
+                  </div>
+
+                  <div class="preview" id="preview" style="display:none">
+                    <div class="thumb"><img id="thumbImg" alt="Vorschau" /></div>
+                    <div>
+                      <div class="label" style="justify-content:flex-start;gap:10px">
+                        <span id="previewTitle">Vorschau</span>
+                      </div>
+                      <div class="hint" id="previewMeta"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="check">
+                <input id="uConsent" type="checkbox" required />
+                <div class="text">
+                  <div class="t">Ich darf das posten</div>
+                  <div class="d">
+                    Du bestätigst dass du die Bilder gemacht hast oder sie nutzen darfst.
+                    Du erlaubst SetHub das Material zu posten.
+                  </div>
+                </div>
+              </div>
+
+              <div class="actions">
+                <button class="btn" type="button" id="saveDraft">Entwurf speichern</button>
+                <button class="btn primary" type="submit" id="sendBtn" disabled>Absenden</button>
+              </div>
+
+              <div class="status" id="status" aria-live="polite"></div>
+
+              <div class="small-note">
+                Du willst nicht hochladen.
+                Dann schick uns dein Set per Mail über dein Mail Programm.
+                Button Absenden öffnet auch Mail wenn kein Upload Server aktiv ist.
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div class="h">So läuft es</div>
+            <div class="pill">Du bekommst Credit</div>
+          </div>
+
+          <div class="card-body">
+            <div class="steps" aria-label="Ablauf">
+              <div class="step">
+                <div class="n">1</div>
+                <div>
+                  <div class="t">Schick Bilder</div>
+                  <div class="d">Gutes Licht. Front. Details. Eine Totalansicht.</div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="n">2</div>
+                <div>
+                  <div class="t">Schreib Infos</div>
+                  <div class="d">Titel. Teilezahl. Bauzeit. Technik. Idee.</div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="n">3</div>
+                <div>
+                  <div class="t">Wir posten</div>
+                  <div class="d">Wir wählen Sets aus. Wir geben dir Credit.</div>
+                </div>
+              </div>
+
+              <div class="step">
+                <div class="n">4</div>
+                <div>
+                  <div class="t">Du teilst den Post</div>
+                  <div class="d">Link an Freunde. Community wächst.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider" style="margin:16px 0 10px"></div>
+
+            <div class="mini-gallery" aria-label="Beispiele">
+              <div class="sample">
+                <div class="thumb">
+                  <img src="Bilder/Wbild4.jpeg" alt="Beispiel 1" loading="lazy">
+                </div>
+                <div>
+                  <div class="h">Bau Fokus</div>
+                  <div class="d">Eine klare Ansicht plus ein Detail Shot hilft beim Post.</div>
+                </div>
+              </div>
+
+              <div class="sample">
+                <div class="thumb">
+                  <img src="Bilder/Wbild5.jpeg" alt="Beispiel 2" loading="lazy">
+                </div>
+                <div>
+                  <div class="h">Story Fokus</div>
+                  <div class="d">Ein Bild mit Szene zeigt dein Set im Einsatz.</div>
+                </div>
+              </div>
+
+              <div class="sample">
+                <div class="thumb">
+                  <img src="Bilder/Wbild6.jpeg" alt="Beispiel 3" loading="lazy">
+                </div>
+                <div>
+                  <div class="h">Detail Fokus</div>
+                  <div class="d">Closeup auf Technik oder Design macht den Post stark.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="small-note">
+              Welche Sets willst du hier sehen.
+              MOCs.
+              Reviews.
+              Displays.
+              Minifig Szenen.
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -722,9 +1218,9 @@
       <div class="g-item" data-view="Bilder/Wbild1.png" aria-label="Bild 1"><img src="Bilder/Wbild1.png" alt="Bild 1" loading="lazy"></div>
       <div class="g-item" data-view="Bilder/Wbild2.png" aria-label="Bild 2"><img src="Bilder/Wbild2.png" alt="Bild 2" loading="lazy"></div>
       <div class="g-item" data-view="Bilder/Wbild3.png" aria-label="Bild 3"><img src="Bilder/Wbild3.png" alt="Bild 3" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild4.png" aria-label="Bild 4"><img src="Bilder/Wbild4.jpeg" alt="Bild 4" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild5.png" aria-label="Bild 5"><img src="Bilder/Wbild5.jpeg" alt="Bild 5" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild6.png" aria-label="Bild 6"><img src="Bilder/Wbild6.jpeg" alt="Bild 6" loading="lazy"></div>
+      <div class="g-item" data-view="Bilder/Wbild4.jpeg" aria-label="Bild 4"><img src="Bilder/Wbild4.jpeg" alt="Bild 4" loading="lazy"></div>
+      <div class="g-item" data-view="Bilder/Wbild5.jpeg" aria-label="Bild 5"><img src="Bilder/Wbild5.jpeg" alt="Bild 5" loading="lazy"></div>
+      <div class="g-item" data-view="Bilder/Wbild6.jpeg" aria-label="Bild 6"><img src="Bilder/Wbild6.jpeg" alt="Bild 6" loading="lazy"></div>
     </div>
   </div>
 
@@ -750,17 +1246,14 @@
     document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
 
     const modalBackdrop = document.getElementById("modalBackdrop")
+    const galleryModal = document.getElementById("galleryModal")
     const galleryClose = document.getElementById("galleryClose")
     const viewer = document.getElementById("viewer")
     const viewerImg = document.getElementById("viewerImg")
     const viewerClose = document.getElementById("viewerClose")
 
-    function lockScroll(){
-      document.body.classList.add("modal-open")
-    }
-    function unlockScroll(){
-      document.body.classList.remove("modal-open")
-    }
+    function lockScroll(){ document.body.classList.add("modal-open") }
+    function unlockScroll(){ document.body.classList.remove("modal-open") }
 
     function openGallery(){
       lockScroll()
@@ -824,6 +1317,212 @@
       if(!document.body.classList.contains("modal-open")) return
       if(e.target === modalBackdrop) closeGallery()
     })
+
+    // SUBMISSION FORM
+    const form = document.getElementById("setForm")
+    const uName = document.getElementById("uName")
+    const uMail = document.getElementById("uMail")
+    const uTitle = document.getElementById("uTitle")
+    const uDesc = document.getElementById("uDesc")
+    const uFiles = document.getElementById("uFiles")
+    const uConsent = document.getElementById("uConsent")
+    const sendBtn = document.getElementById("sendBtn")
+    const statusEl = document.getElementById("status")
+    const fileName = document.getElementById("fileName")
+    const dropZone = document.getElementById("dropZone")
+
+    const preview = document.getElementById("preview")
+    const thumbImg = document.getElementById("thumbImg")
+    const previewTitle = document.getElementById("previewTitle")
+    const previewMeta = document.getElementById("previewMeta")
+
+    const saveDraft = document.getElementById("saveDraft")
+
+    const DRAFT_KEY = "sethub_set_draft_v1"
+
+    function setStatus(text, kind){
+      statusEl.textContent = text || ""
+      statusEl.classList.remove("ok","bad")
+      if(kind) statusEl.classList.add(kind)
+    }
+
+    function bytesToMB(n){
+      const mb = n / (1024 * 1024)
+      return Math.round(mb * 10) / 10
+    }
+
+    function validate(){
+      const baseOk =
+        uName.value.trim().length >= 2 &&
+        uTitle.value.trim().length >= 2 &&
+        uDesc.value.trim().length >= 10 &&
+        uConsent.checked
+
+      const hasFiles = uFiles.files && uFiles.files.length > 0
+      const filesOk = !hasFiles || (uFiles.files.length >= 1 && uFiles.files.length <= 5)
+
+      const ok = baseOk && filesOk
+      sendBtn.disabled = !ok
+      return ok
+    }
+
+    function updateFileUI(){
+      const files = uFiles.files
+      if(!files || files.length === 0){
+        fileName.textContent = "Noch kein Bild"
+        preview.style.display = "none"
+        thumbImg.src = ""
+        return
+      }
+
+      const first = files[0]
+      fileName.textContent = files.length === 1 ? first.name : files.length + " Bilder gewählt"
+
+      const url = URL.createObjectURL(first)
+      thumbImg.src = url
+      previewTitle.textContent = first.name
+      const totalBytes = Array.from(files).reduce((s,f) => s + (f.size || 0), 0)
+      previewMeta.textContent = files.length + " Datei(en) " + bytesToMB(totalBytes) + " MB"
+      preview.style.display = "grid"
+    }
+
+    function saveDraftToStorage(){
+      const draft = {
+        name: uName.value.trim(),
+        email: uMail.value.trim(),
+        title: uTitle.value.trim(),
+        desc: uDesc.value.trim(),
+        consent: uConsent.checked
+      }
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
+      setStatus("Entwurf gespeichert", "ok")
+      setTimeout(() => setStatus("", ""), 1800)
+    }
+
+    function loadDraftFromStorage(){
+      try{
+        const raw = localStorage.getItem(DRAFT_KEY)
+        if(!raw) return
+        const d = JSON.parse(raw)
+        uName.value = d.name || ""
+        uMail.value = d.email || ""
+        uTitle.value = d.title || ""
+        uDesc.value = d.desc || ""
+        uConsent.checked = !!d.consent
+      }catch(_){}
+      validate()
+    }
+
+    function openMailFallback(){
+      const to = "post@sethub.example"
+      const subject = encodeURIComponent("Set Einsendung " + (uTitle.value.trim() || ""))
+      const lines = [
+        "Name " + (uName.value.trim() || ""),
+        "Mail " + (uMail.value.trim() || ""),
+        "Titel " + (uTitle.value.trim() || ""),
+        "",
+        (uDesc.value.trim() || "")
+      ]
+      const body = encodeURIComponent(lines.join("\n"))
+      location.href = "mailto:" + to + "?subject=" + subject + "&body=" + body
+    }
+
+    function handleDrop(e){
+      e.preventDefault()
+      const dt = e.dataTransfer
+      if(!dt || !dt.files) return
+      const files = Array.from(dt.files).filter(f => (f.type || "").startsWith("image/")).slice(0,5)
+      const list = new DataTransfer()
+      files.forEach(f => list.items.add(f))
+      uFiles.files = list.files
+      updateFileUI()
+      validate()
+    }
+
+    ;["dragenter","dragover"].forEach(ev => {
+      dropZone.addEventListener(ev, (e) => {
+        e.preventDefault()
+        dropZone.style.borderColor = "rgba(4,213,235,.55)"
+      })
+    })
+    ;["dragleave","drop"].forEach(ev => {
+      dropZone.addEventListener(ev, (e) => {
+        e.preventDefault()
+        dropZone.style.borderColor = "rgba(255,255,255,.18)"
+      })
+    })
+    dropZone.addEventListener("drop", handleDrop)
+
+    dropZone.addEventListener("keydown", (e) => {
+      if(e.key === "Enter" || e.key === " "){
+        e.preventDefault()
+        uFiles.click()
+      }
+    })
+
+    uFiles.addEventListener("change", () => {
+      updateFileUI()
+      validate()
+    })
+
+    ;[uName,uMail,uTitle,uDesc,uConsent].forEach(el => {
+      el.addEventListener("input", validate)
+      el.addEventListener("change", validate)
+    })
+
+    saveDraft.addEventListener("click", saveDraftToStorage)
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault()
+      if(!validate()) return
+
+      setStatus("Sende", "")
+      sendBtn.disabled = true
+
+      const ENDPOINT = ""
+      const hasEndpoint = typeof ENDPOINT === "string" && ENDPOINT.trim().length > 0
+
+      if(!hasEndpoint){
+        setStatus("Öffne Mail", "ok")
+        openMailFallback()
+        setTimeout(() => {
+          sendBtn.disabled = false
+          validate()
+          setStatus("", "")
+        }, 800)
+        return
+      }
+
+      try{
+        const fd = new FormData()
+        fd.append("name", uName.value.trim())
+        fd.append("email", uMail.value.trim())
+        fd.append("title", uTitle.value.trim())
+        fd.append("desc", uDesc.value.trim())
+
+        Array.from(uFiles.files || []).slice(0,5).forEach((f, i) => {
+          fd.append("image_" + (i+1), f, f.name)
+        })
+
+        const res = await fetch(ENDPOINT, { method:"POST", body:fd })
+        if(!res.ok) throw new Error("bad")
+
+        setStatus("Danke. Wir melden uns wenn dein Set online ist", "ok")
+        localStorage.removeItem(DRAFT_KEY)
+        form.reset()
+        updateFileUI()
+      }catch(_){
+        setStatus("Senden ging nicht. Mail wird geöffnet", "bad")
+        openMailFallback()
+      }finally{
+        sendBtn.disabled = false
+        validate()
+      }
+    })
+
+    loadDraftFromStorage()
+    updateFileUI()
+    validate()
   </script>
 </body>
 </html>
