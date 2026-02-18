@@ -422,6 +422,7 @@
       flex-direction:column;
       gap:10px;
       flex:1;
+      min-height:0;
     }
 
     .name{
@@ -439,7 +440,7 @@
 
     .topline{
       display:flex;
-      align-items:center;
+      align-items:flex-end;
       justify-content:space-between;
       gap:10px;
       flex-wrap:wrap;
@@ -455,10 +456,37 @@
       white-space:nowrap;
     }
 
+    .pricebox{
+      display:flex;
+      align-items:baseline;
+      gap:8px;
+      white-space:nowrap;
+      justify-content:flex-end;
+    }
     .price{
       font-weight:900;
       font-size:1.12rem;
       letter-spacing:.01em;
+      white-space:nowrap;
+    }
+    .oldprice{
+      color:var(--muted);
+      font-weight:900;
+      text-decoration:line-through;
+      font-size:.9rem;
+      white-space:nowrap;
+    }
+    .pctpill{
+      height:22px;
+      padding:0 8px;
+      border-radius:999px;
+      border:1px solid rgba(207,100,229,.55);
+      background:rgba(207,100,229,.10);
+      color:#f2c9ff;
+      display:flex;
+      align-items:center;
+      font-weight:900;
+      font-size:.78rem;
       white-space:nowrap;
     }
 
@@ -503,21 +531,24 @@
     .card.expanded .chips{display:none}
 
     .details{
-      overflow:hidden;
+      overflow:visible;
       max-height:0;
       opacity:0;
       transform:translateY(-4px);
-      transition:max-height .28s ease, opacity .18s ease, transform .18s ease;
+      transition:max-height .28s ease, opacity .18s ease, transform .18s ease, padding .18s ease;
       border-radius:16px;
       border:1px solid rgba(255,255,255,.10);
       background:rgba(16,24,32,.22);
       padding:0;
     }
     .card.expanded .details{
-      max-height:260px;
+      max-height:1200px;
       opacity:1;
       transform:translateY(0);
       padding:10px;
+    }
+    @media (max-width:520px){
+      .card.expanded .details{max-height:1600px}
     }
 
     .stores{
@@ -810,6 +841,7 @@
     }
 
     const MAX_SETS = 200
+    const FALLBACK_IMG = "/Bilder/real1.png"
 
     const els = {
       burgerBtn: document.getElementById("burgerBtn"),
@@ -934,10 +966,12 @@
 
     function guessSetNumberFromUrl(u){
       const s = String(u || "")
-      const m = s.match(/(?:\/|product\/)(\d{4,6})(?:\D|$)/)
-      if(m && m[1]) return m[1]
-      const m2 = s.match(/\b(\d{4,6})\b/)
-      return m2 ? m2[1] : ""
+      const m5 = s.match(/\b(\d{5})(?!\d)\b/)
+      if(m5) return m5[1]
+      const m6 = s.match(/\b(\d{6})(?!\d)\b/)
+      if(m6) return m6[1]
+      const m4 = s.match(/\b(\d{4})(?!\d)\b/)
+      return m4 ? m4[1] : ""
     }
 
     function firstText(o, keys){
@@ -969,8 +1003,13 @@
       const price = firstText(it, ["price","currentPrice","salePrice","now","value","bestPrice","lowestPrice"])
       const oldPrice = firstText(it, ["originalPrice","oldPrice","wasPrice","regularPrice","listPrice","before","msrp"])
 
-      let setNumber = ""
-      setNumber =
+      const p = parsePrice(price)
+      const op = parsePrice(oldPrice)
+
+      const fromText = cleanSetNumber(guessLegoSetNumberFromText(name))
+      const fromUrl = cleanSetNumber(guessSetNumberFromUrl(url))
+
+      let setNumber =
         cleanSetNumber(it.setNumber) ||
         cleanSetNumber(it.setnumber) ||
         cleanSetNumber(it.set_no) ||
@@ -979,15 +1018,25 @@
         cleanSetNumber(it.set) ||
         cleanSetNumber(it.setId)
 
-      if(!setNumber) setNumber = cleanSetNumber(guessSetNumberFromUrl(url))
-      if(!setNumber) setNumber = guessLegoSetNumberFromText(name)
+      let setNumberConfidence = setNumber ? "explicit" : "none"
 
-      const p = parsePrice(price)
-      const op = parsePrice(oldPrice)
+      if(!setNumber && fromText){
+        setNumber = fromText
+        setNumberConfidence = "name"
+      }
+
+      if(!setNumber && fromUrl){
+        const nameStr = String(name || "")
+        if(nameStr.includes(fromUrl)){
+          setNumber = fromUrl
+          setNumberConfidence = "url"
+        }
+      }
 
       return {
         source,
         setNumber,
+        setNumberConfidence,
         name: String(name || "").trim(),
         url: String(url || "").trim(),
         image: String(image || "").trim(),
@@ -1003,9 +1052,10 @@
       for(const x of list){
         if(x.price === null) continue
 
-        const key = x.setNumber
+        const mergeable = !!x.setNumber && x.setNumberConfidence !== "none"
+        const key = mergeable
           ? "set:" + x.setNumber
-          : "fallback:" + (x.url || x.name || "").slice(0,180)
+          : "fallback:" + x.source + ":" + (x.url || x.name || "").slice(0,180)
 
         const cur = map.get(key) || {
           setNumber: x.setNumber || "",
@@ -1075,22 +1125,20 @@
       return "Alternate"
     }
 
-    function pickCardName(x){
+    function pickPresentation(x){
       const order = ["lego","amazon","alternate"]
       for(const k of order){
         const s = x.sources[k]
-        if(s && s.name) return s.name
+        if(s && (s.name || s.url || isFinite(s.price))){
+          return {
+            source: k,
+            name: s.name || x.name || "Set",
+            image: s.image || "",
+            url: s.url || ""
+          }
+        }
       }
-      return x.name || "Set"
-    }
-
-    function pickCardImage(x){
-      const order = ["lego","amazon","alternate"]
-      for(const k of order){
-        const s = x.sources[k]
-        if(s && s.image) return s.image
-      }
-      return ""
+      return { source:"alternate", name:x.name || "Set", image:"", url:"" }
     }
 
     function chipHtml(source, x){
@@ -1220,7 +1268,8 @@
 
       if(q){
         out = out.filter(x => {
-          const n = (pickCardName(x) || "").toLowerCase()
+          const p = pickPresentation(x)
+          const n = (p.name || "").toLowerCase()
           const id = (x.setNumber || "").toLowerCase()
           return n.includes(q) || id.includes(q)
         })
@@ -1233,9 +1282,9 @@
       }else if(sort === "worst"){
         out.sort((a,b)=> (b.best?.price ?? -1) - (a.best?.price ?? -1))
       }else if(sort === "name_az"){
-        out.sort((a,b)=> (pickCardName(a) || "").localeCompare((pickCardName(b) || ""), "de", { sensitivity:"base" }))
+        out.sort((a,b)=> (pickPresentation(a).name || "").localeCompare((pickPresentation(b).name || ""), "de", { sensitivity:"base" }))
       }else if(sort === "name_za"){
-        out.sort((a,b)=> (pickCardName(b) || "").localeCompare((pickCardName(a) || ""), "de", { sensitivity:"base" }))
+        out.sort((a,b)=> (pickPresentation(b).name || "").localeCompare((pickPresentation(a).name || ""), "de", { sensitivity:"base" }))
       }else if(sort === "set_asc"){
         out.sort((a,b)=> (a.setNumber || "").localeCompare((b.setNumber || ""), "de", { numeric:true }))
       }else if(sort === "set_desc"){
@@ -1267,12 +1316,19 @@
       if(els.pinfo) els.pinfo.textContent = "Seite " + page + " von " + pages
 
       for(const x of items){
-        const name = pickCardName(x)
-        const img = pickCardImage(x)
+        const pres = pickPresentation(x)
+        const name = pres.name
+        const img = pres.image
         const setNumber = x.setNumber || ""
 
         const bestPrice = x.best?.price
         const priceTxt = isFinite(bestPrice) ? formatEUR(bestPrice) : "-"
+
+        const bestSource = x.best?.source
+        const bestOld = bestSource && x.sources[bestSource] ? x.sources[bestSource].oldPrice : null
+        const oldTxt = isFinite(bestOld) ? formatEUR(bestOld) : ""
+
+        const pct = (x.bestSale && isFinite(x.bestSale.pct)) ? x.bestSale.pct : null
 
         const card = document.createElement("div")
         card.className = "card"
@@ -1289,7 +1345,7 @@
         const sAlt = x.sources.alternate || null
 
         const primarySource =
-          (x.bestSale && (x.bestSale.source === "lego" || x.bestSale.source === "amazon"))
+          (x.bestSale && (x.bestSale.source === "lego" || x.bestSale.source === "amazon" || x.bestSale.source === "alternate"))
             ? x.bestSale.source
             : (x.best ? x.best.source : "alternate")
 
@@ -1304,7 +1360,7 @@
 
         card.innerHTML =
           "<div class=\"thumb\">" +
-            "<img loading=\"lazy\" src=\"" + escapeHtml(img || "/Bilder/real1.png") + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='/Bilder/real1.png'\">" +
+            "<img loading=\"lazy\" src=\"" + escapeHtml(img || FALLBACK_IMG) + "\" alt=\"" + escapeHtml(name) + "\" onerror=\"this.onerror=null;this.src='" + FALLBACK_IMG + "'\">" +
             topBadgeHtml(x) +
             "<button class=\"heart " + (heartOn ? "on" : "") + "\" type=\"button\" aria-label=\"Wishlist\">" +
               "<svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">" +
@@ -1317,7 +1373,11 @@
             "<div class=\"name\">" + escapeHtml(name) + "</div>" +
             "<div class=\"topline\">" +
               "<div class=\"setno\">" + (setNumber ? ("Set " + escapeHtml(setNumber)) : "Kein Set") + "</div>" +
-              "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
+              "<div class=\"pricebox\">" +
+                (pct ? "<div class=\"pctpill\">-" + escapeHtml(String(pct)) + "%</div>" : "") +
+                (oldTxt ? "<div class=\"oldprice\">" + escapeHtml(oldTxt) + "</div>" : "") +
+                "<div class=\"price\">" + escapeHtml(priceTxt) + "</div>" +
+              "</div>" +
             "</div>" +
             "<div class=\"chips\">" +
               saleChipHtml(x) +
@@ -1344,6 +1404,7 @@
           const willOpen = !card.classList.contains("expanded")
           closeAllCardsExcept(card)
           setExpanded(card, willOpen)
+          if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
         })
 
         card.querySelectorAll(".store-btn").forEach(btn => {
@@ -1358,6 +1419,7 @@
           const willOpen = !card.classList.contains("expanded")
           closeAllCardsExcept(card)
           setExpanded(card, willOpen)
+          if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
         })
 
         card.addEventListener("keydown", (e) => {
@@ -1366,6 +1428,7 @@
             const willOpen = !card.classList.contains("expanded")
             closeAllCardsExcept(card)
             setExpanded(card, willOpen)
+            if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
           }
         })
 
