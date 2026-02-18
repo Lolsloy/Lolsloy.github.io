@@ -579,17 +579,13 @@
       white-space:nowrap;
     }
 
-    .store-price{
-      font-weight:900;
-    }
-
+    .store-price{font-weight:900}
     .store-old{
       color:var(--muted);
       font-weight:850;
       text-decoration:line-through;
       font-size:.88rem;
     }
-
     .store-pct{
       height:22px;
       padding:0 8px;
@@ -840,17 +836,30 @@
     function openDrawer(){ document.body.classList.add("drawer-open") }
     function closeDrawer(){ document.body.classList.remove("drawer-open") }
 
-    els.burgerBtn.addEventListener("click", () => {
-      if(document.body.classList.contains("drawer-open")) closeDrawer()
-      else openDrawer()
-    })
-    els.drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
-    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+    if(els.burgerBtn){
+      els.burgerBtn.addEventListener("click", () => {
+        if(document.body.classList.contains("drawer-open")) closeDrawer()
+        else openDrawer()
+      })
+    }
 
-    els.filterBtn.addEventListener("click", () => {
-      els.filters.classList.toggle("on")
+    if(els.drawerBackdrop){
+      els.drawerBackdrop.addEventListener("click", closeDrawer)
+    }
+
+    document.querySelectorAll(".drawer-link").forEach(a => {
+      a.addEventListener("click", closeDrawer)
     })
+
+    addEventListener("keydown", e => {
+      if(e.key === "Escape") closeDrawer()
+    })
+
+    if(els.filterBtn && els.filters){
+      els.filterBtn.addEventListener("click", () => {
+        els.filters.classList.toggle("on")
+      })
+    }
 
     let PAGE_SIZE = pickPageSize()
     let raw = []
@@ -883,7 +892,7 @@
     }
 
     function updateWishStat(){
-      els.statWish.textContent = String(wishlist.size)
+      if(els.statWish) els.statWish.textContent = String(wishlist.size)
     }
 
     function parsePrice(v){
@@ -919,15 +928,15 @@
     }
 
     function guessLegoSetNumberFromText(s){
-      const m = String(s || "").match(/\\b\\d{4,6}\\b/)
+      const m = String(s || "").match(/\b\d{4,6}\b/)
       return m ? m[0] : ""
     }
 
     function guessSetNumberFromUrl(u){
       const s = String(u || "")
-      const m = s.match(/(?:\\/|product\\/)(\\d{4,6})(?:\\D|$)/)
+      const m = s.match(/(?:\/|product\/)(\d{4,6})(?:\D|$)/)
       if(m && m[1]) return m[1]
-      const m2 = s.match(/\\b(\\d{4,6})\\b/)
+      const m2 = s.match(/\b(\d{4,6})\b/)
       return m2 ? m2[1] : ""
     }
 
@@ -1051,7 +1060,8 @@
     }
 
     function escapeHtml(str){
-      return String(str)
+      const s = String(str ?? "")
+      return s
         .replaceAll("&","&amp;")
         .replaceAll("<","&lt;")
         .replaceAll(">","&gt;")
@@ -1149,6 +1159,7 @@
     }
 
     function closeAllCardsExcept(keepCard){
+      if(!els.grid) return
       els.grid.querySelectorAll(".card.expanded").forEach(c => {
         if(c !== keepCard) setExpanded(c, false)
       })
@@ -1165,7 +1176,7 @@
     }
 
     async function loadAll(){
-      els.reload.disabled = true
+      if(els.reload) els.reload.disabled = true
 
       try{
         const results = await Promise.allSettled([
@@ -1183,7 +1194,7 @@
         merged.sort((a,b)=> (a.best?.price ?? 1e18) - (b.best?.price ?? 1e18))
 
         raw = merged.slice(0, MAX_SETS)
-        els.statSets.textContent = String(raw.length)
+        if(els.statSets) els.statSets.textContent = String(raw.length)
 
         page = 1
         apply()
@@ -1192,14 +1203,14 @@
         view = []
         render()
       }finally{
-        els.reload.disabled = false
+        if(els.reload) els.reload.disabled = false
       }
     }
 
     function apply(){
-      const q = (els.q.value || "").trim().toLowerCase()
-      const s = els.source.value
-      const sort = els.sort.value
+      const q = (els.q?.value || "").trim().toLowerCase()
+      const s = els.source?.value || "all"
+      const sort = els.sort?.value || "best"
 
       let out = raw
 
@@ -1238,6 +1249,8 @@
     }
 
     function render(){
+      if(!els.grid) return
+
       const total = view.length
       const pages = Math.max(1, Math.ceil(total / PAGE_SIZE))
       page = Math.min(page, pages)
@@ -1246,12 +1259,12 @@
       const items = view.slice(start, start + PAGE_SIZE)
 
       els.grid.innerHTML = ""
-      els.empty.hidden = items.length !== 0
+      if(els.empty) els.empty.hidden = items.length !== 0
 
-      els.pager.hidden = total <= PAGE_SIZE
-      els.prev.disabled = page <= 1
-      els.next.disabled = page >= pages
-      els.pinfo.textContent = "Seite " + page + " von " + pages
+      if(els.pager) els.pager.hidden = total <= PAGE_SIZE
+      if(els.prev) els.prev.disabled = page <= 1
+      if(els.next) els.next.disabled = page >= pages
+      if(els.pinfo) els.pinfo.textContent = "Seite " + page + " von " + pages
 
       for(const x of items){
         const name = pickCardName(x)
@@ -1368,22 +1381,26 @@
       }
     }
 
-    els.prev.addEventListener("click", () => {
-      page = Math.max(1, page - 1)
-      render()
-      window.scrollTo({ top:0, behavior:"smooth" })
-    })
+    if(els.prev){
+      els.prev.addEventListener("click", () => {
+        page = Math.max(1, page - 1)
+        render()
+        window.scrollTo({ top:0, behavior:"smooth" })
+      })
+    }
 
-    els.next.addEventListener("click", () => {
-      page = page + 1
-      render()
-      window.scrollTo({ top:0, behavior:"smooth" })
-    })
+    if(els.next){
+      els.next.addEventListener("click", () => {
+        page = page + 1
+        render()
+        window.scrollTo({ top:0, behavior:"smooth" })
+      })
+    }
 
-    els.sort.addEventListener("change", () => { page = 1; apply() })
-    els.source.addEventListener("change", () => { page = 1; apply() })
-    els.q.addEventListener("input", debounce(() => { page = 1; apply() }, 140))
-    els.reload.addEventListener("click", loadAll)
+    if(els.sort) els.sort.addEventListener("change", () => { page = 1; apply() })
+    if(els.source) els.source.addEventListener("change", () => { page = 1; apply() })
+    if(els.q) els.q.addEventListener("input", debounce(() => { page = 1; apply() }, 140))
+    if(els.reload) els.reload.addEventListener("click", loadAll)
 
     window.addEventListener("resize", debounce(() => {
       const n = pickPageSize()
