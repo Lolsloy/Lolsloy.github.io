@@ -783,16 +783,17 @@
       return out
     }
 
-    async function loadSets(){
-      const grid = document.getElementById("setsGrid")
+  async function loadSets(){
+  const grid = document.getElementById("setsGrid")
+  if(!grid) return
 
-      const data = await fetchJson(SETS_API_URL)
-      const list = Array.isArray(data) ? data : []
-      const clean = dedupeSets(list).sort(byGuessDateDesc)
+  const data = await fetchJson(SETS_API_URL)
+  const list = Array.isArray(data) ? data : []
+  const clean = dedupeSets(list).sort(byGuessDateDesc)
 
-      const setItems = clean.slice(0,9)
-      grid.innerHTML = setItems.map(buildCard).join("")
-    }
+  grid.innerHTML = clean.slice(0,9).map(buildCard).join("")
+}
+
 
     function showFallback(){
       const track = document.getElementById("track")
@@ -810,7 +811,7 @@
     }
     // sahdas
 
-    Promise.all([loadNews(), loadSets()]).catch(showFallback)
+    Promise.all(loadNews()).catch(showFallback)
   </script>
 </body>
 </html>

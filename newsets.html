@@ -29,9 +29,7 @@
       --pink:#cf64e5;
       --cyan:#00E5FF;
 
-      --cardW: 240px;
       --cardMediaRatio: 4 / 3;
-      --pageSize: 28;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
@@ -520,12 +518,6 @@
     .openBtn svg{width:18px;height:18px;color:#fff}
     .card:hover .openBtn{transform:translateY(-1px);filter:brightness(1.06)}
 
-    @media (max-width:420px){
-      .card{min-height:300px;border-radius:20px}
-      .media img{padding:10px}
-      .name{font-size:1.02rem}
-    }
-
     .pager{
       display:flex;
       align-items:center;
@@ -583,6 +575,16 @@
       border:1px solid rgba(255,255,255,.08);
       background:rgba(16,24,32,.35);
       min-height:320px;
+    }
+
+    .errorBox{
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.45);
+      padding:14px;
+      color:#d7dde3;
+      font-weight:900;
+      line-height:1.35;
     }
   </style>
 </head>
@@ -714,10 +716,7 @@
 
       <div class="divider"></div>
 
-      <div class="grid" id="grid" aria-label="Sets Grid">
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-      </div>
+      <div class="grid" id="grid" aria-label="Sets Grid"></div>
 
       <div class="pager" aria-label="Pagination">
         <div class="pagerLeft" id="rangeMeta">0–0</div>
@@ -732,15 +731,17 @@
   </main>
 
   <script>
-    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts"
+    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
     const FALLBACK_IMG = "/Bilder/real1.png"
     const PAGE_SIZE = 28
     const WISH_KEY = "sethub_wishlist_v1"
 
     const burgerBtn = document.getElementById("burgerBtn")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
+
     function openDrawer(){ document.body.classList.add("drawer-open") }
     function closeDrawer(){ document.body.classList.remove("drawer-open") }
+
     burgerBtn.addEventListener("click", () => {
       document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
     })
@@ -769,11 +770,22 @@
       return n.toFixed(2)
     }
 
+    function ensureArrayFromApi(data){
+      if(Array.isArray(data)) return data
+      if(data && Array.isArray(data.$values)) return data.$values
+      if(data && Array.isArray(data.items)) return data.items
+      if(data && Array.isArray(data.data)) return data.data
+      if(data && Array.isArray(data.results)) return data.results
+      if(data && Array.isArray(data.value)) return data.value
+      return []
+    }
+
     function withTimeout(ms){
       const controller = new AbortController()
       const t = setTimeout(() => controller.abort(), ms)
       return { signal: controller.signal, clear: () => clearTimeout(t) }
     }
+
     async function fetchJson(url){
       const { signal, clear } = withTimeout(14000)
       let res
@@ -788,7 +800,7 @@
       } finally {
         clear()
       }
-      if(!res.ok) throw new Error("bad status")
+      if(!res.ok) throw new Error("HTTP " + res.status)
       return await res.json()
     }
 
@@ -804,17 +816,7 @@
 
       const search = (name + " " + theme + " " + setNumber).toLowerCase()
 
-      return {
-        name,
-        setNumber,
-        theme,
-        price,
-        img,
-        url,
-        date,
-        raw,
-        search
-      }
+      return { name,setNumber,theme,price,img,url,date,raw,search }
     }
 
     function getWishlist(){
@@ -828,12 +830,8 @@
     function setWishlist(arr){
       localStorage.setItem(WISH_KEY, JSON.stringify(arr))
     }
-    function inWish(setNumber){
-      const w = getWishlist()
-      return w.includes(String(setNumber))
-    }
-    function toggleWish(setNumber){
-      const key = String(setNumber)
+    function toggleWish(id){
+      const key = String(id)
       let w = getWishlist()
       if(w.includes(key)) w = w.filter(x => x !== key)
       else w = [key, ...w]
@@ -845,8 +843,9 @@
       document.getElementById("wishCount").textContent = String(w.length)
       document.querySelectorAll(".wishBtn").forEach(btn => {
         const id = btn.getAttribute("data-id") || ""
-        btn.setAttribute("data-on", w.includes(id) ? "1" : "0")
-        btn.setAttribute("aria-pressed", w.includes(id) ? "true" : "false")
+        const on = w.includes(id)
+        btn.setAttribute("data-on", on ? "1" : "0")
+        btn.setAttribute("aria-pressed", on ? "true" : "false")
       })
     }
 
@@ -911,9 +910,9 @@
       const title = x.name || "Set"
       const img = x.img || FALLBACK_IMG
       const price = x.price ? `${x.price}` : ""
-      const setNumber = x.setNumber ? `#${x.setNumber}` : ""
+      const setNumberTxt = x.setNumber ? `#${x.setNumber}` : ""
 
-      const wishId = x.setNumber || title
+      const wishId = (x.setNumber || title).trim()
 
       return `
         <a class="card" href="${href}" target="_blank" rel="noopener" aria-label="${safeText(title)}">
@@ -935,8 +934,8 @@
 
             <div class="subline">
               <div class="subLeft">
-                <div class="price">${price ? price : ""}</div>
-                <div class="setno">${setNumber}</div>
+                <div class="price">${price}</div>
+                <div class="setno">${setNumberTxt}</div>
               </div>
               <div class="openBtn" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
@@ -979,13 +978,12 @@
       prevPage.disabled = page <= 1
       nextPage.disabled = page >= totalPages
 
-      grid.innerHTML = slice.map(buildCard).join("") || ""
+      grid.innerHTML = slice.length ? slice.map(buildCard).join("") : `<div class="errorBox">Keine Daten</div>`
       wireWishlistButtons()
     }
 
     prevPage.addEventListener("click", () => { page -= 1; render() })
     nextPage.addEventListener("click", () => { page += 1; render() })
-
     q.addEventListener("input", () => applyFilter())
 
     sortBtn.addEventListener("click", () => {
@@ -1003,7 +1001,8 @@
       `
 
       const data = await fetchJson(SETS_API_URL)
-      const list = Array.isArray(data) ? data : []
+      const list = ensureArrayFromApi(data)
+
       const norm = list.map(normalizeItem)
 
       const seen = new Set()
@@ -1018,13 +1017,13 @@
 
       all.sort(byNew)
       reloadCount.textContent = String(all.length)
+
       applyFilter()
       updateWishUI()
     }
 
-    reloadBtn.addEventListener("click", () => load().catch(() => {}))
-
-    function showFallback(){
+    function showError(msg){
+      grid.innerHTML = `<div class="errorBox">${safeText(msg)}</div>`
       all = []
       filtered = []
       reloadCount.textContent = "0"
@@ -1032,7 +1031,17 @@
       updateWishUI()
     }
 
-    load().catch(showFallback)
+    reloadBtn.addEventListener("click", () => {
+      load().catch(err => {
+        console.error(err)
+        showError("Fehler beim Laden. Schau in die Browser Console. CORS oder JSON Format")
+      })
+    })
+
+    load().catch(err => {
+      console.error(err)
+      showError("Fehler beim Laden. Schau in die Browser Console. CORS oder JSON Format")
+    })
 
     updateWishUI()
   </script>
