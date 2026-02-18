@@ -1,3 +1,4 @@
+<!-- sale.html -->
 <!doctype html>
 <html lang="de">
 <head>
@@ -128,9 +129,11 @@
       position:fixed;
       top:16px;
       left:68px;
+      right:140px;
       z-index:59;
       display:flex;
       gap:10px;
+      align-items:center;
     }
     .top-link{
       height:46px;
@@ -152,16 +155,65 @@
     .top-link:hover{background:rgba(19,32,42,.85)}
     .top-link span{color:#b7c2cc;font-weight:700}
 
+    .top-icons{
+      position:fixed;
+      top:16px;
+      right:14px;
+      z-index:59;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .top-ic{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid rgba(255,255,255,.10);
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      position:relative;
+    }
+    .top-ic:hover{background:rgba(19,32,42,.85)}
+    .top-ic svg{width:20px;height:20px;color:#fff}
+
+    .badgecount{
+      position:absolute;
+      right:-6px;
+      top:-6px;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      border-radius:999px;
+      background:rgba(207,100,229,.95);
+      color:#fff;
+      font-weight:900;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 10px 24px rgba(0,0,0,.45);
+    }
+
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
       .nav-text{font-size:1.45rem}
       .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;gap:8px}
+      .top-links{top:14px;left:64px;right:118px;gap:8px}
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
+      .top-icons{top:14px;right:14px;gap:8px}
+      .top-ic{height:44px;width:44px}
     }
-    @media (max-width:520px){ .top-links{display:none} }
+    @media (max-width:520px){
+      .top-links{display:none}
+      .top-icons{display:flex}
+    }
 
     .drawer{
       position:fixed;
@@ -542,13 +594,10 @@
       padding:0;
     }
     .card.expanded .details{
-      max-height:1200px;
+      max-height:1600px;
       opacity:1;
       transform:translateY(0);
       padding:10px;
-    }
-    @media (max-width:520px){
-      .card.expanded .details{max-height:1600px}
     }
 
     .stores{
@@ -701,12 +750,29 @@
     </a>
   </div>
 
+  <div class="top-icons" id="topIcons" aria-label="Icons">
+    <a class="top-ic" href="/wishlist.html" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div class="badgecount" id="wishBadge" hidden>0</div>
+    </a>
+
+    <button class="top-ic" id="loginOpenTop" type="button" aria-label="Anmelden">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 12a4 4 0 1 0-4-4a4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2"/>
+        <path d="M4 20c1.6-3.4 5-5 8-5s6.4 1.6 8 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+
   <nav class="drawer" id="drawer" aria-label="Menü">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
     <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
     <a href="/sale.html" class="drawer-link">Sale <small>Deals</small></a>
+    <a href="/wishlist.html" class="drawer-link">Wishlist <small>Saved</small></a>
     <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
     <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden <small>Google</small></button>
   </nav>
@@ -843,6 +909,9 @@
     const MAX_SETS = 200
     const FALLBACK_IMG = "/Bilder/real1.png"
 
+    const LS_WISH_KEYS = "sethub_wishlist"
+    const LS_WISH_ITEMS = "sethub_wishlist_items"
+
     const els = {
       burgerBtn: document.getElementById("burgerBtn"),
       drawerBackdrop: document.getElementById("drawerBackdrop"),
@@ -862,7 +931,11 @@
       pinfo: document.getElementById("pinfo"),
 
       statSets: document.getElementById("statSets"),
-      statWish: document.getElementById("statWish")
+      statWish: document.getElementById("statWish"),
+
+      wishBadge: document.getElementById("wishBadge"),
+      loginOpenTop: document.getElementById("loginOpenTop"),
+      loginOpenDrawer: document.getElementById("loginOpenDrawer")
     }
 
     function openDrawer(){ document.body.classList.add("drawer-open") }
@@ -874,18 +947,9 @@
         else openDrawer()
       })
     }
-
-    if(els.drawerBackdrop){
-      els.drawerBackdrop.addEventListener("click", closeDrawer)
-    }
-
-    document.querySelectorAll(".drawer-link").forEach(a => {
-      a.addEventListener("click", closeDrawer)
-    })
-
-    addEventListener("keydown", e => {
-      if(e.key === "Escape") closeDrawer()
-    })
+    if(els.drawerBackdrop) els.drawerBackdrop.addEventListener("click", closeDrawer)
+    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
+    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
 
     if(els.filterBtn && els.filters){
       els.filterBtn.addEventListener("click", () => {
@@ -893,13 +957,22 @@
       })
     }
 
+    if(els.loginOpenTop && els.loginOpenDrawer){
+      els.loginOpenTop.addEventListener("click", () => {
+        closeDrawer()
+        els.loginOpenDrawer.click()
+      })
+    }
+
     let PAGE_SIZE = pickPageSize()
     let raw = []
     let view = []
     let page = 1
-    let wishlist = loadWishlist()
 
-    updateWishStat()
+    let wishlist = loadWishlistKeys()
+    let wishItems = loadWishlistItems()
+
+    updateWishUi()
 
     function pickPageSize(){
       const w = window.innerWidth || 1200
@@ -908,9 +981,9 @@
       return 20
     }
 
-    function loadWishlist(){
+    function loadWishlistKeys(){
       try{
-        const x = JSON.parse(localStorage.getItem("sethub_wishlist") || "[]")
+        const x = JSON.parse(localStorage.getItem(LS_WISH_KEYS) || "[]")
         if(Array.isArray(x)) return new Set(x.map(String))
         return new Set()
       }catch{
@@ -918,13 +991,29 @@
       }
     }
 
-    function saveWishlist(){
-      localStorage.setItem("sethub_wishlist", JSON.stringify([...wishlist]))
-      updateWishStat()
+    function loadWishlistItems(){
+      try{
+        const x = JSON.parse(localStorage.getItem(LS_WISH_ITEMS) || "{}")
+        if(x && typeof x === "object") return x
+        return {}
+      }catch{
+        return {}
+      }
     }
 
-    function updateWishStat(){
-      if(els.statWish) els.statWish.textContent = String(wishlist.size)
+    function saveWishlist(){
+      localStorage.setItem(LS_WISH_KEYS, JSON.stringify([...wishlist]))
+      localStorage.setItem(LS_WISH_ITEMS, JSON.stringify(wishItems))
+      updateWishUi()
+    }
+
+    function updateWishUi(){
+      const n = wishlist.size
+      if(els.statWish) els.statWish.textContent = String(n)
+      if(els.wishBadge){
+        els.wishBadge.textContent = String(n)
+        els.wishBadge.hidden = n <= 0
+      }
     }
 
     function parsePrice(v){
@@ -1223,6 +1312,27 @@
       }
     }
 
+    function makeWishSnapshot(x){
+      const pres = pickPresentation(x)
+      const setNumber = x.setNumber || ""
+      const heartKey = setNumber ? setNumber : ("fallback:" + ((x.best && x.best.url) || pres.name))
+
+      return {
+        key: heartKey,
+        setNumber: setNumber,
+        name: pres.name || "Set",
+        image: pres.image || "",
+        best: x.best ? { source:x.best.source, price:x.best.price, url:x.best.url } : null,
+        bestSale: x.bestSale ? { source:x.bestSale.source, pct:x.bestSale.pct, price:x.bestSale.price, oldPrice:x.bestSale.oldPrice } : null,
+        sources: {
+          lego: x.sources.lego ? { name:x.sources.lego.name, image:x.sources.lego.image, url:x.sources.lego.url, price:x.sources.lego.price, oldPrice:x.sources.lego.oldPrice, discountPct:x.sources.lego.discountPct } : null,
+          amazon: x.sources.amazon ? { name:x.sources.amazon.name, image:x.sources.amazon.image, url:x.sources.amazon.url, price:x.sources.amazon.price, oldPrice:x.sources.amazon.oldPrice, discountPct:x.sources.amazon.discountPct } : null,
+          alternate: x.sources.alternate ? { name:x.sources.alternate.name, image:x.sources.alternate.image, url:x.sources.alternate.url, price:x.sources.alternate.price, oldPrice:x.sources.alternate.oldPrice, discountPct:x.sources.alternate.discountPct } : null
+        },
+        savedAt: Date.now()
+      }
+    }
+
     async function loadAll(){
       if(els.reload) els.reload.disabled = true
 
@@ -1392,9 +1502,20 @@
         const heart = card.querySelector(".heart")
         heart.addEventListener("click", (e) => {
           e.stopPropagation()
-          if(wishlist.has(heartKey)) wishlist.delete(heartKey)
-          else wishlist.add(heartKey)
-          heart.classList.toggle("on")
+
+          if(wishlist.has(heartKey)){
+            wishlist.delete(heartKey)
+            delete wishItems[heartKey]
+            heart.classList.remove("on")
+            saveWishlist()
+            return
+          }
+
+          wishlist.add(heartKey)
+          heart.classList.add("on")
+
+          const snap = makeWishSnapshot(x)
+          wishItems[heartKey] = snap
           saveWishlist()
         })
 
