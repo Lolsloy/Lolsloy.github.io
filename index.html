@@ -1943,30 +1943,36 @@
       button.textContent = loading ? loadingText : idleText
     }
 
-    async function postJson(url, payload){
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json' },
-        credentials: 'include',
-        body: JSON.stringify(payload)
-      })
+async function postJson(url, payload){
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type':'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(payload)
+  })
 
-      let data = null
-      const text = await res.text()
-      try{
-        data = text ? JSON.parse(text) : null
-      }catch{
-        data = null
-      }
+  const text = await res.text()
 
-      if(!res.ok){
-        const message = data && data.message ? data.message : 'Request failed'
-        throw new Error(message)
-      }
+  console.log('POST URL:', url)
+  console.log('STATUS:', res.status)
+  console.log('RAW RESPONSE:', text)
 
-      return data
-    }
+  let data = null
+  try{
+    data = text ? JSON.parse(text) : null
+  }catch{
+    data = null
+  }
 
+  if(!res.ok){
+    const message = data && data.message
+      ? data.message
+      : `HTTP ${res.status} ${text || 'Request failed'}`
+    throw new Error(message)
+  }
+
+  return data
+}
     const signupForm = document.getElementById('signupForm')
     const signupEmail = document.getElementById('signupEmail')
     const signupBtn = document.getElementById('signupBtn')
