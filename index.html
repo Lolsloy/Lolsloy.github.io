@@ -8,22 +8,18 @@
   <meta name="theme-color" content="#0E141A" />
   <link rel="icon" type="image/png" href="Bilder/lagos.png">
 
-   <style>
+  <style>
     :root{
       --bg:#0E141A;
       --bg-light:#1C2731;
       --fg-on:#E6E9ED;
       --muted:#9AA4AE;
-
       --glass2:rgba(16,24,32,.7);
       --glassSoft:rgba(16,24,32,.55);
-
       --border:#1f2a35;
       --border2:#0f1a22;
       --glass-border:#213140;
-
       --pink:#cf64e5;
-
       --brandBgO:1;
       --glassO:0;
     }
@@ -125,7 +121,6 @@
       display:grid;
       place-items:center;
       cursor:pointer;
-
       opacity:0;
       pointer-events:none;
       transform:translateX(-18px) scale(.95);
@@ -161,7 +156,6 @@
       z-index:59;
       display:flex;
       gap:10px;
-
       opacity:0;
       pointer-events:none;
       transform:translateX(-10px);
@@ -202,7 +196,6 @@
       display:flex;
       align-items:center;
       gap:10px;
-
       opacity:0;
       pointer-events:none;
       transform:translateX(10px);
@@ -413,7 +406,6 @@
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:2rem;
-
       opacity:0;
       transform:translateY(18px);
       pointer-events:none;
@@ -762,7 +754,13 @@
     .cta-title{font-size:2rem;font-weight:800}
     .logo-small{height:58px;width:auto;display:grid;place-items:center;transform:translateY(1px)}
 
-    .signup{display:flex;gap:.6rem;max-width:520px;position:relative}
+    .signup{
+      display:flex;
+      gap:.6rem;
+      max-width:520px;
+      position:relative;
+      margin-top:14px;
+    }
     .signup input{
       flex:1;
       padding:.9rem 1rem;
@@ -860,6 +858,7 @@
       transform:translateX(-50%) translateY(0) scale(1);
       animation:cookiePop .5s ease;
     }
+
     @keyframes cookiePop{
       0%{transform:translateX(-50%) translateY(30px) scale(.96)}
       60%{transform:translateX(-50%) translateY(-4px) scale(1.01)}
@@ -963,7 +962,6 @@
       overflow:hidden;
       display:flex;
       flex-direction:column;
-
       opacity:0;
       transform:translateX(28px) translateY(-10px) scale(.985);
       will-change:transform, opacity;
@@ -1152,7 +1150,6 @@
       .login-card h3{font-size:1.05rem}
     }
 
-    /* SLIDER HEAD + BUTTONS */
     .slider-head{
       display:flex;
       align-items:flex-end;
@@ -1188,152 +1185,121 @@
     .sbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .sbtn svg{width:22px;height:22px}
 
-    /* SLIDER */
-/* replace ONLY your slider + card css with this */
+    .slider-wrap{
+      position:relative;
+      width:100%;
+    }
 
-/* SLIDER */
-.slider-wrap{
-  position:relative;
-  width:100%;
-}
+    .slider{
+      display:flex;
+      gap:22px;
+      overflow-x:auto;
+      overflow-y:hidden;
+      scroll-snap-type:x mandatory;
+      scroll-behavior:smooth;
+      -webkit-overflow-scrolling:touch;
+      padding:26px 5% 46px;
+      scroll-padding-left:5%;
+      scroll-padding-right:5%;
+      overscroll-behavior-x:contain;
+      scrollbar-width:none;
+      touch-action:pan-x pan-y;
+      pointer-events:auto;
+    }
+    .slider::-webkit-scrollbar{display:none}
 
-.slider{
-  display:flex;
-  gap:22px;
+    .pcard{
+      flex:0 0 auto;
+      width:min(440px,72vw);
+      height:480px;
+      border-radius:26px;
+      border:1px solid #223041;
+      background:
+        radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 60%),
+        radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.10), transparent 60%),
+        rgba(16,24,32,.46);
+      backdrop-filter:blur(16px);
+      box-shadow:0 34px 140px rgba(0,0,0,.60);
+      scroll-snap-align:start;
+      position:relative;
+      overflow:hidden;
+      padding:22px 22px 18px;
+      color:#fff;
+      transition:transform .18s ease, filter .18s ease;
+    }
+    .pcard:hover{
+      transform:translateY(-6px);
+      filter:brightness(1.06);
+    }
 
-  overflow-x:auto;
-  overflow-y:hidden;
+    .pcard-top{
+      position:relative;
+      z-index:3;
+      max-width:28ch;
+    }
 
-  scroll-snap-type:x mandatory;
-  scroll-behavior:smooth;
-  -webkit-overflow-scrolling:touch;
+    .pcard-title{
+      margin-top:2px;
+      font-size:1.55rem;
+      line-height:1.1;
+      font-weight:950;
+      letter-spacing:.01em;
+    }
 
-  padding:26px 5% 46px;
-  scroll-padding-left:5%;
-  scroll-padding-right:5%;
+    .pcard-img{
+      position:absolute;
+      left:50%;
+      bottom:-8px;
+      transform:translateX(-50%);
+      width:92%;
+      max-width:520px;
+      max-height:86%;
+      object-fit:contain;
+      z-index:1;
+      pointer-events:none;
+      user-select:none;
+      filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
+    }
 
-  overscroll-behavior-x:contain;
+    .pcard-dark{
+      background:
+        radial-gradient(900px 520px at 20% 10%, rgba(0,229,255,.08), transparent 60%),
+        radial-gradient(900px 520px at 85% 90%, rgba(255,94,160,.10), transparent 62%),
+        rgba(8,12,16,.92);
+      border:1px solid #1a2530;
+    }
 
-  scrollbar-width:none;
+    @media (max-width:620px){
+      .slider{
+        gap:14px;
+        padding:18px 12px 34px;
+        scroll-padding-left:12px;
+        scroll-padding-right:12px;
+      }
 
-  touch-action:pan-x pan-y;
-  pointer-events:auto;
-}
-.slider::-webkit-scrollbar{display:none}
+      .pcard{
+        width:calc(100% - 24px);
+        height:440px;
+        padding:18px;
+        scroll-snap-align:center;
+      }
 
-.pcard{
-  flex:0 0 auto;
+      .pcard-title{
+        font-size:1.35rem;
+      }
 
-  width:min(440px,72vw);
-  height:480px;
+      .pcard-img{
+        width:96%;
+        max-width:none;
+        bottom:-6px;
+        max-height:88%;
+      }
+    }
 
-  border-radius:26px;
-  border:1px solid #223041;
-
-  background:
-    radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 60%),
-    radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.10), transparent 60%),
-    rgba(16,24,32,.46);
-
-  backdrop-filter:blur(16px);
-  box-shadow:0 34px 140px rgba(0,0,0,.60);
-
-  scroll-snap-align:start;
-
-  position:relative;
-  overflow:hidden;
-
-  padding:22px 22px 18px;
-  color:#fff;
-
-  transition:transform .18s ease, filter .18s ease;
-}
-.pcard:hover{
-  transform:translateY(-6px);
-  filter:brightness(1.06);
-}
-
-.pcard-top{
-  position:relative;
-  z-index:3;
-  max-width:28ch;
-}
-
-.pcard-title{
-  margin-top:2px;
-  font-size:1.55rem;
-  line-height:1.1;
-  font-weight:950;
-  letter-spacing:.01em;
-}
-
-.pcard-img{
-  position:absolute;
-  left:50%;
-  bottom:-8px;
-  transform:translateX(-50%);
-
-  width:92%;
-  max-width:520px;
-  max-height:86%;
-
-  object-fit:contain;
-
-  z-index:1;
-  pointer-events:none;
-  user-select:none;
-
-  filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
-}
-
-.pcard-dark{
-  background:
-    radial-gradient(900px 520px at 20% 10%, rgba(0,229,255,.08), transparent 60%),
-    radial-gradient(900px 520px at 85% 90%, rgba(255,94,160,.10), transparent 62%),
-    rgba(8,12,16,.92);
-  border:1px solid #1a2530;
-}
-
-.pcard-sky{
-  background:
-    radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 62%),
-    radial-gradient(900px 520px at 92% 120%, rgba(59,130,246,.12), transparent 62%),
-    rgba(14,20,26,.58);
-}
-
-@media (max-width:620px){
-  .slider{
-    gap:14px;
-
-    padding:18px 12px 34px;
-
-    scroll-padding-left:12px;
-    scroll-padding-right:12px;
-  }
-
-  .pcard{
-    width:calc(100% - 24px);
-    height:440px;
-    padding:18px;
-    scroll-snap-align:center;
-  }
-
-  .pcard-title{
-    font-size:1.35rem;
-  }
-
-  .pcard-img{
-    width:96%;
-    max-width:none;
-    bottom:-6px;
-    max-height:88%;
-  }
-}
-
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  .pcard,.pcard-img,.qcard::before,.q-ico::after{animation:none;transition:none}
-}
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      .pcard,.pcard-img,.qcard::before,.q-ico::after{animation:none;transition:none}
+    }
   </style>
 </head>
 
@@ -1597,72 +1563,65 @@
         </div>
       </div>
 
+      <section class="section" id="featured">
+        <div class="container">
+          <div class="slider-head">
+            <h2 class="slider-title">Featured Products</h2>
 
-         <section class="section" id="featured">
-  <div class="container">
-    <div class="slider-head">
-      <h2 class="slider-title">Featured Products</h2>
-
-      <div class="slider-actions" aria-label="Slider Steuerung">
-        <button class="sbtn" type="button" id="slidePrev" aria-label="Nach links">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-        <button class="sbtn" type="button" id="slideNext" aria-label="Nach rechts">
-          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
-      </div>
-    </div>
-
-    <div class="slider-wrap">
-      <div class="slider" id="cardSlider" tabindex="0" aria-label="Karten Slider">
-        <a class="pcard pcard-dark" href="/info.html?id=apple-watch-black-unity" aria-label="Apple Watch Black Unity">
-          <div class="pcard-top">
-           
-            <div class="pcard-title">Theme Page - All Your Sets in One Place </div>
+            <div class="slider-actions" aria-label="Slider Steuerung">
+              <button class="sbtn" type="button" id="slidePrev" aria-label="Nach links">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="sbtn" type="button" id="slideNext" aria-label="Nach rechts">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
           </div>
-          <img class="pcard-img" src="/Bilder/slider1.png" alt="">
-        </a>
 
-        <a class="pcard" href="/info.html?id=watch-series-11" aria-label="Apple Watch Series 11">
-          <div class="pcard-top">
-            <div class="pcard-title">Wishlists - Highlight your future Sets</div>
+          <div class="slider-wrap">
+            <div class="slider" id="cardSlider" tabindex="0" aria-label="Karten Slider">
+              <a class="pcard pcard-dark" href="/info.html?id=theme-page" aria-label="Theme Page">
+                <div class="pcard-top">
+                  <div class="pcard-title">Theme Page - All Your Sets in One Place</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider1.png" alt="">
+              </a>
+
+              <a class="pcard" href="/info.html?id=wishlist" aria-label="Wishlist">
+                <div class="pcard-top">
+                  <div class="pcard-title">Wishlists - Highlight your future Sets</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider2.png" alt="">
+              </a>
+
+              <a class="pcard" href="/info.html?id=boxes" aria-label="Boxes">
+                <div class="pcard-top">
+                  <div class="pcard-title">Convenient - Manage Sets in Boxes</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider3.png" alt="">
+              </a>
+
+              <a class="pcard pcard-dark" href="/info.html?id=news" aria-label="News">
+                <div class="pcard-top">
+                  <div class="pcard-title">Informative - Recent LEGO News all in one place</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider4.png" alt="">
+              </a>
+
+              <a class="pcard" href="/info.html?id=scan" aria-label="Scan">
+                <div class="pcard-top">
+                  <div class="pcard-title">Simple - Add Sets with just one scan</div>
+                </div>
+                <img class="pcard-img" src="/Bilder/slider5.png" alt="">
+              </a>
+            </div>
           </div>
-          <img class="pcard-img" src="/Bilder/slider2.png" alt">
-        </a>
-
-        <a class="pcard" href="/info.html?id=airtag" aria-label="AirTag">
-          <div class="pcard-top">
-            <div class="pcard-title">Convinient - Manage Sets in Boxes</div>
-          </div>
-          <img class="pcard-img" src="/Bilder/slider3.png" alt="">
-        </a>
-
-        <a class="pcard pcard-dark" href="/info.html?id=ipad-pro" aria-label="iPad Pro">
-          <div class="pcard-top">
-            <div class="pcard-title">Informative - Recent LEGOnews all in one place</div>
-          </div>
-          <img class="pcard-img" src="/Bilder/slider4.png" alt="">
-      
-        </a>
-
-        <a class="pcard" href="/info.html?id=iphone-17" aria-label="iPhone 17">
-          <div class="pcard-top">
-            <div class="pcard-title">Simple - Add Sets with just one scan</div>
-          </div>
-          <img class="pcard-img" src="/Bilder/slider5.png" alt="">
-        </a>
-
-        
-      </div>
-    </div>
-  </div>
-</section>
-
-
+        </div>
+      </section>
 
       <div class="container feature">
         <div class="stage" aria-hidden="true"></div>
@@ -1765,21 +1724,11 @@
           </div>
         </div>
 
-        <form class="signup" id="signupForm"
-          action="https://sethub.us15.list-manage.com/subscribe/post?u=7ec946cee576bceb6230c39d1&amp;id=f9515cb6c5&amp;f_id=00f1c2e1f0"
-          method="post"
-          target="mcHiddenFrame"
-          novalidate>
+        <form class="signup" id="signupForm" novalidate>
           <input type="email" name="EMAIL" id="signupEmail" placeholder="Enter Email Address" required />
-
-          <div aria-hidden="true" style="position:absolute; left:-5000px;">
-            <input type="text" name="b_7ec946cee576bceb6230c39d1_f9515cb6c5" tabindex="-1" value="">
-          </div>
-
           <button type="submit" id="signupBtn">Sign Up</button>
         </form>
 
-        <iframe name="mcHiddenFrame" id="mcHiddenFrame" style="display:none"></iframe>
       </div>
 
       <section class="impressum" id="impressum">
@@ -1843,7 +1792,11 @@
 
   <script>
     const GOOGLE_CLIENT_ID = '890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com'
-    const SUBSCRIBE_URL = 'https://YOUR_BACKEND_DOMAIN/api/subscribe'
+
+    const API_BASE = 'https://YOUR_BACKEND_DOMAIN'
+    const GOOGLE_SUBSCRIBE_URL = `${API_BASE}/api/auth/google-subscribe`
+    const NEWSLETTER_SUBSCRIBE_URL = `${API_BASE}/api/newsletter/subscribe`
+    const SESSION_ME_URL = `${API_BASE}/api/auth/me`
 
     const brandLine = document.getElementById('brandLine')
     const brandFixed = document.getElementById('brandFixed')
@@ -1858,10 +1811,8 @@
 
       const startTop = h/2
       const endTop = 39
-
       const startLeft = w/2
       const endLeft = w/2
-
       const t = clamp01(y/(h*0.35))
 
       const curTop = lerp(startTop, endTop, t)
@@ -1885,38 +1836,38 @@
       rafPending = false
     }
 
-    let rafPending=false
+    let rafPending = false
     addEventListener('scroll',()=>{
       if(!rafPending){
         requestAnimationFrame(updateBrand)
-        rafPending=true
+        rafPending = true
       }
     },{passive:true})
     addEventListener('resize',updateBrand)
     updateBrand()
 
-    const target=new Date('2026-05-01T23:59:59')
-    const elD=document.getElementById('cd-d')
-    const elH=document.getElementById('cd-h')
-    const elM=document.getElementById('cd-m')
-    const elS=document.getElementById('cd-s')
+    const target = new Date('2026-05-01T23:59:59')
+    const elD = document.getElementById('cd-d')
+    const elH = document.getElementById('cd-h')
+    const elM = document.getElementById('cd-m')
+    const elS = document.getElementById('cd-s')
 
     function tick(){
-      const now=new Date()
-      let diff=Math.max(0,target-now)
+      const now = new Date()
+      let diff = Math.max(0,target-now)
 
-      const d=Math.floor(diff/86400000)
-      diff-=d*86400000
-      const h=Math.floor(diff/3600000)
-      diff-=h*3600000
-      const m=Math.floor(diff/60000)
-      diff-=m*60000
-      const s=Math.floor(diff/1000)
+      const d = Math.floor(diff/86400000)
+      diff -= d*86400000
+      const h = Math.floor(diff/3600000)
+      diff -= h*3600000
+      const m = Math.floor(diff/60000)
+      diff -= m*60000
+      const s = Math.floor(diff/1000)
 
-      elD.textContent=String(d).padStart(2,'0')
-      elH.textContent=String(h).padStart(2,'0')
-      elM.textContent=String(m).padStart(2,'0')
-      elS.textContent=String(s).padStart(2,'0')
+      elD.textContent = String(d).padStart(2,'0')
+      elH.textContent = String(h).padStart(2,'0')
+      elM.textContent = String(m).padStart(2,'0')
+      elS.textContent = String(s).padStart(2,'0')
     }
     tick()
     setInterval(tick,1000)
@@ -1997,28 +1948,65 @@
       if(e.target === toastWrap) closeToast()
     })
 
+    function setLoading(button, loading, idleText, loadingText){
+      button.disabled = loading
+      button.textContent = loading ? loadingText : idleText
+    }
+
+    async function postJson(url, payload){
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      })
+
+      let data = null
+      const text = await res.text()
+      try{
+        data = text ? JSON.parse(text) : null
+      }catch{
+        data = null
+      }
+
+      if(!res.ok){
+        const message = data && data.message ? data.message : 'Request failed'
+        throw new Error(message)
+      }
+
+      return data
+    }
+
     const signupForm = document.getElementById('signupForm')
     const signupEmail = document.getElementById('signupEmail')
     const signupBtn = document.getElementById('signupBtn')
 
-    signupForm.addEventListener('submit', ()=>{
+    signupForm.addEventListener('submit', async (e)=>{
+      e.preventDefault()
+
       const email = signupEmail.value.trim()
-      if(!email) return
-      signupBtn.disabled = true
-      signupBtn.textContent = 'Sending'
-      setTimeout(()=>{
+      if(!email){
+        toast('Bitte gib eine Email ein','Fehler')
+        return
+      }
+
+      setLoading(signupBtn, true, 'Sign Up', 'Sending')
+
+      try{
+        const data = await postJson(NEWSLETTER_SUBSCRIBE_URL, { email })
         signupForm.reset()
-        signupBtn.disabled = false
-        signupBtn.textContent = 'Sign Up'
-        toast('Deine Email wurde geschickt Danke für dein Interesse','Gesendet')
-      }, 900)
+        toast(data?.message || 'Du wurdest für News eingetragen','Gesendet')
+      }catch(err){
+        toast(err.message || 'Newsletter Anmeldung fehlgeschlagen','Fehler')
+      }finally{
+        setLoading(signupBtn, false, 'Sign Up', 'Sending')
+      }
     })
 
     const aiFab = document.getElementById('aiFab')
     const aiOverlay = document.getElementById('aiOverlay')
     const aiClose = document.getElementById('aiClose')
     const aiFrame = document.getElementById('aiFrame')
-
     const AI_URL = 'https://lego.sethub.ddnsfree.com/'
     let aiBusy = false
 
@@ -2055,6 +2043,8 @@
     const loginBackdrop = document.getElementById('loginBackdrop')
     const loginModal = document.getElementById('loginModal')
     const loginClose = document.getElementById('loginClose')
+    const userName = document.getElementById('userName')
+    const userEmail = document.getElementById('userEmail')
 
     function openLogin(){
       document.body.classList.add('login-open')
@@ -2069,15 +2059,6 @@
       loginModal.setAttribute('aria-hidden','true')
     }
 
-    loginOpen.addEventListener('click', openLogin)
-    loginIconBtn.addEventListener('click', openLogin)
-    loginOpenDrawer.addEventListener('click', ()=>{ closeDrawer(); openLogin() })
-    loginClose.addEventListener('click', closeLogin)
-    loginBackdrop.addEventListener('click', closeLogin)
-
-    const userName = document.getElementById('userName')
-    const userEmail = document.getElementById('userEmail')
-
     function setUserUI(u){
       if(!u) return
       document.body.classList.add('user-on')
@@ -2085,27 +2066,41 @@
       userEmail.textContent = u.email || ''
     }
 
-    function onGoogleCredential(resp){
-      fetch(SUBSCRIBE_URL, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
+    async function loadSessionUser(){
+      try{
+        const res = await fetch(SESSION_ME_URL, { credentials:'include' })
+        if(!res.ok) return
+        const data = await res.json()
+        if(data?.ok && data?.user){
+          setUserUI(data.user)
+        }
+      }catch{}
+    }
+
+    loginOpen.addEventListener('click', openLogin)
+    loginIconBtn.addEventListener('click', openLogin)
+    loginOpenDrawer.addEventListener('click', ()=>{ closeDrawer(); openLogin() })
+    loginClose.addEventListener('click', closeLogin)
+    loginBackdrop.addEventListener('click', closeLogin)
+
+    async function onGoogleCredential(resp){
+      try{
+        const data = await postJson(GOOGLE_SUBSCRIBE_URL, {
           credential: resp.credential,
           origin: location.origin
         })
-      })
-      .then(async r=>{
-        const text = await r.text()
-        const data = (()=>{ try{return JSON.parse(text)}catch{return null} })()
-        if(!r.ok || !data || !data.ok) throw new Error('subscribe_failed')
+
         closeLogin()
-        setUserUI({ name: data.name, email: data.email })
-        toast('Angemeldet und eingetragen','Erfolg')
-      })
-      .catch(()=>{
+        setUserUI({
+          name: data?.user?.name || data?.name || 'User',
+          email: data?.user?.email || data?.email || ''
+        })
+
+        toast(data?.message || 'Angemeldet und für News eingetragen','Erfolg')
+      }catch(err){
         closeLogin()
-        toast('Anmelden fehlgeschlagen','Fehler')
-      })
+        toast(err.message || 'Anmelden fehlgeschlagen','Fehler')
+      }
     }
 
     function initGSI(){
@@ -2126,7 +2121,6 @@
       if(!btn || !window.google || !google.accounts || !google.accounts.id) return
 
       btn.innerHTML = ''
-
       const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
 
       google.accounts.id.renderButton(btn, {
@@ -2150,6 +2144,8 @@
         }
         if(Date.now() - start > 4000) clearInterval(t)
       }, 50)
+
+      loadSessionUser()
     })
 
     window.addEventListener('resize', ()=>{
@@ -2162,77 +2158,74 @@
       if(e.key === 'Escape'){
         document.body.classList.remove('drawer-open')
         document.body.classList.remove('cookie-open')
-        document.body.classList.remove('ai-open')
         document.body.classList.remove('login-open')
-        document.body.classList.remove('toast-on')
+        closeAI()
+        closeToast()
       }
     })
 
+    const cardSlider = document.getElementById('cardSlider')
+    const slidePrev = document.getElementById('slidePrev')
+    const slideNext = document.getElementById('slideNext')
+    const cards = Array.from(cardSlider.querySelectorAll('.pcard'))
 
-const cardSlider = document.getElementById('cardSlider')
-const slidePrev = document.getElementById('slidePrev')
-const slideNext = document.getElementById('slideNext')
-const cards = Array.from(cardSlider.querySelectorAll('.pcard'))
+    function getStep(){
+      const first = cards[0]
+      if(!first) return 320
+      const gap = parseFloat(getComputedStyle(cardSlider).gap || '22')
+      return first.getBoundingClientRect().width + gap
+    }
 
-function getStep(){
-  const first = cards[0]
-  if(!first) return 320
-  const gap = parseFloat(getComputedStyle(cardSlider).gap || '22')
-  return first.getBoundingClientRect().width + gap
-}
+    function slideBy(dir){
+      cardSlider.scrollBy({ left: getStep() * dir, behavior: 'smooth' })
+    }
 
-function slideBy(dir){
-  cardSlider.scrollBy({ left: getStep() * dir, behavior: 'smooth' })
-}
+    slidePrev.addEventListener('click', ()=> slideBy(-1))
+    slideNext.addEventListener('click', ()=> slideBy(1))
 
-slidePrev.addEventListener('click', ()=> slideBy(-1))
-slideNext.addEventListener('click', ()=> slideBy(1))
+    cardSlider.addEventListener('keydown', e=>{
+      if(e.key === 'ArrowLeft') slideBy(-1)
+      if(e.key === 'ArrowRight') slideBy(1)
+    })
 
-cardSlider.addEventListener('keydown', e=>{
-  if(e.key === 'ArrowLeft') slideBy(-1)
-  if(e.key === 'ArrowRight') slideBy(1)
-})
+    let isDown = false
+    let startX = 0
+    let startY = 0
+    let startScroll = 0
+    let lock = ''
 
-let isDown = false
-let startX = 0
-let startY = 0
-let startScroll = 0
-let lock = ''
+    cardSlider.addEventListener('pointerdown', e=>{
+      isDown = true
+      lock = ''
+      startX = e.clientX
+      startY = e.clientY
+      startScroll = cardSlider.scrollLeft
+      cardSlider.setPointerCapture(e.pointerId)
+    })
 
-cardSlider.addEventListener('pointerdown', e=>{
-  isDown = true
-  lock = ''
-  startX = e.clientX
-  startY = e.clientY
-  startScroll = cardSlider.scrollLeft
-  cardSlider.setPointerCapture(e.pointerId)
-})
+    cardSlider.addEventListener('pointermove', e=>{
+      if(!isDown) return
+      const dx = e.clientX - startX
+      const dy = e.clientY - startY
 
-cardSlider.addEventListener('pointermove', e=>{
-  if(!isDown) return
-  const dx = e.clientX - startX
-  const dy = e.clientY - startY
+      if(!lock){
+        lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+      }
 
-  if(!lock){
-    lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
-  }
+      if(lock === 'x'){
+        cardSlider.scrollLeft = startScroll - dx
+        e.preventDefault()
+      }
+    })
 
-  if(lock === 'x'){
-    cardSlider.scrollLeft = startScroll - dx
-    e.preventDefault()
-  }
-})
+    function endDrag(){
+      isDown = false
+      lock = ''
+    }
 
-function endDrag(){
-  isDown = false
-  lock = ''
-}
-
-cardSlider.addEventListener('pointerup', endDrag)
-cardSlider.addEventListener('pointercancel', endDrag)
-cardSlider.addEventListener('pointerleave', endDrag)
-
-
+    cardSlider.addEventListener('pointerup', endDrag)
+    cardSlider.addEventListener('pointercancel', endDrag)
+    cardSlider.addEventListener('pointerleave', endDrag)
   </script>
 </body>
 </html>
