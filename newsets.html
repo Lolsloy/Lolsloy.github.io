@@ -3,42 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SetHub Events</title>
-  <meta name="description" content="SetHub Events" />
+  <title>SetHub New Sets</title>
+  <meta name="description" content="SetHub New Sets" />
   <meta name="theme-color" content="#0E141A" />
   <link rel="icon" type="image/png" href="Bilder/lagos.png" />
 
   <style>
     :root{
       --bg:#0E141A;
-      --fg-on:#E6E9ED;
-      --muted:#94a3b8;
+      --fg:#E6E9ED;
+      --muted:#A6B0BA;
+
+      --panel:rgba(15,22,30,.70);
+      --glass:rgba(16,24,32,.65);
+      --border:rgba(255,255,255,.10);
+
       --shadow:0 26px 90px rgba(0,0,0,.55);
-      --r2:23px;
+
+      --r1:28px;
+      --r2:18px;
+      --r3:14px;
+
       --gap:16px;
 
-      --card:#0b1218;
-      --card2:#0f1820;
-      --line:#223041;
+      --pink:#cf64e5;
+      --cyan:#00E5FF;
 
-      --ok:#00ff87;
-      --warn:#ffd300;
-      --bad:#ff5ea0;
+      --cardMediaRatio: 4 / 3;
     }
 
     *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--fg-on);
+      color:var(--fg);
       background:var(--bg);
-      overflow-x:hidden;
       min-height:100vh;
+      overflow-x:hidden;
     }
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
-    button{font:inherit;color:inherit}
-    input, textarea, select{font:inherit;color:inherit}
-    ::selection{background:rgba(4,213,235,.25)}
+    button,input{font:inherit}
+    :focus-visible{
+      outline:3px solid rgba(0,229,255,.55);
+      outline-offset:3px;
+      border-radius:12px;
+    }
 
     header.site{
       position:fixed;
@@ -46,10 +56,9 @@
       height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
-      border-bottom:1px solid #0f1a22;
+      border-bottom:1px solid rgba(15,26,34,.9);
       z-index:50;
     }
-
     .topbar-inner{
       height:100%;
       width:min(1240px,100%);
@@ -59,7 +68,6 @@
       grid-template-columns:56px 1fr 56px;
       align-items:center;
     }
-
     .nav-brand{
       grid-column:2;
       justify-self:center;
@@ -70,9 +78,7 @@
       min-width:0;
       transform:translateY(4px);
     }
-
     .logo-svg{width:100%;height:100%;display:block}
-
     .nav-logo{
       height:48px;
       width:auto;
@@ -81,7 +87,6 @@
       transform:translateY(10px);
       flex:0 0 auto;
     }
-
     .nav-text{
       display:flex;
       align-items:center;
@@ -93,7 +98,6 @@
       font-size:1.6rem;
       white-space:nowrap;
     }
-    .nav-text span{cursor:default}
 
     .burger{
       position:fixed;
@@ -104,7 +108,7 @@
       height:46px;
       border-radius:12px;
       background:rgba(16,24,32,.7);
-      border:1px solid #1f2a35;
+      border:1px solid rgba(31,42,53,.9);
       backdrop-filter:blur(10px);
       display:grid;
       place-items:center;
@@ -112,7 +116,6 @@
       transition:transform .12s ease, filter .12s ease;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
-
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
       position:absolute;left:0;right:0;
@@ -122,7 +125,6 @@
     .burger .lines span:nth-child(1){top:0}
     .burger .lines span:nth-child(2){top:6px}
     .burger .lines span:nth-child(3){top:12px}
-
     body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
     body.drawer-open .burger .lines span:nth-child(2){opacity:0}
     body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
@@ -131,49 +133,48 @@
       position:fixed;
       top:16px;
       left:68px;
+      right:250px;
       z-index:59;
       display:flex;
       gap:10px;
+      align-items:center;
     }
-
     .top-link{
       height:46px;
       padding:0 14px;
       border-radius:12px;
       background:rgba(16,24,32,.7);
-      border:1px solid #1f2a35;
+      border:1px solid rgba(31,42,53,.9);
       backdrop-filter:blur(10px);
       display:flex;
       align-items:center;
       gap:10px;
       cursor:pointer;
       user-select:none;
-      font-weight:800;
+      font-weight:900;
       color:#fff;
       letter-spacing:.02em;
       white-space:nowrap;
+      transition:transform .12s ease, filter .12s ease;
     }
-    .top-link:hover{background:rgba(19,32,42,.85)}
-    .top-link span{color:#b7c2cc;font-weight:700}
+    .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .top-link span{color:#b7c2cc;font-weight:800}
 
     .login-float{
       position:fixed;
       top:16px;
-      right:14px;
+      right:68px;
       z-index:60;
       display:flex;
       align-items:center;
       gap:10px;
-      opacity:1;
-      pointer-events:auto;
-      transform:none;
     }
 
     .status-pill{
       height:46px;
       padding:0 14px;
       border-radius:12px;
-      border:1px solid #1f2a35;
+      border:1px solid rgba(31,42,53,.9);
       background:rgba(16,24,32,.55);
       display:none;
       align-items:center;
@@ -181,14 +182,13 @@
       font-weight:900;
       letter-spacing:.02em;
       color:#fff;
-      max-width:280px;
+      max-width:220px;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
       backdrop-filter:blur(10px);
     }
     .status-pill span{color:#94a3b8;font-weight:800}
-
     body.user-on #loginOpen{display:none}
     body.user-on #statusPill{display:flex}
 
@@ -197,7 +197,7 @@
       width:46px;
       border-radius:12px;
       background:rgba(16,24,32,.7);
-      border:1px solid #1f2a35;
+      border:1px solid rgba(31,42,53,.9);
       backdrop-filter:blur(10px);
       display:none;
       place-items:center;
@@ -207,15 +207,66 @@
     .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .login-icon-btn svg{width:22px;height:22px;color:#fff}
 
+    .top-icons{
+      position:fixed;
+      top:16px;
+      right:14px;
+      z-index:59;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .top-ic{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid rgba(31,42,53,.9);
+      backdrop-filter:blur(10px);
+      display:grid;
+      place-items:center;
+      cursor:pointer;
+      position:relative;
+    }
+    .top-ic:hover{background:rgba(19,32,42,.85)}
+    .top-ic svg{width:20px;height:20px;color:#fff}
+
+    .badgecount{
+      position:absolute;
+      right:-6px;
+      top:-6px;
+      min-width:20px;
+      height:20px;
+      padding:0 6px;
+      border-radius:999px;
+      background:rgba(207,100,229,.95);
+      color:#fff;
+      font-weight:900;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:1px solid rgba(255,255,255,.12);
+      box-shadow:0 10px 24px rgba(0,0,0,.45);
+    }
+
+    @media (max-width:900px){
+      .top-links{right:210px}
+      .login-float{right:64px}
+      .status-pill{max-width:170px}
+    }
+
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
       .nav-text{font-size:1.45rem}
       .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;gap:8px}
+      .top-links{top:14px;left:64px;right:172px;gap:8px}
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
-      .login-float{top:14px;right:12px}
+      .top-icons{top:14px;right:14px;gap:8px}
+      .top-ic{height:44px;width:44px}
+      .login-float{top:14px;right:66px}
       .status-pill{height:44px}
       .login-icon-btn{height:44px;width:44px}
     }
@@ -225,6 +276,7 @@
       #loginOpen{display:none}
       .login-icon-btn{display:grid}
       body.user-on .login-icon-btn{display:none}
+      .login-float{right:66px}
     }
 
     .drawer{
@@ -232,7 +284,7 @@
       top:0; left:0; bottom:0;
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
-      border-right:1px solid #16212a;
+      border-right:1px solid rgba(22,33,42,.9);
       z-index:58;
       transform:translateX(-100%);
       transition:transform .32s ease;
@@ -242,26 +294,23 @@
       gap:10px;
     }
     body.drawer-open .drawer{transform:translateX(0)}
-
     .drawer a,
-    .drawer button.drawer-link{
+    .drawer button{
       display:flex;
-      width:100%;
       align-items:center;
       justify-content:space-between;
       padding:14px 14px;
       border-radius:12px;
       background:#0f1820;
-      border:1px solid #1a2530;
-      font-weight:700;
+      border:1px solid rgba(26,37,48,.9);
+      font-weight:900;
       letter-spacing:.02em;
+      color:#fff;
       cursor:pointer;
-      text-align:left;
     }
     .drawer a:hover,
-    .drawer button.drawer-link:hover{background:#13202a}
-    .drawer small{color:#94a3b8;font-weight:600}
-
+    .drawer button:hover{background:#13202a}
+    .drawer small{color:#94a3b8;font-weight:800}
     .drawer-backdrop{
       position:fixed;
       inset:0;
@@ -274,7 +323,7 @@
     body.drawer-open .drawer-backdrop{opacity:1;pointer-events:auto}
 
     main{
-      padding:92px 5% 60px;
+      padding:92px 5% 66px;
       width:min(1240px,100%);
       margin:0 auto;
     }
@@ -282,633 +331,346 @@
     @media (max-width:420px){ main{padding-inline:4%} }
 
     .panel{
-      border-radius:var(--r2);
+      border-radius:var(--r1);
       background:
-        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.22), transparent 70%),
-        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.18), transparent 65%),
-        rgba(15,22,30,.68);
-      border:1px solid #223041;
+        radial-gradient(1200px 700px at 72% 22%, rgba(236,72,153,.18), transparent 70%),
+        radial-gradient(1100px 650px at 78% 82%, rgba(59,130,246,.16), transparent 65%),
+        var(--panel);
+      border:1px solid rgba(34,48,65,.9);
       box-shadow:var(--shadow);
       padding:clamp(14px,2.2vw,20px);
     }
 
-    .section-title{
-      font-weight:900;
-      font-size:clamp(2rem,3.4vw,2.7rem);
+    .head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap:14px;
+      flex-wrap:wrap;
+    }
+    .titleWrap{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:220px;
+    }
+    .h1{
+      font-weight:950;
+      font-size:clamp(2.4rem,4.6vw,3.2rem);
       letter-spacing:.01em;
-      margin:18px 0 12px;
+      line-height:1.02;
+    }
+    .metaLine{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-weight:900;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-size:.82rem;
     }
 
-    .section-sub{
-      color:var(--muted);
-      font-weight:650;
-      line-height:1.4;
-      margin:0 0 14px;
-      max-width:72ch;
+    .tools{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:1 1 520px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .search{
+      flex:1 1 360px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:12px 14px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.55);
+      backdrop-filter:blur(10px);
+      min-width:260px;
+    }
+    .search svg{width:18px;height:18px;color:#d7dde3;opacity:.92;flex:0 0 auto}
+    .search input{
+      width:100%;
+      border:0;
+      outline:none;
+      background:transparent;
+      color:#fff;
+      font-weight:850;
+      letter-spacing:.01em;
+    }
+    .search input::placeholder{color:rgba(183,194,204,.75)}
+
+    .btn{
+      height:46px;
+      padding:0 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.55);
+      backdrop-filter:blur(10px);
+      color:#fff;
+      font-weight:950;
+      letter-spacing:.02em;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .btn small{
+      color:#b7c2cc;
+      font-weight:900;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:.78rem;
     }
 
     .divider{
       height:1px;
       background:rgba(255,255,255,.08);
-      margin:22px 0 6px;
+      margin:18px 0 12px;
       border-radius:999px;
     }
 
-    .featured{
+    .grid{
       display:grid;
-      grid-template-columns:2fr 1fr;
       gap:var(--gap);
-      align-items:stretch;
+      grid-template-columns:repeat(4, minmax(0, 1fr));
     }
-    @media (max-width:920px){
-      .featured{grid-template-columns:1fr;gap:12px}
+    @media (max-width:1100px){
+      .grid{grid-template-columns:repeat(3, minmax(0, 1fr))}
     }
-
-    .stack{
-      display:grid;
-      grid-template-rows:1fr 1fr;
-      gap:var(--gap);
+    @media (max-width:820px){
+      .grid{grid-template-columns:repeat(2, minmax(0, 1fr))}
     }
-    @media (max-width:920px){
-      .stack{grid-template-rows:none;grid-template-columns:1fr 1fr}
-    }
-    @media (max-width:560px){
-      .stack{grid-template-columns:1fr}
-    }
-
-    .hero-card,
-    .mini-card{
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background:#0b1218;
-      display:block;
-      transform:translateY(0);
-      transition:transform .15s ease, border-color .15s ease;
-    }
-    .hero-card:hover,
-    .mini-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16)}
-
-    .hero-card{min-height:420px}
-    @media (max-width:920px){ .hero-card{min-height:360px} }
-    @media (max-width:560px){ .hero-card{min-height:320px} }
-
-    .mini-card{min-height:200px}
-    @media (max-width:560px){ .mini-card{min-height:190px} }
-
-    .hero-card img{width:100%;height:100%;object-fit:cover}
-    .mini-card img{width:100%;height:100%;object-fit:cover;filter:brightness(.72) saturate(.95)}
-
-    .fade{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(0,0,0,.82) 100%);
-    }
-    .mini-card .fade{
-      background:linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.86) 100%);
-    }
-
-    .meta{
-      position:absolute;
-      left:18px;
-      right:18px;
-      bottom:16px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
-
-    .kicker{
-      color:#cfd6dd;
-      font-weight:800;
-      font-size:1rem;
-      opacity:.92;
-    }
-    .title{
-      font-weight:900;
-      letter-spacing:.01em;
-      display:-webkit-box;
-      -webkit-box-orient:vertical;
-      overflow:hidden;
-    }
-    .hero-card .title{
-      font-size:clamp(1.35rem,2.6vw,2rem);
-      -webkit-line-clamp:2;
-    }
-    .mini-card .title{
-      font-size:1.05rem;
-      line-height:1.15;
-      -webkit-line-clamp:3;
-    }
-
-    .see-more{
-      position:absolute;
-      top:14px;
-      left:14px;
-      padding:10px 12px;
-      border-radius:999px;
-      background:rgba(16,24,32,.6);
-      border:1px solid rgba(255,255,255,.14);
-      font-weight:900;
-      letter-spacing:.02em;
-      cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-    .see-more:hover{background:rgba(19,32,42,.75)}
-
-    .row3{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
-      gap:var(--gap);
-    }
-    @media (max-width:980px){
-      .row3{grid-template-columns:repeat(2,minmax(0,1fr))}
-    }
-    @media (max-width:560px){
-      .row3{grid-template-columns:repeat(1,minmax(0,1fr));gap:12px}
+    @media (max-width:420px){
       :root{--gap:12px}
-    }
-
-    .event-card{
-      position:relative;
-      border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background:#0b1218;
-      min-height:240px;
-      display:block;
-      transform:translateY(0);
-      transition:transform .15s ease, border-color .15s ease;
-    }
-    .event-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16)}
-    .event-card img{width:100%;height:100%;object-fit:cover}
-    .event-card .fade{
-      position:absolute;
-      inset:0;
-      background:linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.86) 100%);
-    }
-    .event-card .meta{
-      position:absolute;
-      left:16px;
-      right:16px;
-      bottom:14px;
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-    .event-card .title{
-      font-size:1.1rem;
-      line-height:1.15;
-      -webkit-line-clamp:3;
-    }
-
-    .submit-grid{
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:var(--gap);
-      align-items:start;
-      margin-top:12px;
-    }
-    @media (max-width:980px){
-      .submit-grid{grid-template-columns:1fr}
+      .grid{gap:12px}
     }
 
     .card{
-      background:rgba(12,18,24,.78);
-      border:1px solid #16212a;
-      border-radius:18px;
-      box-shadow:0 18px 70px rgba(0,0,0,.35);
+      border-radius:22px;
       overflow:hidden;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(700px 420px at 12% -10%, rgba(0,229,255,.10), transparent 60%),
+        radial-gradient(700px 520px at 92% 120%, rgba(207,100,229,.10), transparent 60%),
+        rgba(12,18,24,.92);
+      box-shadow:0 16px 70px rgba(0,0,0,.45);
+      display:flex;
+      flex-direction:column;
+      min-height:320px;
+      position:relative;
+      transform:translateY(0);
+      transition:transform .14s ease, filter .14s ease, border-color .14s ease;
     }
+    .card:hover{transform:translateY(-2px);filter:brightness(1.03);border-color:rgba(255,255,255,.16)}
 
-    .card-head{
-      padding:14px 14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(16,24,32,.55);
-      backdrop-filter:blur(10px);
+    .cardTop{
+      position:absolute;
+      left:12px;
+      right:12px;
+      top:12px;
+      z-index:3;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:12px;
-    }
-    .card-head .h{
-      font-weight:900;
-      letter-spacing:.01em;
-      font-size:1.05rem;
-      color:#fff;
+      gap:10px;
+      pointer-events:none;
     }
     .pill{
-      padding:8px 10px;
+      pointer-events:auto;
+      height:28px;
+      padding:0 10px;
       border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.55);
-      font-weight:850;
-      letter-spacing:.02em;
-      color:#fff;
-      font-size:.9rem;
-      white-space:nowrap;
-    }
-
-    .card-body{padding:14px}
-
-    .steps{
-      display:grid;
-      gap:10px;
-    }
-    .step{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(11,18,24,.7);
-    }
-    .n{
-      width:28px;height:28px;
-      border-radius:10px;
-      display:grid;
-      place-items:center;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.55);
-      font-weight:900;
-      flex:0 0 auto;
-    }
-    .step .t{
-      font-weight:850;
-      letter-spacing:.01em;
-      line-height:1.2;
-    }
-    .step .d{
-      color:var(--muted);
-      font-weight:650;
-      line-height:1.35;
-      margin-top:4px;
-    }
-
-    form.set-form{
-      display:grid;
-      gap:12px;
-    }
-
-    .field{
-      display:grid;
-      gap:8px;
-    }
-    .label{
-      font-weight:850;
-      letter-spacing:.01em;
-      color:#fff;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .hint{
-      color:var(--muted);
-      font-weight:650;
-      font-size:.95rem;
-      line-height:1.35;
-    }
-
-    .input, .textarea{
-      width:100%;
-      padding:12px 12px;
-      border-radius:14px;
-      background:rgba(11,18,24,.8);
+      background:rgba(16,24,32,.70);
       border:1px solid rgba(255,255,255,.10);
-      outline:none;
-      transition:border-color .14s ease, transform .14s ease, filter .14s ease;
-    }
-    .textarea{min-height:120px;resize:vertical}
-    .input:focus, .textarea:focus{border-color:rgba(4,213,235,.45)}
-    .input::placeholder, .textarea::placeholder{color:rgba(148,163,184,.7)}
-
-    .two{
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:12px;
-    }
-    @media (max-width:560px){ .two{grid-template-columns:1fr} }
-
-    .drop{
-      border-radius:16px;
-      border:1px dashed rgba(255,255,255,.18);
-      background:rgba(11,18,24,.65);
-      padding:14px;
-      display:grid;
-      gap:10px;
-    }
-    .drop-top{
       display:flex;
       align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
-    }
-    .file-btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.65);
-      font-weight:900;
-      cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-    .file-btn:hover{background:rgba(19,32,42,.85)}
-    .file-name{
-      color:var(--muted);
-      font-weight:700;
+      font-weight:950;
+      letter-spacing:.02em;
+      font-size:.86rem;
+      color:#fff;
+      backdrop-filter:blur(10px);
+      max-width:70%;
       overflow:hidden;
       text-overflow:ellipsis;
       white-space:nowrap;
-      max-width:56ch;
     }
-
-    .preview{
-      display:grid;
-      grid-template-columns:110px 1fr;
-      gap:12px;
-      align-items:center;
-      padding:12px;
-      border-radius:14px;
-      background:rgba(15,24,32,.6);
-      border:1px solid rgba(255,255,255,.08);
-    }
-    @media (max-width:560px){ .preview{grid-template-columns:1fr} }
-
-    .thumb{
-      width:110px;
-      height:82px;
+    .wishBtn{
+      pointer-events:auto;
+      width:36px;
+      height:36px;
       border-radius:12px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.10);
-      background:#0b1218;
-    }
-    .thumb img{width:100%;height:100%;object-fit:cover}
-
-    .check{
-      display:flex;
-      gap:10px;
-      align-items:flex-start;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(11,18,24,.65);
-    }
-    .check input{
-      margin-top:3px;
-      width:18px;height:18px;
-      accent-color:#04d5eb;
-    }
-    .check .text{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.55);
+      backdrop-filter:blur(10px);
       display:grid;
-      gap:6px;
-    }
-    .check .text .t{font-weight:850}
-    .check .text .d{color:var(--muted);font-weight:650;line-height:1.35}
-
-    .actions{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-top:2px;
-    }
-    .btn{
-      padding:12px 14px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.65);
-      font-weight:900;
+      place-items:center;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-      transition:transform .12s ease, filter .12s ease, background .12s ease;
+      transition:transform .12s ease, filter .12s ease;
     }
-    .btn:hover{background:rgba(19,32,42,.88);transform:translateY(-1px)}
-    .btn.primary{
-      border-color:rgba(4,213,235,.45);
-      background:rgba(4,213,235,.14);
+    .wishBtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .wishBtn svg{width:18px;height:18px}
+    .wishBtn[data-on="1"]{
+      border-color:rgba(207,100,229,.60);
+      background:rgba(122,59,208,.22);
     }
-    .btn.primary:hover{filter:brightness(1.08)}
-    .btn:disabled{
-      cursor:not-allowed;
-      opacity:.55;
-      transform:none;
-    }
+    .wishBtn[data-on="1"] svg{fill:var(--pink);stroke:var(--pink)}
+    .wishBtn[data-on="0"] svg{fill:none;stroke:#fff}
 
-    .status{
-      color:var(--muted);
-      font-weight:700;
-      line-height:1.3;
-      min-height:1.3em;
-    }
-    .status.ok{color:rgba(0,255,135,.9)}
-    .status.bad{color:rgba(255,94,160,.95)}
-
-    .mini-gallery{
+    .media{
+      width:100%;
+      aspect-ratio:var(--cardMediaRatio);
+      background:#fff;
       display:grid;
-      gap:12px;
-    }
-    .sample{
-      display:grid;
-      grid-template-columns:110px 1fr;
-      gap:12px;
-      align-items:center;
-      padding:12px;
-      border-radius:16px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(11,18,24,.70);
-    }
-    @media (max-width:560px){ .sample{grid-template-columns:1fr} }
-    .sample .thumb{width:110px;height:82px}
-    .sample .h{
-      font-weight:900;
-      letter-spacing:.01em;
-      line-height:1.2;
-    }
-    .sample .d{
-      color:var(--muted);
-      font-weight:650;
-      margin-top:6px;
-      line-height:1.35;
-    }
-    .small-note{
-      color:var(--muted);
-      font-weight:650;
-      line-height:1.35;
-      margin-top:10px;
-    }
-
-    .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.60);
-      z-index:90;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .2s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-
-    .modal{
-      position:fixed;
-      left:50%;
-      top:50%;
-      transform:translate(-50%,-50%) scale(.98);
-      width:min(980px,92vw);
-      max-height:88vh;
-      background:rgba(12,18,24,.98);
-      border:1px solid #16212a;
-      border-radius:18px;
-      box-shadow:var(--shadow);
-      z-index:91;
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .2s ease, transform .2s ease;
+      place-items:center;
       overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+    .media img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      object-position:center;
+      padding:12px;
+    }
+
+    .body{
+      padding:12px 14px 12px;
       display:flex;
       flex-direction:column;
+      gap:10px;
+      flex:1 1 auto;
+      min-height:0;
     }
-
-    body.modal-open{
+    .name{
+      font-weight:950;
+      letter-spacing:.01em;
+      line-height:1.15;
+      font-size:1.05rem;
+      display:-webkit-box;
+      -webkit-line-clamp:2;
+      -webkit-box-orient:vertical;
       overflow:hidden;
-      touch-action:none;
+    }
+    .subline{
+      color:rgba(215,221,227,.92);
+      font-weight:900;
+      letter-spacing:.02em;
+      font-size:.95rem;
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:auto;
+      padding-top:8px;
+    }
+    .subLeft{
+      display:flex;
+      gap:10px;
+      align-items:baseline;
+      min-width:0;
+    }
+    .price{
+      font-weight:950;
+      color:#fff;
+    }
+    .setno{
+      color:rgba(183,194,204,.92);
+      font-weight:950;
+      white-space:nowrap;
     }
 
-    body.modal-open .modal-backdrop{opacity:1;pointer-events:auto}
-    body.modal-open .modal{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+    .openBtn{
+      width:38px;
+      height:38px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(16,24,32,.40);
+      display:grid;
+      place-items:center;
+      flex:0 0 auto;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .openBtn svg{width:18px;height:18px;color:#fff}
+    .card:hover .openBtn{transform:translateY(-1px);filter:brightness(1.06)}
 
-    .modal-top{
+    .pager{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      padding:14px 14px;
-      border-bottom:1px solid rgba(255,255,255,.08);
-      background:rgba(16,24,32,.75);
-      backdrop-filter:blur(10px);
-      flex:0 0 auto;
-    }
-
-    .modal-top .h{
-      font-weight:900;
-      letter-spacing:.01em;
-      font-size:1.05rem;
-      color:#fff;
-    }
-
-    .modal-top .x{
-      width:44px;height:44px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.65);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-    .modal-top .x:hover{background:rgba(19,32,42,.85)}
-
-    .gallery{
-      display:grid;
-      grid-template-columns:repeat(3,minmax(0,1fr));
       gap:12px;
-      padding:14px;
-      overflow:auto;
-      -webkit-overflow-scrolling:touch;
-      flex:1 1 auto;
+      margin-top:16px;
+      flex-wrap:wrap;
     }
-    @media (max-width:860px){
-      .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .pagerLeft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color:var(--muted);
+      font-weight:950;
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      font-size:.82rem;
     }
-    @media (max-width:520px){
-      .gallery{grid-template-columns:repeat(1,minmax(0,1fr))}
-      .modal{
-        width:94vw;
-        max-height:92vh;
-      }
+    .pagerBtns{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .pbtn{
+      height:42px;
+      padding:0 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.55);
+      color:#fff;
+      font-weight:950;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+    }
+    .pbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .pbtn:disabled{opacity:.45;cursor:default;transform:none;filter:none}
+    .pageInfo{
+      height:42px;
+      padding:0 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.35);
+      color:#d7dde3;
+      font-weight:950;
+      display:flex;
+      align-items:center;
+      user-select:none;
+      white-space:nowrap;
     }
 
-    .g-item{
-      position:relative;
-      border-radius:16px;
-      overflow:hidden;
+    .skeleton{
+      border-radius:22px;
       border:1px solid rgba(255,255,255,.08);
-      background:#0b1218;
-      min-height:220px;
-      cursor:pointer;
-      transform:translateY(0);
-      transition:transform .15s ease, border-color .15s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
+      background:rgba(16,24,32,.35);
+      min-height:320px;
     }
-    .g-item:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16)}
-    .g-item img{width:100%;height:100%;object-fit:cover}
 
-    .viewer{
-      position:fixed;
-      inset:0;
-      z-index:100;
-      background:rgba(0,0,0,.82);
-      opacity:0;
-      pointer-events:none;
-      transition:opacity .18s ease;
-      display:grid;
-      place-items:center;
-      padding:18px;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-    body.viewer-open{
-      overflow:hidden;
-      touch-action:none;
-    }
-    body.viewer-open .viewer{opacity:1;pointer-events:auto}
-
-    .viewer-inner{
-      width:min(1100px,94vw);
+    .errorBox{
       border-radius:18px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.12);
-      background:#0b1218;
-      box-shadow:var(--shadow);
-      position:relative;
+      border:1px solid rgba(255,255,255,.10);
+      background:rgba(16,24,32,.45);
+      padding:14px;
+      color:#d7dde3;
+      font-weight:900;
+      line-height:1.35;
+      grid-column:1/-1;
     }
-    .viewer-inner img{
-      width:100%;
-      height:auto;
-      display:block;
-      max-height:82vh;
-      object-fit:contain;
-      background:#0b1218;
-    }
-
-    .viewer-close{
-      position:absolute;
-      top:12px;
-      right:12px;
-      width:46px;height:46px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(16,24,32,.72);
-      backdrop-filter:blur(10px);
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
-    }
-    .viewer-close:hover{background:rgba(19,32,42,.92)}
 
     .footer-cta{background:#12181e;padding:3.5rem 0 0;margin-top:28px}
     .cta-inner{width:min(1400px,100%);margin:0 auto;padding:0 5% 2rem}
@@ -956,6 +718,7 @@
       background:#0f151b;
       font-size:.95rem;
       line-height:1.5;
+      scroll-margin-top:100px;
     }
     .impressum h3{font-size:1.2rem;margin-bottom:.6rem;font-weight:800}
 
@@ -1139,12 +902,15 @@
     </div>
   </button>
 
-  <div class="top-links" aria-label="Quick Links">
+  <div class="top-links" id="topLinks" aria-label="Quick Links">
     <a class="top-link" href="/news.html" aria-label="News">
       <strong>News</strong><span>Updates</span>
     </a>
     <a class="top-link" href="/events.html" aria-label="Events">
       <strong>Events</strong><span>Dates</span>
+    </a>
+    <a class="top-link" href="/sale.html" aria-label="Sale">
+      <strong>Sale</strong><span>Deals</span>
     </a>
   </div>
 
@@ -1163,6 +929,15 @@
         <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
       </svg>
     </button>
+  </div>
+
+  <div class="top-icons" aria-label="Icons">
+    <a class="top-ic" href="/wishlist.html" aria-label="Wishlist">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-7-4.6-9.3-9C1.3 9 3.2 6 6.5 6c1.9 0 3.2 1 3.9 2c.7-1 2-2 3.9-2C17.6 6 19.5 9 21.3 12c-2.3 4.4-9.3 9-9.3 9Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+      </svg>
+      <div class="badgecount" id="wishBadgeTop" hidden>0</div>
+    </a>
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
@@ -1238,262 +1013,45 @@
 
   <main>
     <div class="panel">
-      <div class="section-title">Our Events</div>
-
-      <div class="featured" aria-label="Events Highlight">
-        <div class="hero-card" aria-label="Hero Image">
-          <img src="Bilder/Wbild1.png" alt="Event Bild 1" loading="lazy">
-          <div class="fade" aria-hidden="true"></div>
-          <div class="meta">
-            <div class="kicker">SetHub</div>
-            <div class="title">Events und Highlights</div>
+      <div class="head">
+        <div class="titleWrap">
+          <div class="h1">New Sets</div>
+          <div class="metaLine">
+            <span id="itemsMeta">0 items</span>
+            <span id="pageMeta">Seite 1</span>
           </div>
         </div>
 
-        <div class="stack" aria-label="More Images">
-          <div class="mini-card" aria-label="Bild 2">
-            <img src="Bilder/Wbild2.png" alt="Event Bild 2" loading="lazy">
-            <div class="fade" aria-hidden="true"></div>
-            <button class="see-more" type="button" data-open-gallery="1" aria-label="See more">See more</button>
-            <div class="meta">
-              <div class="title">Mehr Bilder ansehen</div>
-            </div>
+        <div class="tools">
+          <div class="search">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="2"/>
+              <path d="M16.5 16.5 21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input id="q" type="search" placeholder="Search name, theme, number" autocomplete="off" />
           </div>
 
-          <div class="mini-card" aria-label="Bild 3">
-            <img src="Bilder/Wbild3.png" alt="Event Bild 3" loading="lazy">
-            <div class="fade" aria-hidden="true"></div>
-            <button class="see-more" type="button" data-open-gallery="1" aria-label="See more">See more</button>
-            <div class="meta">
-              <div class="title">Galerie öffnen</div>
-            </div>
-          </div>
+          <button class="btn" id="sortBtn" type="button">
+            Sort <small id="sortLabel">New</small>
+          </button>
+
+          <button class="btn" id="reloadBtn" type="button">
+            Reload <small id="reloadCount">0</small>
+          </button>
         </div>
       </div>
 
       <div class="divider"></div>
 
-      <div class="section-title" style="margin-top:18px">Lego Events</div>
+      <div class="grid" id="grid" aria-label="Sets Grid"></div>
 
-      <div class="row3" aria-label="Event Links">
-        <a class="event-card"
-           href="https://www.stonewars.de/events/lego-events-jahresausblick-2026/"
-           target="_blank" rel="noopener"
-           aria-label="Jahresausblick 2026">
-          <img src="https://www.stonewars.de/wp-content/uploads/2025/12/titelbild-jahresausblick-2026-678x509.jpg" alt="Jahresausblick 2026" loading="lazy">
-          <div class="fade" aria-hidden="true"></div>
-          <div class="meta">
-            <div class="title">LEGO Events Jahresausblick 2026</div>
-          </div>
-        </a>
+      <div class="pager" aria-label="Pagination">
+        <div class="pagerLeft" id="rangeMeta">0–0</div>
 
-        <a class="event-card"
-           href="https://www.stonewars.de/events/lego-events-im-november-2025-gbc-weltrekordversuch-spielemesse-hamburg/"
-           target="_blank" rel="noopener"
-           aria-label="LEGO Events im November 2025">
-          <img src="https://www.stonewars.de/wp-content/uploads/2025/11/weltrekord-spielemesse-hamburg-gbc-678x509.jpg" alt="LEGO Events November 2025" loading="lazy">
-          <div class="fade" aria-hidden="true"></div>
-          <div class="meta">
-            <div class="title">LEGO Events im November 2025</div>
-          </div>
-        </a>
-
-        <a class="event-card"
-           href="https://www.stonewars.de/events/bricking-bavaria-2025-bericht/"
-           target="_blank" rel="noopener"
-           aria-label="Bricking Bavaria 2025 Bericht">
-          <img src="https://www.stonewars.de/wp-content/uploads/2025/11/Bricking-Bavaria-2025-bericht-titelbild-678x509.jpg" alt="Bricking Bavaria 2025" loading="lazy">
-          <div class="fade" aria-hidden="true"></div>
-          <div class="meta">
-            <div class="title">Bricking Bavaria 2025 Bericht</div>
-          </div>
-        </a>
-      </div>
-
-      <div class="divider"></div>
-
-      <div class="section-title" id="sets-einsenden" style="margin-top:18px">Dein Set einsenden</div>
-      <p class="section-sub">
-        Schick uns Bilder von deinem Set und ein paar Infos.
-        Wir wählen Beiträge aus und posten sie auf SetHub.
-        Du bekommst Credit mit deinem Namen oder deinem Nick.
-      </p>
-
-      <div class="submit-grid" aria-label="Set Einsenden">
-        <div class="card">
-          <div class="card-head">
-            <div class="h">Upload</div>
-            <div class="pill">1 bis 5 Bilder</div>
-          </div>
-
-          <div class="card-body">
-            <form class="set-form" id="setForm" novalidate>
-              <div class="two">
-                <div class="field">
-                  <div class="label">
-                    <span>Dein Name oder Nick</span>
-                  </div>
-                  <input class="input" id="uName" name="name" type="text" placeholder="Zum Beispiel Lara oder BrickMax" autocomplete="nickname" required />
-                </div>
-
-                <div class="field">
-                  <div class="label">
-                    <span>Kontakt Mail</span>
-                  </div>
-                  <input class="input" id="uMail" name="email" type="email" placeholder="optional" autocomplete="email" />
-                  <div class="hint">Nur für Rückfragen</div>
-                </div>
-              </div>
-
-              <div class="field">
-                <div class="label">
-                  <span>Set Titel</span>
-                </div>
-                <input class="input" id="uTitle" name="title" type="text" placeholder="Zum Beispiel Space Base MOC" required />
-              </div>
-
-              <div class="field">
-                <div class="label">
-                  <span>Beschreibung</span>
-                </div>
-                <textarea class="textarea" id="uDesc" name="desc" placeholder="Was soll man wissen. Teile. Technik. Story. Maße." required></textarea>
-              </div>
-
-              <div class="field">
-                <div class="label">
-                  <span>Bilder</span>
-                  <span class="file-name" id="fileName">Noch kein Bild</span>
-                </div>
-
-                <div class="drop" id="dropZone" tabindex="0" aria-label="Upload Bereich">
-                  <div class="drop-top">
-                    <label class="file-btn" for="uFiles">Bilder wählen</label>
-                    <input id="uFiles" name="files" type="file" accept="image/*" multiple hidden />
-                    <div class="hint">JPG PNG WEBP</div>
-                  </div>
-
-                  <div class="preview" id="preview" style="display:none">
-                    <div class="thumb"><img id="thumbImg" alt="Vorschau" /></div>
-                    <div>
-                      <div class="label" style="justify-content:flex-start;gap:10px">
-                        <span id="previewTitle">Vorschau</span>
-                      </div>
-                      <div class="hint" id="previewMeta"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="check">
-                <input id="uConsent" type="checkbox" required />
-                <div class="text">
-                  <div class="t">Ich darf das posten</div>
-                  <div class="d">
-                    Du bestätigst dass du die Bilder gemacht hast oder sie nutzen darfst.
-                    Du erlaubst SetHub das Material zu posten.
-                  </div>
-                </div>
-              </div>
-
-              <div class="actions">
-                <button class="btn" type="button" id="saveDraft">Entwurf speichern</button>
-                <button class="btn primary" type="submit" id="sendBtn" disabled>Absenden</button>
-              </div>
-
-              <div class="status" id="status" aria-live="polite"></div>
-
-              <div class="small-note">
-                Du willst nicht hochladen.
-                Dann schick uns dein Set per Mail über dein Mail Programm.
-                Button Absenden öffnet auch Mail wenn kein Upload Server aktiv ist.
-              </div>
-            </form>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div class="h">So läuft es</div>
-            <div class="pill">Du bekommst Credit</div>
-          </div>
-
-          <div class="card-body">
-            <div class="steps" aria-label="Ablauf">
-              <div class="step">
-                <div class="n">1</div>
-                <div>
-                  <div class="t">Schick Bilder</div>
-                  <div class="d">Gutes Licht. Front. Details. Eine Totalansicht.</div>
-                </div>
-              </div>
-
-              <div class="step">
-                <div class="n">2</div>
-                <div>
-                  <div class="t">Schreib Infos</div>
-                  <div class="d">Titel. Teilezahl. Bauzeit. Technik. Idee.</div>
-                </div>
-              </div>
-
-              <div class="step">
-                <div class="n">3</div>
-                <div>
-                  <div class="t">Wir posten</div>
-                  <div class="d">Wir wählen Sets aus. Wir geben dir Credit.</div>
-                </div>
-              </div>
-
-              <div class="step">
-                <div class="n">4</div>
-                <div>
-                  <div class="t">Du teilst den Post</div>
-                  <div class="d">Link an Freunde. Community wächst.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="divider" style="margin:16px 0 10px"></div>
-
-            <div class="mini-gallery" aria-label="Beispiele">
-              <div class="sample">
-                <div class="thumb">
-                  <img src="Bilder/Wbild4.jpeg" alt="Beispiel 1" loading="lazy">
-                </div>
-                <div>
-                  <div class="h">Bau Fokus</div>
-                  <div class="d">Eine klare Ansicht plus ein Detail Shot hilft beim Post.</div>
-                </div>
-              </div>
-
-              <div class="sample">
-                <div class="thumb">
-                  <img src="Bilder/Wbild5.jpeg" alt="Beispiel 2" loading="lazy">
-                </div>
-                <div>
-                  <div class="h">Story Fokus</div>
-                  <div class="d">Ein Bild mit Szene zeigt dein Set im Einsatz.</div>
-                </div>
-              </div>
-
-              <div class="sample">
-                <div class="thumb">
-                  <img src="Bilder/Wbild6.jpeg" alt="Beispiel 3" loading="lazy">
-                </div>
-                <div>
-                  <div class="h">Detail Fokus</div>
-                  <div class="d">Closeup auf Technik oder Design macht den Post stark.</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="small-note">
-              Welche Sets willst du hier sehen.
-              MOCs.
-              Reviews.
-              Displays.
-              Minifig Szenen.
-            </div>
-          </div>
+        <div class="pagerBtns">
+          <button class="pbtn" id="prevPage" type="button">Prev</button>
+          <div class="pageInfo" id="pageInfo">Seite 1 von 1</div>
+          <button class="pbtn" id="nextPage" type="button">Next</button>
         </div>
       </div>
     </div>
@@ -1524,30 +1082,6 @@
       <div>office@sethub.io</div>
     </section>
   </section>
-
-  <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"></div>
-
-  <div class="modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Galerie">
-    <div class="modal-top">
-      <div class="h">Gallery</div>
-      <button class="x" id="galleryClose" type="button" aria-label="Close">✕</button>
-    </div>
-    <div class="gallery" id="galleryGrid" aria-label="Bilder">
-      <div class="g-item" data-view="Bilder/Wbild1.png" aria-label="Bild 1"><img src="Bilder/Wbild1.png" alt="Bild 1" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild2.png" aria-label="Bild 2"><img src="Bilder/Wbild2.png" alt="Bild 2" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild3.png" aria-label="Bild 3"><img src="Bilder/Wbild3.png" alt="Bild 3" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild4.jpeg" aria-label="Bild 4"><img src="Bilder/Wbild4.jpeg" alt="Bild 4" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild5.jpeg" aria-label="Bild 5"><img src="Bilder/Wbild5.jpeg" alt="Bild 5" loading="lazy"></div>
-      <div class="g-item" data-view="Bilder/Wbild6.jpeg" aria-label="Bild 6"><img src="Bilder/Wbild6.jpeg" alt="Bild 6" loading="lazy"></div>
-    </div>
-  </div>
-
-  <div class="viewer" id="viewer" aria-hidden="true">
-    <div class="viewer-inner" aria-label="Bild Ansicht">
-      <button class="viewer-close" id="viewerClose" type="button" aria-label="Close">✕</button>
-      <img id="viewerImg" src="" alt="Bild" />
-    </div>
-  </div>
 
   <div class="toast-wrap" id="toastWrap" aria-hidden="true">
     <div class="toast" role="status" aria-live="polite">
@@ -1583,19 +1117,24 @@
 
   <script>
     const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
+    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
+    const FALLBACK_IMG = "/Bilder/real1.png"
+    const PAGE_SIZE = 28
+
+    const LS_WISH_KEYS = "sethub_wishlist"
+    const LS_WISH_ITEMS = "sethub_wishlist_items"
 
     const burgerBtn = document.getElementById("burgerBtn")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
+    const wishBadgeTop = document.getElementById("wishBadgeTop")
 
     function openDrawer(){ document.body.classList.add("drawer-open") }
     function closeDrawer(){ document.body.classList.remove("drawer-open") }
 
     burgerBtn.addEventListener("click", () => {
-      if(document.body.classList.contains("drawer-open")) closeDrawer()
-      else openDrawer()
+      document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
     })
     drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
 
     const loginOpen = document.getElementById("loginOpen")
     const loginIconBtn = document.getElementById("loginIconBtn")
@@ -1697,6 +1236,45 @@
       }
     })
 
+    function scrollToHash(hash){
+      if(!hash || hash === "#") return false
+      const el = document.querySelector(hash)
+      if(!el) return false
+
+      const header = document.querySelector("header.site")
+      const headerH = header ? header.offsetHeight : 0
+      const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
+
+      window.scrollTo({ top: y, behavior: "smooth" })
+      return true
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href") || ""
+        if(!href.startsWith("#")) return
+
+        e.preventDefault()
+
+        const needsCloseDrawer = document.body.classList.contains("drawer-open")
+        const needsCloseLogin = document.body.classList.contains("login-open")
+
+        if(needsCloseDrawer) closeDrawer()
+        if(needsCloseLogin) closeLogin()
+
+        setTimeout(() => {
+          scrollToHash(href)
+        }, (needsCloseDrawer || needsCloseLogin) ? 180 : 0)
+      })
+    })
+
+    document.querySelectorAll(".drawer-link").forEach(link => {
+      link.addEventListener("click", () => {
+        const href = link.getAttribute("href") || ""
+        if(!href.startsWith("#")) closeDrawer()
+      })
+    })
+
     const toastWrap = document.getElementById("toastWrap")
     const toastOk = document.getElementById("toastOk")
     const toastTitle = document.getElementById("toastTitle")
@@ -1716,276 +1294,6 @@
     toastWrap.addEventListener("click", e => {
       if(e.target === toastWrap) closeToast()
     })
-
-    const modalBackdrop = document.getElementById("modalBackdrop")
-    const galleryModal = document.getElementById("galleryModal")
-    const galleryClose = document.getElementById("galleryClose")
-    const viewer = document.getElementById("viewer")
-    const viewerImg = document.getElementById("viewerImg")
-    const viewerClose = document.getElementById("viewerClose")
-
-    function lockScroll(){ document.body.classList.add("modal-open") }
-    function unlockScroll(){ document.body.classList.remove("modal-open") }
-
-    function openGallery(){
-      lockScroll()
-      galleryClose.focus({ preventScroll:true })
-    }
-    function closeGallery(){
-      unlockScroll()
-      closeViewer()
-    }
-
-    function openViewer(src){
-      viewerImg.src = src
-      document.body.classList.add("viewer-open")
-      viewerClose.focus({ preventScroll:true })
-    }
-    function closeViewer(){
-      document.body.classList.remove("viewer-open")
-      viewerImg.src = ""
-    }
-
-    document.querySelectorAll("[data-open-gallery]").forEach(btn => {
-      btn.addEventListener("click", openGallery, { passive:true })
-      btn.addEventListener("touchend", (e) => { e.preventDefault(); openGallery() }, { passive:false })
-    })
-
-    modalBackdrop.addEventListener("click", closeGallery)
-    modalBackdrop.addEventListener("touchend", (e) => { e.preventDefault(); closeGallery() }, { passive:false })
-    galleryClose.addEventListener("click", closeGallery)
-    galleryClose.addEventListener("touchend", (e) => { e.preventDefault(); closeGallery() }, { passive:false })
-
-    document.getElementById("galleryGrid").addEventListener("click", (e) => {
-      const item = e.target.closest(".g-item")
-      if(!item) return
-      const src = item.getAttribute("data-view") || ""
-      if(!src) return
-      openViewer(src)
-    })
-
-    viewer.addEventListener("click", (e) => {
-      if(e.target === viewer) closeViewer()
-    })
-    viewer.addEventListener("touchend", (e) => {
-      if(e.target === viewer){
-        e.preventDefault()
-        closeViewer()
-      }
-    }, { passive:false })
-
-    viewerClose.addEventListener("click", closeViewer)
-    viewerClose.addEventListener("touchend", (e) => { e.preventDefault(); closeViewer() }, { passive:false })
-
-    addEventListener("pointerdown", (e) => {
-      if(!document.body.classList.contains("modal-open")) return
-      if(e.target === modalBackdrop) closeGallery()
-    })
-
-    const form = document.getElementById("setForm")
-    const uName = document.getElementById("uName")
-    const uMail = document.getElementById("uMail")
-    const uTitle = document.getElementById("uTitle")
-    const uDesc = document.getElementById("uDesc")
-    const uFiles = document.getElementById("uFiles")
-    const uConsent = document.getElementById("uConsent")
-    const sendBtn = document.getElementById("sendBtn")
-    const statusEl = document.getElementById("status")
-    const fileName = document.getElementById("fileName")
-    const dropZone = document.getElementById("dropZone")
-
-    const preview = document.getElementById("preview")
-    const thumbImg = document.getElementById("thumbImg")
-    const previewTitle = document.getElementById("previewTitle")
-    const previewMeta = document.getElementById("previewMeta")
-
-    const saveDraft = document.getElementById("saveDraft")
-
-    const DRAFT_KEY = "sethub_set_draft_v1"
-
-    function setStatus(text, kind){
-      statusEl.textContent = text || ""
-      statusEl.classList.remove("ok","bad")
-      if(kind) statusEl.classList.add(kind)
-    }
-
-    function bytesToMB(n){
-      const mb = n / (1024 * 1024)
-      return Math.round(mb * 10) / 10
-    }
-
-    function validate(){
-      const baseOk =
-        uName.value.trim().length >= 2 &&
-        uTitle.value.trim().length >= 2 &&
-        uDesc.value.trim().length >= 10 &&
-        uConsent.checked
-
-      const hasFiles = uFiles.files && uFiles.files.length > 0
-      const filesOk = !hasFiles || (uFiles.files.length >= 1 && uFiles.files.length <= 5)
-
-      const ok = baseOk && filesOk
-      sendBtn.disabled = !ok
-      return ok
-    }
-
-    function updateFileUI(){
-      const files = uFiles.files
-      if(!files || files.length === 0){
-        fileName.textContent = "Noch kein Bild"
-        preview.style.display = "none"
-        thumbImg.src = ""
-        return
-      }
-
-      const first = files[0]
-      fileName.textContent = files.length === 1 ? first.name : files.length + " Bilder gewählt"
-
-      const url = URL.createObjectURL(first)
-      thumbImg.src = url
-      previewTitle.textContent = first.name
-      const totalBytes = Array.from(files).reduce((s,f) => s + (f.size || 0), 0)
-      previewMeta.textContent = files.length + " Datei(en) " + bytesToMB(totalBytes) + " MB"
-      preview.style.display = "grid"
-    }
-
-    function saveDraftToStorage(){
-      const draft = {
-        name: uName.value.trim(),
-        email: uMail.value.trim(),
-        title: uTitle.value.trim(),
-        desc: uDesc.value.trim(),
-        consent: uConsent.checked
-      }
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-      setStatus("Entwurf gespeichert", "ok")
-      setTimeout(() => setStatus("", ""), 1800)
-    }
-
-    function loadDraftFromStorage(){
-      try{
-        const raw = localStorage.getItem(DRAFT_KEY)
-        if(!raw) return
-        const d = JSON.parse(raw)
-        uName.value = d.name || ""
-        uMail.value = d.email || ""
-        uTitle.value = d.title || ""
-        uDesc.value = d.desc || ""
-        uConsent.checked = !!d.consent
-      }catch(_){}
-      validate()
-    }
-
-    function openMailFallback(){
-      const to = "post@sethub.example"
-      const subject = encodeURIComponent("Set Einsendung " + (uTitle.value.trim() || ""))
-      const lines = [
-        "Name " + (uName.value.trim() || ""),
-        "Mail " + (uMail.value.trim() || ""),
-        "Titel " + (uTitle.value.trim() || ""),
-        "",
-        (uDesc.value.trim() || "")
-      ]
-      const body = encodeURIComponent(lines.join("\n"))
-      location.href = "mailto:" + to + "?subject=" + subject + "&body=" + body
-    }
-
-    function handleDrop(e){
-      e.preventDefault()
-      const dt = e.dataTransfer
-      if(!dt || !dt.files) return
-      const files = Array.from(dt.files).filter(f => (f.type || "").startsWith("image/")).slice(0,5)
-      const list = new DataTransfer()
-      files.forEach(f => list.items.add(f))
-      uFiles.files = list.files
-      updateFileUI()
-      validate()
-    }
-
-    ;["dragenter","dragover"].forEach(ev => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault()
-        dropZone.style.borderColor = "rgba(4,213,235,.55)"
-      })
-    })
-    ;["dragleave","drop"].forEach(ev => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault()
-        dropZone.style.borderColor = "rgba(255,255,255,.18)"
-      })
-    })
-    dropZone.addEventListener("drop", handleDrop)
-
-    dropZone.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" || e.key === " "){
-        e.preventDefault()
-        uFiles.click()
-      }
-    })
-
-    uFiles.addEventListener("change", () => {
-      updateFileUI()
-      validate()
-    })
-
-    ;[uName,uMail,uTitle,uDesc,uConsent].forEach(el => {
-      el.addEventListener("input", validate)
-      el.addEventListener("change", validate)
-    })
-
-    saveDraft.addEventListener("click", saveDraftToStorage)
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault()
-      if(!validate()) return
-
-      setStatus("Sende", "")
-      sendBtn.disabled = true
-
-      const ENDPOINT = ""
-      const hasEndpoint = typeof ENDPOINT === "string" && ENDPOINT.trim().length > 0
-
-      if(!hasEndpoint){
-        setStatus("Öffne Mail", "ok")
-        openMailFallback()
-        setTimeout(() => {
-          sendBtn.disabled = false
-          validate()
-          setStatus("", "")
-        }, 800)
-        return
-      }
-
-      try{
-        const fd = new FormData()
-        fd.append("name", uName.value.trim())
-        fd.append("email", uMail.value.trim())
-        fd.append("title", uTitle.value.trim())
-        fd.append("desc", uDesc.value.trim())
-
-        Array.from(uFiles.files || []).slice(0,5).forEach((f, i) => {
-          fd.append("image_" + (i+1), f, f.name)
-        })
-
-        const res = await fetch(ENDPOINT, { method:"POST", body:fd })
-        if(!res.ok) throw new Error("bad")
-
-        setStatus("Danke. Wir melden uns wenn dein Set online ist", "ok")
-        localStorage.removeItem(DRAFT_KEY)
-        form.reset()
-        updateFileUI()
-      }catch(_){
-        setStatus("Senden ging nicht. Mail wird geöffnet", "bad")
-        openMailFallback()
-      }finally{
-        sendBtn.disabled = false
-        validate()
-      }
-    })
-
-    loadDraftFromStorage()
-    updateFileUI()
-    validate()
 
     const signupForm = document.getElementById("signupForm")
     const signupEmail = document.getElementById("signupEmail")
@@ -2010,12 +1318,404 @@
       }, 900)
     })
 
-    addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        if(document.body.classList.contains("viewer-open")) closeViewer()
-        else if(document.body.classList.contains("modal-open")) closeGallery()
-        else if(document.body.classList.contains("drawer-open")) closeDrawer()
+    function safeText(s){
+      return String(s || "").replaceAll("<","").replaceAll(">","")
+    }
 
+    function escapeHtml(str){
+      const s = String(str ?? "")
+      return s
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;")
+    }
+
+    function firstText(o, keys){
+      for(const k of keys){
+        const v = o && o[k]
+        if(v !== undefined && v !== null && String(v).trim() !== "") return String(v)
+      }
+      return ""
+    }
+
+    function asNumber(x){
+      const n = Number(String(x || "").replace(",", ".").replace(/[^\d.]/g,""))
+      return Number.isFinite(n) ? n : null
+    }
+
+    function formatEUR(n){
+      try{
+        return new Intl.NumberFormat("de-DE", { style:"currency", currency:"EUR" }).format(n)
+      }catch{
+        return (Math.round(n * 100) / 100).toFixed(2) + " €"
+      }
+    }
+
+    function formatPrice(p){
+      const n = asNumber(p)
+      if(n === null) return ""
+      return formatEUR(n)
+    }
+
+    function ensureArrayFromApi(data){
+      if(Array.isArray(data)) return data
+      if(data && Array.isArray(data.$values)) return data.$values
+      if(data && Array.isArray(data.items)) return data.items
+      if(data && Array.isArray(data.data)) return data.data
+      if(data && Array.isArray(data.results)) return data.results
+      if(data && Array.isArray(data.value)) return data.value
+      return []
+    }
+
+    function withTimeout(ms){
+      const controller = new AbortController()
+      const t = setTimeout(() => controller.abort(), ms)
+      return { signal: controller.signal, clear: () => clearTimeout(t) }
+    }
+
+    async function fetchJson(url){
+      const { signal, clear } = withTimeout(14000)
+      let res
+      try{
+        res = await fetch(url, {
+          method:"GET",
+          mode:"cors",
+          cache:"no-store",
+          headers:{ "Accept":"application/json" },
+          signal
+        })
+      } finally {
+        clear()
+      }
+      if(!res.ok) throw new Error("HTTP " + res.status)
+      return await res.json()
+    }
+
+    function normalizeItem(raw){
+      const name = safeText(firstText(raw, ["name","title","setName","productName"]) || "Set")
+      const setNumber = safeText(firstText(raw, ["setNumber","number","id","setId"]) || "")
+      const theme = safeText(firstText(raw, ["theme","category","line"]) || "")
+      const priceRaw = firstText(raw, ["price","msrp","eurPrice","priceEur"]) || ""
+      const price = formatPrice(priceRaw)
+      const img = firstText(raw, ["imageUrl","image","img","thumbnail","picture","imageURL"]) || FALLBACK_IMG
+      const url = firstText(raw, ["productUrl","url","link","sourceUrl"]) || "#"
+      const date = firstText(raw, ["publishedAt","date","createdAt","releaseDate"]) || ""
+      const search = (name + " " + theme + " " + setNumber).toLowerCase()
+
+      return { name,setNumber,theme,price,img,url,date,raw,search }
+    }
+
+    function loadWishlistKeys(){
+      try{
+        const x = JSON.parse(localStorage.getItem(LS_WISH_KEYS) || "[]")
+        if(Array.isArray(x)) return new Set(x.map(String))
+        return new Set()
+      }catch{
+        return new Set()
+      }
+    }
+
+    function loadWishlistItems(){
+      try{
+        const x = JSON.parse(localStorage.getItem(LS_WISH_ITEMS) || "{}")
+        if(x && typeof x === "object") return x
+        return {}
+      }catch{
+        return {}
+      }
+    }
+
+    function saveWishlist(keys, items){
+      localStorage.setItem(LS_WISH_KEYS, JSON.stringify([...keys]))
+      localStorage.setItem(LS_WISH_ITEMS, JSON.stringify(items))
+      updateWishUI(keys)
+    }
+
+    function updateWishUI(keysSet){
+      const keys = keysSet || loadWishlistKeys()
+      const n = keys.size
+
+      if(wishBadgeTop){
+        wishBadgeTop.textContent = String(n)
+        wishBadgeTop.hidden = n <= 0
+      }
+
+      document.querySelectorAll(".wishBtn").forEach(btn => {
+        const id = btn.getAttribute("data-id") || ""
+        const on = keys.has(id)
+        btn.setAttribute("data-on", on ? "1" : "0")
+        btn.setAttribute("aria-pressed", on ? "true" : "false")
+      })
+    }
+
+    function makeWishSnapshot(x){
+      const key = (x.setNumber || x.name || "").trim() || ("fallback:" + (x.url || x.name))
+      const priceNum = asNumber(x.price)
+
+      return {
+        key,
+        setNumber: (x.setNumber || "").trim(),
+        name: x.name || "Set",
+        image: x.img || "",
+        best: (priceNum !== null && x.url && x.url !== "#")
+          ? { source:"lego", price: priceNum, url: x.url }
+          : null,
+        bestSale: null,
+        sources: {
+          lego: (priceNum !== null && x.url && x.url !== "#")
+            ? { name: x.name || "Set", image: x.img || "", url: x.url, price: priceNum, oldPrice: null, discountPct: null }
+            : null,
+          amazon: null,
+          alternate: null
+        },
+        savedAt: Date.now()
+      }
+    }
+
+    function toggleWishFromItem(item){
+      const key = (item.setNumber || item.name || "").trim() || ("fallback:" + (item.url || item.name))
+      const keys = loadWishlistKeys()
+      const items = loadWishlistItems()
+
+      if(keys.has(key)){
+        keys.delete(key)
+        delete items[key]
+        saveWishlist(keys, items)
+        return
+      }
+
+      keys.add(key)
+      items[key] = makeWishSnapshot({ ...item, img:item.img || item.image || "" })
+      saveWishlist(keys, items)
+    }
+
+    let all = []
+    let filtered = []
+    let page = 1
+    let sortMode = "new"
+
+    const grid = document.getElementById("grid")
+    const q = document.getElementById("q")
+    const itemsMeta = document.getElementById("itemsMeta")
+    const pageMeta = document.getElementById("pageMeta")
+    const rangeMeta = document.getElementById("rangeMeta")
+    const pageInfo = document.getElementById("pageInfo")
+    const prevPage = document.getElementById("prevPage")
+    const nextPage = document.getElementById("nextPage")
+    const sortBtn = document.getElementById("sortBtn")
+    const sortLabel = document.getElementById("sortLabel")
+    const reloadBtn = document.getElementById("reloadBtn")
+    const reloadCount = document.getElementById("reloadCount")
+
+    function byNew(a,b){
+      const da = new Date(a.date || 0).getTime()
+      const db = new Date(b.date || 0).getTime()
+      if(db !== da) return db - da
+      const na = Number(a.setNumber || 0)
+      const nb = Number(b.setNumber || 0)
+      return (Number.isFinite(nb) ? nb : 0) - (Number.isFinite(na) ? na : 0)
+    }
+    function byPrice(a,b){
+      const pa = asNumber(a.price) ?? 0
+      const pb = asNumber(b.price) ?? 0
+      return pb - pa
+    }
+    function byNumber(a,b){
+      const na = Number(a.setNumber || 0)
+      const nb = Number(b.setNumber || 0)
+      return (Number.isFinite(nb) ? nb : 0) - (Number.isFinite(na) ? na : 0)
+    }
+
+    function applyFilter(){
+      const term = (q.value || "").trim().toLowerCase()
+      filtered = term ? all.filter(x => x.search.includes(term)) : all.slice()
+
+      if(sortMode === "new") filtered.sort(byNew)
+      if(sortMode === "price") filtered.sort(byPrice)
+      if(sortMode === "number") filtered.sort(byNumber)
+
+      page = 1
+      render()
+    }
+
+    function clampPage(){
+      const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
+      if(page < 1) page = 1
+      if(page > totalPages) page = totalPages
+      return totalPages
+    }
+
+    function buildCard(x){
+      const href = x.url || "#"
+      const title = x.name || "Set"
+      const img = x.img || FALLBACK_IMG
+      const price = x.price ? `${escapeHtml(x.price)}` : ""
+      const setNumberTxt = x.setNumber ? `#${escapeHtml(x.setNumber)}` : ""
+
+      const wishId = (x.setNumber || title).trim()
+
+      return `
+        <a class="card" href="${escapeHtml(href)}" target="_blank" rel="noopener" aria-label="${safeText(title)}">
+          <div class="cardTop">
+            <div class="pill">${escapeHtml(x.setNumber || "Set")}</div>
+            <button class="wishBtn" type="button" data-id="${escapeHtml(wishId)}" aria-label="Wishlist" aria-pressed="false" data-on="0">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 21s-7-4.4-9.4-8.5C.8 9.2 2.7 6 6.2 6c2 0 3.2 1 3.8 2 .6-1 1.8-2 3.8-2 3.5 0 5.4 3.2 3.6 6.5C19 16.6 12 21 12 21Z" stroke-width="2" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="media">
+            <img src="${escapeHtml(img)}" alt="${safeText(title)}" onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+          </div>
+
+          <div class="body">
+            <div class="name">${escapeHtml(title)}</div>
+
+            <div class="subline">
+              <div class="subLeft">
+                <div class="price">${price}</div>
+                <div class="setno">${setNumberTxt}</div>
+              </div>
+              <div class="openBtn" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7 17L17 7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      `
+    }
+
+    function wireWishlistButtons(){
+      grid.querySelectorAll(".wishBtn").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault()
+          e.stopPropagation()
+
+          const id = btn.getAttribute("data-id") || ""
+          if(!id) return
+
+          const card = btn.closest(".card")
+          if(!card) return
+
+          const href = card.getAttribute("href") || "#"
+          const titleEl = card.querySelector(".name")
+          const imgEl = card.querySelector(".media img")
+          const pillEl = card.querySelector(".pill")
+          const priceEl = card.querySelector(".price")
+
+          const item = {
+            name: titleEl ? titleEl.textContent.trim() : "Set",
+            setNumber: pillEl ? pillEl.textContent.trim() : "",
+            img: imgEl ? (imgEl.getAttribute("src") || "") : "",
+            url: href,
+            price: priceEl ? priceEl.textContent.trim() : "",
+            date: ""
+          }
+
+          toggleWishFromItem(item)
+        })
+      })
+
+      updateWishUI()
+    }
+
+    function render(){
+      const totalPages = clampPage()
+      const total = filtered.length
+
+      const start = (page - 1) * PAGE_SIZE
+      const end = Math.min(total, start + PAGE_SIZE)
+      const slice = filtered.slice(start, end)
+
+      itemsMeta.textContent = `${total} items`
+      pageMeta.textContent = `Seite ${page}`
+      rangeMeta.textContent = `${start + (total ? 1 : 0)}–${end}`
+      pageInfo.textContent = `Seite ${page} von ${totalPages}`
+
+      prevPage.disabled = page <= 1
+      nextPage.disabled = page >= totalPages
+
+      grid.innerHTML = slice.length ? slice.map(buildCard).join("") : `<div class="errorBox">Keine Daten</div>`
+      wireWishlistButtons()
+    }
+
+    prevPage.addEventListener("click", () => { page -= 1; render() })
+    nextPage.addEventListener("click", () => { page += 1; render() })
+    q.addEventListener("input", () => applyFilter())
+
+    sortBtn.addEventListener("click", () => {
+      if(sortMode === "new"){ sortMode = "number"; sortLabel.textContent = "Number"; applyFilter(); return }
+      if(sortMode === "number"){ sortMode = "price"; sortLabel.textContent = "Price"; applyFilter(); return }
+      sortMode = "new"
+      sortLabel.textContent = "New"
+      applyFilter()
+    })
+
+    async function load(){
+      grid.innerHTML = `
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      `
+
+      const data = await fetchJson(SETS_API_URL)
+      const list = ensureArrayFromApi(data)
+
+      const norm = list.map(normalizeItem)
+
+      const seen = new Set()
+      all = []
+      for(const it of norm){
+        const key = (it.setNumber || it.name).trim()
+        if(!key) continue
+        if(seen.has(key)) continue
+        seen.add(key)
+        all.push(it)
+      }
+
+      all.sort(byNew)
+      reloadCount.textContent = String(all.length)
+
+      applyFilter()
+      updateWishUI()
+    }
+
+    function showError(msg){
+      grid.innerHTML = `<div class="errorBox">${safeText(msg)}</div>`
+      all = []
+      filtered = []
+      reloadCount.textContent = "0"
+      itemsMeta.textContent = "0 items"
+      pageMeta.textContent = "Seite 1"
+      rangeMeta.textContent = "0–0"
+      pageInfo.textContent = "Seite 1 von 1"
+      prevPage.disabled = true
+      nextPage.disabled = true
+      updateWishUI()
+    }
+
+    reloadBtn.addEventListener("click", () => {
+      load().catch(err => {
+        console.error(err)
+        showError("Fehler beim Laden. Schau in die Browser Console. CORS oder JSON Format")
+      })
+    })
+
+    load().catch(err => {
+      console.error(err)
+      showError("Fehler beim Laden. Schau in die Browser Console. CORS oder JSON Format")
+    })
+
+    updateWishUI()
+
+    addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        closeDrawer()
         closeLogin()
         closeToast()
       }
