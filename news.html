@@ -28,6 +28,7 @@
     }
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
+    button{font:inherit}
 
     header.site{
       position:fixed;
@@ -150,6 +151,57 @@
     .top-link:hover{background:rgba(19,32,42,.85)}
     .top-link span{color:#b7c2cc;font-weight:700}
 
+    .login-float{
+      position:fixed;
+      top:16px;
+      right:14px;
+      z-index:60;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      opacity:1;
+      pointer-events:auto;
+      transform:none;
+    }
+
+    .status-pill{
+      height:46px;
+      padding:0 14px;
+      border-radius:12px;
+      border:1px solid #1f2a35;
+      background:rgba(16,24,32,.55);
+      display:none;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+      color:#fff;
+      max-width:280px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      white-space:nowrap;
+      backdrop-filter:blur(10px);
+    }
+    .status-pill span{color:#94a3b8;font-weight:800}
+
+    body.user-on #loginOpen{display:none}
+    body.user-on #statusPill{display:flex}
+
+    .login-icon-btn{
+      height:46px;
+      width:46px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(10px);
+      display:none;
+      place-items:center;
+      cursor:pointer;
+      transition:transform .12s ease, filter .12s ease;
+    }
+    .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
+    .login-icon-btn svg{width:22px;height:22px;color:#fff}
+
     @media (max-width:720px){
       header.site{height:72px}
       .nav-logo{height:44px}
@@ -158,10 +210,17 @@
       .top-links{top:14px;left:64px;gap:8px}
       .top-link{height:44px;padding:0 12px}
       .top-link span{display:none}
+      .login-float{top:14px;right:12px}
+      .status-pill{height:44px}
+      .login-icon-btn{height:44px;width:44px}
     }
 
     @media (max-width:520px){
       .top-links{display:none}
+      .status-pill{display:none}
+      #loginOpen{display:none}
+      .login-icon-btn{display:grid}
+      body.user-on .login-icon-btn{display:none}
     }
 
     .drawer{
@@ -392,6 +451,137 @@
       background:rgba(16,24,32,.35);
       height:260px;
     }
+
+    .login-backdrop{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.55);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease;
+      z-index:95;
+    }
+
+    .login-modal{
+      position:fixed;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%) translateY(18px) scale(.985);
+      width:min(520px,92vw);
+      opacity:0;
+      pointer-events:none;
+      z-index:96;
+      transition:transform .28s ease, opacity .28s ease;
+    }
+
+    .login-card{
+      background:
+        radial-gradient(900px 420px at 12% -10%, rgba(236,72,153,.30), transparent 60%),
+        radial-gradient(800px 520px at 92% 120%, rgba(59,130,246,.28), transparent 60%),
+        rgba(12,18,24,.96);
+      border:1px solid #213140;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 24px 80px rgba(0,0,0,.6);
+      backdrop-filter:blur(14px);
+      max-height:86vh;
+      overflow:auto;
+      -webkit-overflow-scrolling:touch;
+    }
+
+    .login-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .login-card h3{
+      font-size:1.25rem;
+      font-weight:900;
+      letter-spacing:.04em;
+      color:#fff;
+    }
+
+    .login-text{
+      margin-top:4px;
+      color:#cfd6dd;
+      font-size:.95rem;
+      line-height:1.45;
+    }
+
+    .login-close{
+      height:36px;
+      padding:0 12px;
+      border-radius:12px;
+      border:1px solid #2a3641;
+      background:#111b23;
+      color:#d9e1e8;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .login-foot{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      margin-top:12px;
+      color:#94a3b8;
+      font-size:.85rem;
+      flex-wrap:wrap;
+    }
+    .login-foot a:hover{color:#fff}
+
+    body.login-open .login-backdrop{opacity:1;pointer-events:auto}
+    body.login-open .login-modal{
+      opacity:1;
+      pointer-events:auto;
+      transform:translate(-50%,-50%) translateY(0) scale(1);
+    }
+
+    #gsiButton{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    @media (max-width:520px){
+      .login-modal{
+        left:0;
+        top:auto;
+        bottom:0;
+        width:100vw;
+        transform:translateY(14px) scale(.985);
+        padding:0 10px 10px;
+      }
+
+      body.login-open .login-modal{
+        transform:translateY(0) scale(1);
+      }
+
+      .login-card{
+        border-radius:18px 18px 0 0;
+        padding:14px;
+        max-height:78vh;
+      }
+
+      .login-card h3{font-size:1.1rem}
+      .login-text{font-size:.9rem}
+
+      #gsiButton > div,
+      #gsiButton iframe{
+        width:100% !important;
+        min-width:0 !important;
+      }
+
+      .login-close{
+        height:34px;
+        padding:0 10px;
+        border-radius:10px;
+      }
+    }
   </style>
 </head>
 
@@ -409,6 +599,23 @@
     <a class="top-link" href="/events.html" aria-label="Events">
       <strong>Events</strong><span>Dates</span>
     </a>
+  </div>
+
+  <div class="login-float" aria-label="Account">
+    <div class="status-pill" id="statusPill" aria-live="polite">
+      <strong id="userName">User</strong><span id="userEmail">Email</span>
+    </div>
+
+    <button class="top-link" id="loginOpen" type="button" aria-label="Anmelden">
+      <strong>Anmelden</strong><span>Google</span>
+    </button>
+
+    <button class="login-icon-btn" id="loginIconBtn" type="button" aria-label="Anmelden">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path d="M4 20a8 8 0 0 1 16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü">
@@ -505,8 +712,7 @@
       <div class="row3" id="newsGrid">
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div>
       </div>
 
       <div class="divider"></div>
@@ -515,13 +721,35 @@
       <div class="row3" id="stoneWarsGrid">
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
-        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div>
       </div>
     </div>
   </main>
 
+  <div class="login-backdrop" id="loginBackdrop" aria-hidden="true"></div>
+
+  <div class="login-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
+    <div class="login-card">
+      <div class="login-head">
+        <div>
+          <h3 id="loginTitle">Anmelden</h3>
+          <p class="login-text">Mit Google anmelden</p>
+        </div>
+        <button class="login-close" id="loginClose" type="button">Close</button>
+      </div>
+
+      <div id="gsiButton"></div>
+
+      <div class="login-foot">
+        <a href="#impressum">Impressum</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
   <script>
+    const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
     const NEWS_API_URL = "https://sethub.ddnsfree.com/InfoScraper/api/LegoNews"
     const STONE_WARS_API_URL = "https://sethub.ddnsfree.com/InfoScraper/api/Scraps"
     const FALLBACK_IMG = "/Bilder/real1.png"
@@ -538,7 +766,107 @@
     })
     drawerBackdrop.addEventListener("click", closeDrawer)
     document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
-    addEventListener("keydown", e => { if(e.key === "Escape") closeDrawer() })
+
+    const loginOpen = document.getElementById("loginOpen")
+    const loginIconBtn = document.getElementById("loginIconBtn")
+    const loginOpenDrawer = document.getElementById("loginOpenDrawer")
+    const loginBackdrop = document.getElementById("loginBackdrop")
+    const loginModal = document.getElementById("loginModal")
+    const loginClose = document.getElementById("loginClose")
+    const userName = document.getElementById("userName")
+    const userEmail = document.getElementById("userEmail")
+
+    function openLogin(){
+      document.body.classList.add("login-open")
+      loginBackdrop.setAttribute("aria-hidden","false")
+      loginModal.setAttribute("aria-hidden","false")
+      setTimeout(renderGsiFit, 0)
+    }
+
+    function closeLogin(){
+      document.body.classList.remove("login-open")
+      loginBackdrop.setAttribute("aria-hidden","true")
+      loginModal.setAttribute("aria-hidden","true")
+    }
+
+    function setUserUI(u){
+      if(!u) return
+      document.body.classList.add("user-on")
+      userName.textContent = u.name || "User"
+      userEmail.textContent = u.email || ""
+    }
+
+    loginOpen?.addEventListener("click", openLogin)
+    loginIconBtn?.addEventListener("click", openLogin)
+    loginOpenDrawer?.addEventListener("click", () => {
+      closeDrawer()
+      openLogin()
+    })
+    loginClose?.addEventListener("click", closeLogin)
+    loginBackdrop?.addEventListener("click", closeLogin)
+
+    function onGoogleCredential(resp){
+      try{
+        const payload = JSON.parse(atob(resp.credential.split(".")[1]))
+        setUserUI({
+          name: payload.name || "User",
+          email: payload.email || ""
+        })
+        closeLogin()
+      }catch{
+        closeLogin()
+      }
+    }
+
+    function initGSI(){
+      if(!window.google || !google.accounts || !google.accounts.id) return
+
+      google.accounts.id.initialize({
+        client_id: GOOGLE_CLIENT_ID,
+        callback: onGoogleCredential,
+        auto_select: false,
+        cancel_on_tap_outside: true
+      })
+
+      renderGsiFit()
+    }
+
+    function renderGsiFit(){
+      const btn = document.getElementById("gsiButton")
+      if(!btn || !window.google || !google.accounts || !google.accounts.id) return
+
+      btn.innerHTML = ""
+
+      const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
+
+      google.accounts.id.renderButton(btn, {
+        theme: "filled_black",
+        size: "large",
+        type: "standard",
+        shape: "pill",
+        text: "signin_with",
+        logo_alignment: "left",
+        width: w
+      })
+    }
+
+    window.addEventListener("load", () => {
+      const start = Date.now()
+      const t = setInterval(() => {
+        if(window.google && google.accounts && google.accounts.id){
+          clearInterval(t)
+          initGSI()
+          return
+        }
+        if(Date.now() - start > 4000) clearInterval(t)
+      }, 50)
+    })
+
+    window.addEventListener("resize", () => {
+      if(document.body.classList.contains("login-open")){
+        renderGsiFit()
+      }
+    })
 
     function formatDate(iso){
       const d = new Date(iso)
@@ -794,7 +1122,7 @@
 
       const newsItems = clean
         .filter(x => !sliderKeys.has(`${firstText(x, ["title","name","headline"]).trim()}__${firstText(x, ["publishedAt","date","createdAt"]).trim()}`))
-        .slice(0, 12)
+        .slice(0, 8)
 
       track.innerHTML = sliderItems.length
         ? sliderItems.map(buildSlide).join("")
@@ -809,7 +1137,7 @@
 
       grid.innerHTML = newsItems.length
         ? newsItems.map(buildCard).join("")
-        : Array.from({length:12}, () => `
+        : Array.from({length:8}, () => `
             <div class="news-card">
               <div class="thumb">
                 <img src="${FALLBACK_IMG}" alt="Keine News">
@@ -833,7 +1161,7 @@
 
       grid.innerHTML = clean.length
         ? clean.map(buildCard).join("")
-        : Array.from({length:12}, () => `
+        : Array.from({length:8}, () => `
             <div class="news-card">
               <div class="thumb">
                 <img src="${FALLBACK_IMG}" alt="Keine Stone Wars News">
@@ -885,6 +1213,13 @@
         </div>
       `).join("")
     }
+
+    addEventListener("keydown", e => {
+      if(e.key === "Escape"){
+        closeDrawer()
+        closeLogin()
+      }
+    })
 
     Promise.all([
       loadNews(),
