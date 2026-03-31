@@ -829,7 +829,7 @@
 
       const data = await fetchJson(STONE_WARS_API_URL)
       const list = Array.isArray(data) ? data : []
-      const clean = dedupeNews(list).sort(byDateDesc).slice(0, 12)
+      const clean = dedupeNews(list).sort(byDateDesc).slice(0, 8)
 
       grid.innerHTML = clean.length
         ? clean.map(buildCard).join("")
@@ -861,7 +861,7 @@
 
       dots.innerHTML = `<button class="dot" type="button" aria-current="true" data-i="0" aria-label="Slide 1"></button>`
 
-      newsGrid.innerHTML = Array.from({length:12}, () => `
+      newsGrid.innerHTML = Array.from({length:8}, () => `
         <div class="news-card">
           <div class="thumb">
             <img src="${FALLBACK_IMG}" alt="Keine Verbindung">
@@ -873,7 +873,7 @@
         </div>
       `).join("")
 
-      stoneWarsGrid.innerHTML = Array.from({length:12}, () => `
+      stoneWarsGrid.innerHTML = Array.from({length:8}, () => `
         <div class="news-card">
           <div class="thumb">
             <img src="${FALLBACK_IMG}" alt="Keine Verbindung">
