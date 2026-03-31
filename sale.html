@@ -78,6 +78,7 @@
       gap:.6rem;
       min-width:0;
       transform:translateY(4px);
+      padding-inline:120px;
     }
     .logo-svg{width:100%;height:100%;display:block}
     .nav-logo{
@@ -255,12 +256,14 @@
       .top-links{right:210px}
       .login-float{right:64px}
       .status-pill{max-width:170px}
+      .nav-brand{padding-inline:110px}
     }
 
     @media (max-width:720px){
       header.site{height:72px}
-      .nav-logo{height:44px}
-      .nav-text{font-size:1.45rem}
+      .nav-logo{height:42px}
+      .nav-text{font-size:1.32rem}
+      .nav-brand{padding-inline:92px;gap:.45rem}
       .burger{width:44px;height:44px;top:14px}
       .top-links{top:14px;left:64px;right:172px;gap:8px}
       .top-link{height:44px;padding:0 12px}
@@ -271,13 +274,68 @@
       .status-pill{height:44px}
       .login-icon-btn{height:44px;width:44px}
     }
+
     @media (max-width:520px){
+      header.site{height:68px}
       .top-links{display:none}
       .status-pill{display:none}
       #loginOpen{display:none}
       .login-icon-btn{display:grid}
       body.user-on .login-icon-btn{display:none}
-      .login-float{right:66px}
+
+      .burger{
+        top:12px;
+        left:10px;
+        width:42px;
+        height:42px;
+      }
+
+      .login-float{
+        top:12px;
+        right:58px;
+        gap:6px;
+      }
+
+      .top-icons{
+        top:12px;
+        right:10px;
+        gap:6px;
+      }
+
+      .top-ic,
+      .login-icon-btn{
+        width:42px;
+        height:42px;
+        border-radius:11px;
+      }
+
+      .nav-brand{
+        padding-inline:86px;
+        gap:.35rem;
+        transform:translateY(2px);
+      }
+
+      .nav-logo{
+        height:34px;
+        transform:translateY(6px);
+      }
+
+      .nav-text{
+        font-size:1.08rem;
+        letter-spacing:.02em;
+      }
+    }
+
+    @media (max-width:390px){
+      .nav-brand{
+        padding-inline:82px;
+      }
+      .nav-logo{
+        height:30px;
+      }
+      .nav-text{
+        font-size:.96rem;
+      }
     }
 
     .drawer{
@@ -332,6 +390,7 @@
       margin:0 auto;
     }
     @media (max-width:720px){ main{padding-top:84px} }
+    @media (max-width:520px){ main{padding-top:78px} }
     @media (max-width:420px){ main{padding-inline:4%} }
 
     .panel{
@@ -1026,8 +1085,6 @@
       <span></span><span></span><span></span>
     </div>
   </button>
-
-  
 
   <div class="login-float" aria-label="Account">
     <div class="status-pill" id="statusPill" aria-live="polite">
@@ -2122,7 +2179,7 @@
       if(n !== PAGE_SIZE){
         PAGE_SIZE = n
         page = 1
-        render() 
+        render()
       }
       if(document.body.classList.contains("login-open")){
         renderGsiFit()
