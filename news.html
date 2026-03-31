@@ -180,7 +180,8 @@
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
-    .drawer a{
+    .drawer a,
+    .drawer button{
       display:flex;
       align-items:center;
       justify-content:space-between;
@@ -190,8 +191,11 @@
       border:1px solid #1a2530;
       font-weight:700;
       letter-spacing:.02em;
+      color:#fff;
+      cursor:pointer;
     }
-    .drawer a:hover{background:#13202a}
+    .drawer a:hover,
+    .drawer button:hover{background:#13202a}
     .drawer small{color:#94a3b8;font-weight:600}
 
     .drawer-backdrop{
@@ -229,6 +233,13 @@
       font-size:clamp(2rem,3.4vw,2.7rem);
       letter-spacing:.01em;
       margin:18px 0 12px;
+    }
+
+    .section-subtitle{
+      font-weight:900;
+      font-size:clamp(1.45rem,2.5vw,2rem);
+      letter-spacing:.01em;
+      margin:26px 0 14px;
     }
 
     .divider{
@@ -490,9 +501,9 @@
 
       <div class="dots" aria-label="Slider Punkte" id="dots"></div>
 
-      <div class="section-title" style="margin-top:20px">News</div>
-
+      <div class="section-subtitle">LEGO News</div>
       <div class="row3" id="newsGrid">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
         <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
@@ -500,11 +511,19 @@
 
       <div class="divider"></div>
 
-    
+      <div class="section-subtitle">Stone Wars</div>
+      <div class="row3" id="stoneWarsGrid">
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+        <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+      </div>
+    </div>
+  </main>
 
   <script>
     const NEWS_API_URL = "https://sethub.ddnsfree.com/InfoScraper/api/LegoNews"
-    const SETS_API_URL = "https://sethub.ddnsfree.com/NewSetsScraper/api/LegoProducts/"
+    const STONE_WARS_API_URL = "https://sethub.ddnsfree.com/InfoScraper/api/Scraps"
     const FALLBACK_IMG = "/Bilder/real1.png"
 
     const burgerBtn = document.getElementById("burgerBtn")
@@ -534,30 +553,6 @@
       return String(s || "").replaceAll("<","").replaceAll(">","")
     }
 
-    function pickLocale(items){
-      const de = items.filter(x => (x.sourceUrl || "").includes("/de-"))
-      return de.length ? de : items
-    }
-
-    function dedupeNews(items){
-      const best = new Map()
-      for(const it of items){
-        const title = (it.title || "").trim()
-        const date = (it.publishedAt || "").trim()
-        const key = `${title}__${date}`
-        const cur = best.get(key)
-        if(!cur){ best.set(key, it); continue }
-        const curIsDe = (cur.sourceUrl || "").includes("/de-")
-        const itIsDe = (it.sourceUrl || "").includes("/de-")
-        if(!curIsDe && itIsDe) best.set(key, it)
-      }
-      return Array.from(best.values())
-    }
-
-    function byDateDesc(a,b){
-      return new Date(b.publishedAt || 0).getTime() - new Date(a.publishedAt || 0).getTime()
-    }
-
     function firstText(o, keys){
       for(const k of keys){
         const v = o && o[k]
@@ -566,10 +561,52 @@
       return ""
     }
 
+    function byDateDesc(a,b){
+      const da = new Date(firstText(a, ["publishedAt","date","createdAt"]) || 0).getTime()
+      const db = new Date(firstText(b, ["publishedAt","date","createdAt"]) || 0).getTime()
+      return db - da
+    }
+
+    function pickLocale(items){
+      const de = items.filter(x => {
+        const url = String(firstText(x, ["sourceUrl","url","link"])).toLowerCase()
+        return url.includes("/de-") || url.includes("/de/")
+      })
+      return de.length ? de : items
+    }
+
+    function dedupeNews(items){
+      const best = new Map()
+
+      for(const it of items){
+        const title = firstText(it, ["title","name","headline"]).trim()
+        const date = firstText(it, ["publishedAt","date","createdAt"]).trim()
+        const key = `${title}__${date}`
+
+        if(!best.has(key)){
+          best.set(key, it)
+          continue
+        }
+
+        const current = best.get(key)
+        const currentUrl = String(firstText(current, ["sourceUrl","url","link"])).toLowerCase()
+        const newUrl = String(firstText(it, ["sourceUrl","url","link"])).toLowerCase()
+
+        const currentIsDe = currentUrl.includes("/de-") || currentUrl.includes("/de/")
+        const newIsDe = newUrl.includes("/de-") || newUrl.includes("/de/")
+
+        if(!currentIsDe && newIsDe){
+          best.set(key, it)
+        }
+      }
+
+      return Array.from(best.values())
+    }
+
     function buildSlide(item){
       const href = firstText(item, ["sourceUrl","url","link"]) || "#"
       const img = firstText(item, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG
-      const title = safeText(firstText(item, ["title","name","setName"]) || "News")
+      const title = safeText(firstText(item, ["title","name","headline"]) || "News")
       const date = formatDate(firstText(item, ["publishedAt","date","createdAt"]))
 
       return `
@@ -585,15 +622,11 @@
     }
 
     function buildCard(item){
-      const href = firstText(item, ["productUrl","sourceUrl","url","link"]) || "#"
+      const href = firstText(item, ["sourceUrl","url","link","productUrl"]) || "#"
       const img = firstText(item, ["imageUrl","image","img","thumbnail","picture"]) || FALLBACK_IMG
-      const title = safeText(firstText(item, ["title","name","setName"]) || "Item")
-
-      const dateOrInfo =
-        firstText(item, ["publishedAt","date","createdAt"]) ? formatDate(firstText(item, ["publishedAt","date","createdAt"])) :
-        firstText(item, ["price","theme","setNumber","number"])
-
-      const line2 = safeText(dateOrInfo)
+      const title = safeText(firstText(item, ["title","name","headline","setName"]) || "Item")
+      const subtitleRaw = firstText(item, ["publishedAt","date","createdAt"])
+      const subtitle = subtitleRaw ? formatDate(subtitleRaw) : safeText(firstText(item, ["theme","price","setNumber","number"]))
 
       return `
         <a class="news-card" href="${href}" target="_blank" rel="noopener" aria-label="${title}">
@@ -608,7 +641,7 @@
           </div>
           <div class="txt">
             <div class="t1">${title}</div>
-            <div class="t2">${line2}</div>
+            <div class="t2">${subtitle}</div>
           </div>
         </a>
       `
@@ -617,6 +650,7 @@
     function mountDots(count){
       const dotsEl = document.getElementById("dots")
       dotsEl.innerHTML = ""
+
       for(let i = 0; i < count; i++){
         dotsEl.insertAdjacentHTML(
           "beforeend",
@@ -628,7 +662,6 @@
     let sliderTimer = null
     let sliderIdx = 0
     let sliderMax = 0
-    let sliderLocked = false
 
     function sliderGo(i){
       const track = document.getElementById("track")
@@ -670,6 +703,7 @@
       let startX = 0
       let startY = 0
       let moved = false
+      let sliderLocked = false
 
       function onDown(x,y){
         startX = x
@@ -696,6 +730,7 @@
       function onUp(x,y){
         const dx = x - startX
         const dy = y - startY
+
         if(Math.abs(dx) < 50) return
         if(Math.abs(dx) < Math.abs(dy)) return
 
@@ -709,9 +744,11 @@
         sliderEl.setPointerCapture(e.pointerId)
         onDown(e.clientX, e.clientY)
       })
+
       sliderEl.addEventListener("pointermove", e => {
         onMove(e.clientX, e.clientY)
       })
+
       sliderEl.addEventListener("pointerup", e => {
         onUp(e.clientX, e.clientY)
       })
@@ -737,7 +774,8 @@
       } finally {
         clear()
       }
-      if(!res.ok) throw new Error("bad status")
+
+      if(!res.ok) throw new Error(`bad status ${res.status}`)
       return await res.json()
     }
 
@@ -749,70 +787,109 @@
       const list = Array.isArray(data) ? data : []
       const clean = dedupeNews(pickLocale(list)).sort(byDateDesc)
 
-      const sliderItems = clean.slice(0,5)
+      const sliderItems = clean.slice(0, 5)
       const sliderKeys = new Set(
-        sliderItems.map(x => `${(x.title || "").trim()}__${(x.publishedAt || "").trim()}`)
+        sliderItems.map(x => `${firstText(x, ["title","name","headline"]).trim()}__${firstText(x, ["publishedAt","date","createdAt"]).trim()}`)
       )
+
       const newsItems = clean
-        .filter(x => !sliderKeys.has(`${(x.title || "").trim()}__${(x.publishedAt || "").trim()}`))
-        .slice(0,9)
+        .filter(x => !sliderKeys.has(`${firstText(x, ["title","name","headline"]).trim()}__${firstText(x, ["publishedAt","date","createdAt"]).trim()}`))
+        .slice(0, 12)
 
-      track.innerHTML = sliderItems.map(buildSlide).join("")
-      mountDots(sliderItems.length)
+      track.innerHTML = sliderItems.length
+        ? sliderItems.map(buildSlide).join("")
+        : buildSlide({
+            title:"Keine News gefunden",
+            publishedAt:new Date().toISOString(),
+            imageUrl:FALLBACK_IMG,
+            sourceUrl:"#"
+          })
 
-      grid.innerHTML = newsItems.map(buildCard).join("")
+      mountDots(Math.max(sliderItems.length, 1))
+
+      grid.innerHTML = newsItems.length
+        ? newsItems.map(buildCard).join("")
+        : Array.from({length:12}, () => `
+            <div class="news-card">
+              <div class="thumb">
+                <img src="${FALLBACK_IMG}" alt="Keine News">
+              </div>
+              <div class="txt">
+                <div class="t1">Keine LEGO News gefunden</div>
+                <div class="t2">Bitte später erneut laden</div>
+              </div>
+            </div>
+          `).join("")
+
       sliderSetup()
     }
 
-    function byGuessDateDesc(a,b){
-      const da = new Date(firstText(a, ["publishedAt","date","createdAt"]) || 0).getTime()
-      const db = new Date(firstText(b, ["publishedAt","date","createdAt"]) || 0).getTime()
-      return db - da
+    async function loadStoneWars(){
+      const grid = document.getElementById("stoneWarsGrid")
+
+      const data = await fetchJson(STONE_WARS_API_URL)
+      const list = Array.isArray(data) ? data : []
+      const clean = dedupeNews(list).sort(byDateDesc).slice(0, 12)
+
+      grid.innerHTML = clean.length
+        ? clean.map(buildCard).join("")
+        : Array.from({length:12}, () => `
+            <div class="news-card">
+              <div class="thumb">
+                <img src="${FALLBACK_IMG}" alt="Keine Stone Wars News">
+              </div>
+              <div class="txt">
+                <div class="t1">Keine Stone Wars News gefunden</div>
+                <div class="t2">Bitte später erneut laden</div>
+              </div>
+            </div>
+          `).join("")
     }
-
-    function dedupeSets(items){
-      const seen = new Set()
-      const out = []
-      for(const it of items){
-        const name = firstText(it, ["name","title","setName"])
-        const num = firstText(it, ["setNumber","number","id"])
-        const key = `${name}__${num}`
-        if(seen.has(key)) continue
-        seen.add(key)
-        out.push(it)
-      }
-      return out
-    }
-
-  async function loadSets(){
-  const grid = document.getElementById("setsGrid")
-  if(!grid) return
-
-  const data = await fetchJson(SETS_API_URL)
-  const list = Array.isArray(data) ? data : []
-  const clean = dedupeSets(list).sort(byGuessDateDesc)
-
-  grid.innerHTML = clean.slice(0,9).map(buildCard).join("")
-}
-
 
     function showFallback(){
       const track = document.getElementById("track")
+      const dots = document.getElementById("dots")
       const newsGrid = document.getElementById("newsGrid")
-      const setsGrid = document.getElementById("setsGrid")
+      const stoneWarsGrid = document.getElementById("stoneWarsGrid")
+
       track.innerHTML = buildSlide({
         title:"Keine Verbindung",
         publishedAt:new Date().toISOString(),
         imageUrl:FALLBACK_IMG,
         sourceUrl:"#"
       })
-      document.getElementById("dots").innerHTML = ""
-      newsGrid.innerHTML = ""
-      setsGrid.innerHTML = ""
-    }
-    // sahdas
 
-    Promise.all(loadNews()).catch(showFallback)
+      dots.innerHTML = `<button class="dot" type="button" aria-current="true" data-i="0" aria-label="Slide 1"></button>`
+
+      newsGrid.innerHTML = Array.from({length:12}, () => `
+        <div class="news-card">
+          <div class="thumb">
+            <img src="${FALLBACK_IMG}" alt="Keine Verbindung">
+          </div>
+          <div class="txt">
+            <div class="t1">Keine Verbindung</div>
+            <div class="t2">LEGO News konnten nicht geladen werden</div>
+          </div>
+        </div>
+      `).join("")
+
+      stoneWarsGrid.innerHTML = Array.from({length:12}, () => `
+        <div class="news-card">
+          <div class="thumb">
+            <img src="${FALLBACK_IMG}" alt="Keine Verbindung">
+          </div>
+          <div class="txt">
+            <div class="t1">Keine Verbindung</div>
+            <div class="t2">Stone Wars News konnten nicht geladen werden</div>
+          </div>
+        </div>
+      `).join("")
+    }
+
+    Promise.all([
+      loadNews(),
+      loadStoneWars()
+    ]).catch(showFallback)
   </script>
 </body>
 </html>
