@@ -24,7 +24,13 @@
       --glassO:0;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
     html{scroll-behavior:smooth}
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
@@ -37,12 +43,40 @@
       overflow-x:hidden;
       min-height:100vh;
       transition:background .4s ease;
+      -webkit-text-size-adjust:100%;
+    }
+
+    body.drawer-open,
+    body.login-open,
+    body.cookie-open,
+    body.ai-open{
+      overscroll-behavior:none;
+    }
+
+    body.drawer-open{
+      overflow:hidden;
+      touch-action:none;
     }
 
     :focus-visible{
       outline:3px solid rgba(0,229,255,.55);
       outline-offset:4px;
       border-radius:14px;
+    }
+
+    a,
+    button,
+    input,
+    .drawer-link,
+    .burger,
+    .top-link,
+    .login-icon-btn,
+    .cookie-btn,
+    .sbtn,
+    .ai-close,
+    .ok,
+    .pcard{
+      touch-action:manipulation;
     }
 
     header.site{
@@ -125,6 +159,8 @@
       pointer-events:none;
       transform:translateX(-18px) scale(.95);
       transition:transform .28s ease, opacity .28s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     body.header-on .burger{
       transform:translateX(0) scale(1);
@@ -179,6 +215,7 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
+      -webkit-user-select:none;
       font-weight:900;
       color:#fff;
       letter-spacing:.02em;
@@ -241,6 +278,8 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .login-icon-btn svg{width:22px;height:22px;color:#fff}
@@ -279,6 +318,7 @@
       flex-direction:column;
       padding:90px 18px 18px;
       gap:10px;
+      will-change:transform;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -296,6 +336,8 @@
       color:#fff;
       width:100%;
       cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .drawer a:hover,
     .drawer button:hover{background:#13202a}
@@ -320,7 +362,10 @@
       pointer-events:auto;
       transition:opacity .35s ease;
     }
-    .brand-fixed.hidden{opacity:0; pointer-events:none}
+    .brand-fixed.hidden{
+      opacity:0;
+      pointer-events:none;
+    }
 
     .brand-fixed::before{
       content:""; position:fixed; left:0; right:0; top:0; height:78px;
@@ -930,6 +975,8 @@
       pointer-events:none;
       transform:translateY(18px);
       transition:transform .18s ease, filter .12s ease, opacity .18s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     body.ai-fab-on .ai-fab{opacity:1;pointer-events:auto;transform:translateY(0)}
     .ai-fab:hover{transform:translateY(-1px);filter:brightness(1.06)}
@@ -1020,6 +1067,8 @@
       font-weight:900;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .ai-close:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .ai-frame{width:100%;height:100%;border:0;background:#0b1218}
@@ -1181,6 +1230,8 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease, background .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .sbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .sbtn svg{width:22px;height:22px}
@@ -1203,8 +1254,10 @@
       scroll-padding-right:5%;
       overscroll-behavior-x:contain;
       scrollbar-width:none;
-      touch-action:pan-x pan-y;
+      touch-action:pan-y;
       pointer-events:auto;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .slider::-webkit-scrollbar{display:none}
 
@@ -1309,8 +1362,6 @@
       <span></span><span></span><span></span>
     </div>
   </button>
-
- 
 
   <div class="login-float" aria-label="Account">
     <div class="status-pill" id="statusPill" aria-live="polite">
@@ -1864,9 +1915,23 @@
 
     const burgerBtn = document.getElementById('burgerBtn')
     const drawerBackdrop = document.getElementById('drawerBackdrop')
+    const drawer = document.getElementById('drawer')
+    const topBar = document.getElementById('topBar')
 
-    function openDrawer(){ document.body.classList.add('drawer-open') }
-    function closeDrawer(){ document.body.classList.remove('drawer-open') }
+    function openDrawer(){
+      document.body.classList.add('drawer-open')
+      burgerBtn.setAttribute('aria-expanded','true')
+      drawer.setAttribute('aria-hidden','false')
+    }
+
+    function closeDrawer(){
+      document.body.classList.remove('drawer-open')
+      burgerBtn.setAttribute('aria-expanded','false')
+      drawer.setAttribute('aria-hidden','true')
+    }
+
+    burgerBtn.setAttribute('aria-expanded','false')
+    drawer.setAttribute('aria-hidden','true')
 
     burgerBtn.addEventListener('click',()=>{
       document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
@@ -1879,7 +1944,7 @@
       if(!el) return false
 
       const headerH = document.body.classList.contains('header-on')
-        ? document.getElementById('topBar').offsetHeight
+        ? topBar.offsetHeight
         : 0
 
       const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
@@ -1890,12 +1955,18 @@
     document.querySelectorAll('.drawer-link').forEach(link=>{
       link.addEventListener('click',(e)=>{
         const href = link.getAttribute('href') || ''
+
+        if(link.tagName === 'BUTTON'){
+          return
+        }
+
         if(href.startsWith('#')){
           e.preventDefault()
           closeDrawer()
-          setTimeout(()=>scrollToHash(href), 30)
+          requestAnimationFrame(()=>scrollToHash(href))
           return
         }
+
         closeDrawer()
       })
     })
@@ -1929,10 +2000,12 @@
       document.body.classList.add('toast-on')
       toastWrap.setAttribute('aria-hidden','false')
     }
+
     function closeToast(){
       document.body.classList.remove('toast-on')
       toastWrap.setAttribute('aria-hidden','true')
     }
+
     toastOk.addEventListener('click', closeToast)
     toastWrap.addEventListener('click', e=>{
       if(e.target === toastWrap) closeToast()
@@ -1943,36 +2016,37 @@
       button.textContent = loading ? loadingText : idleText
     }
 
-async function postJson(url, payload){
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type':'application/json' },
-    credentials: 'include',
-    body: JSON.stringify(payload)
-  })
+    async function postJson(url, payload){
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      })
 
-  const text = await res.text()
+      const text = await res.text()
 
-  console.log('POST URL:', url)
-  console.log('STATUS:', res.status)
-  console.log('RAW RESPONSE:', text)
+      console.log('POST URL:', url)
+      console.log('STATUS:', res.status)
+      console.log('RAW RESPONSE:', text)
 
-  let data = null
-  try{
-    data = text ? JSON.parse(text) : null
-  }catch{
-    data = null
-  }
+      let data = null
+      try{
+        data = text ? JSON.parse(text) : null
+      }catch{
+        data = null
+      }
 
-  if(!res.ok){
-    const message = data && data.message
-      ? data.message
-      : `HTTP ${res.status} ${text || 'Request failed'}`
-    throw new Error(message)
-  }
-// awhdua
-  return data
-}
+      if(!res.ok){
+        const message = data && data.message
+          ? data.message
+          : `HTTP ${res.status} ${text || 'Request failed'}`
+        throw new Error(message)
+      }
+
+      return data
+    }
+
     const signupForm = document.getElementById('signupForm')
     const signupEmail = document.getElementById('signupEmail')
     const signupBtn = document.getElementById('signupBtn')
@@ -2075,7 +2149,10 @@ async function postJson(url, payload){
 
     loginOpen.addEventListener('click', openLogin)
     loginIconBtn.addEventListener('click', openLogin)
-    loginOpenDrawer.addEventListener('click', ()=>{ closeDrawer(); openLogin() })
+    loginOpenDrawer.addEventListener('click', ()=>{
+      closeDrawer()
+      openLogin()
+    })
     loginClose.addEventListener('click', closeLogin)
     loginBackdrop.addEventListener('click', closeLogin)
 
@@ -2152,7 +2229,7 @@ async function postJson(url, payload){
 
     addEventListener('keydown', e => {
       if(e.key === 'Escape'){
-        document.body.classList.remove('drawer-open')
+        closeDrawer()
         document.body.classList.remove('cookie-open')
         document.body.classList.remove('login-open')
         closeAI()
@@ -2184,44 +2261,60 @@ async function postJson(url, payload){
       if(e.key === 'ArrowRight') slideBy(1)
     })
 
-    let isDown = false
+    let isPointerDown = false
+    let dragActive = false
     let startX = 0
     let startY = 0
     let startScroll = 0
-    let lock = ''
+    let suppressClick = false
+    const DRAG_THRESHOLD = 8
 
     cardSlider.addEventListener('pointerdown', e=>{
-      isDown = true
-      lock = ''
+      if(e.pointerType === 'mouse' && e.button !== 0) return
+      isPointerDown = true
+      dragActive = false
+      suppressClick = false
       startX = e.clientX
       startY = e.clientY
       startScroll = cardSlider.scrollLeft
-      cardSlider.setPointerCapture(e.pointerId)
     })
 
     cardSlider.addEventListener('pointermove', e=>{
-      if(!isDown) return
+      if(!isPointerDown) return
+
       const dx = e.clientX - startX
       const dy = e.clientY - startY
 
-      if(!lock){
-        lock = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+      if(!dragActive){
+        if(Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return
+        if(Math.abs(dx) <= Math.abs(dy)){
+          isPointerDown = false
+          return
+        }
+        dragActive = true
+        suppressClick = true
       }
 
-      if(lock === 'x'){
-        cardSlider.scrollLeft = startScroll - dx
-        e.preventDefault()
-      }
-    })
+      cardSlider.scrollLeft = startScroll - dx
+      e.preventDefault()
+    }, { passive:false })
 
-    function endDrag(){
-      isDown = false
-      lock = ''
+    function endSliderDrag(){
+      isPointerDown = false
+      setTimeout(()=>{
+        suppressClick = false
+      }, 50)
     }
 
-    cardSlider.addEventListener('pointerup', endDrag)
-    cardSlider.addEventListener('pointercancel', endDrag)
-    cardSlider.addEventListener('pointerleave', endDrag)
+    cardSlider.addEventListener('pointerup', endSliderDrag)
+    cardSlider.addEventListener('pointercancel', endSliderDrag)
+    cardSlider.addEventListener('lostpointercapture', endSliderDrag)
+
+    cardSlider.addEventListener('click', e=>{
+      if(!suppressClick) return
+      e.preventDefault()
+      e.stopPropagation()
+    }, true)
   </script>
 </body>
 </html>
