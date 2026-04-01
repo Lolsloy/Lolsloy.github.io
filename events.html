@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>SetHub Events</title>
   <meta name="description" content="SetHub Events" />
   <meta name="theme-color" content="#0E141A" />
@@ -16,11 +16,9 @@
       --shadow:0 26px 90px rgba(0,0,0,.55);
       --r2:23px;
       --gap:16px;
-
       --card:#0b1218;
       --card2:#0f1820;
       --line:#223041;
-
       --ok:#00ff87;
       --warn:#ffd300;
       --bad:#ff5ea0;
@@ -82,7 +80,9 @@
 
     header.site{
       position:fixed;
-      left:0; right:0; top:0;
+      left:0;
+      right:0;
+      top:0;
       height:78px;
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
@@ -91,24 +91,25 @@
     }
 
     .topbar-inner{
+      position:relative;
       height:100%;
       width:min(1240px,100%);
       margin:0 auto;
       padding:0 14px;
-      display:grid;
-      grid-template-columns:56px 1fr 56px;
-      align-items:center;
     }
 
     .nav-brand{
-      grid-column:2;
-      justify-self:center;
+      position:absolute;
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-42%);
       display:flex;
       align-items:center;
       justify-content:center;
       gap:.6rem;
       min-width:0;
-      transform:translateY(4px);
+      width:max-content;
+      max-width:calc(100% - 140px);
     }
 
     .logo-svg{width:100%;height:100%;display:block}
@@ -118,7 +119,6 @@
       width:auto;
       display:grid;
       place-items:center;
-      transform:translateY(10px);
       flex:0 0 auto;
     }
 
@@ -158,8 +158,12 @@
 
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
-      position:absolute;left:0;right:0;
-      height:2px;background:#e8eef4;border-radius:2px;
+      position:absolute;
+      left:0;
+      right:0;
+      height:2px;
+      background:#e8eef4;
+      border-radius:2px;
       transition:transform .25s ease, opacity .2s ease, top .25s ease;
     }
     .burger .lines span:nth-child(1){top:0}
@@ -169,36 +173,6 @@
     body.drawer-open .burger .lines span:nth-child(1){top:6px;transform:rotate(45deg)}
     body.drawer-open .burger .lines span:nth-child(2){opacity:0}
     body.drawer-open .burger .lines span:nth-child(3){top:6px;transform:rotate(-45deg)}
-
-    .top-links{
-      position:fixed;
-      top:16px;
-      left:68px;
-      z-index:59;
-      display:flex;
-      gap:10px;
-    }
-
-    .top-link{
-      height:46px;
-      padding:0 14px;
-      border-radius:12px;
-      background:rgba(16,24,32,.7);
-      border:1px solid #1f2a35;
-      backdrop-filter:blur(10px);
-      display:flex;
-      align-items:center;
-      gap:10px;
-      cursor:pointer;
-      user-select:none;
-      -webkit-user-select:none;
-      font-weight:800;
-      color:#fff;
-      letter-spacing:.02em;
-      white-space:nowrap;
-    }
-    .top-link:hover{background:rgba(19,32,42,.85)}
-    .top-link span{color:#b7c2cc;font-weight:700}
 
     .login-float{
       position:fixed;
@@ -236,6 +210,27 @@
     body.user-on #loginOpen{display:none}
     body.user-on #statusPill{display:flex}
 
+    .top-link{
+      height:46px;
+      padding:0 14px;
+      border-radius:12px;
+      background:rgba(16,24,32,.7);
+      border:1px solid #1f2a35;
+      backdrop-filter:blur(10px);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
+      font-weight:800;
+      color:#fff;
+      letter-spacing:.02em;
+      white-space:nowrap;
+    }
+    .top-link:hover{background:rgba(19,32,42,.85)}
+    .top-link span{color:#b7c2cc;font-weight:700}
+
     .login-icon-btn{
       height:46px;
       width:46px;
@@ -255,27 +250,36 @@
 
     @media (max-width:720px){
       header.site{height:72px}
+      .nav-brand{transform:translate(-50%,-42%);max-width:calc(100% - 120px)}
       .nav-logo{height:44px}
       .nav-text{font-size:1.45rem}
-      .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;gap:8px}
-      .top-link{height:44px;padding:0 12px}
-      .top-link span{display:none}
+      .burger{width:44px;height:44px;top:14px;left:12px}
       .login-float{top:14px;right:12px}
       .status-pill{height:44px}
+      .top-link{height:44px;padding:0 12px}
       .login-icon-btn{height:44px;width:44px}
     }
+
     @media (max-width:520px){
-      .top-links{display:none}
       .status-pill{display:none}
       #loginOpen{display:none}
       .login-icon-btn{display:grid}
       body.user-on .login-icon-btn{display:none}
+      .nav-brand{max-width:calc(100% - 104px)}
+      .nav-text{font-size:1.28rem}
+      .nav-logo{height:40px}
+    }
+
+    @media (max-width:380px){
+      .nav-text{font-size:1.16rem}
+      .nav-brand{gap:.45rem}
     }
 
     .drawer{
       position:fixed;
-      top:0; left:0; bottom:0;
+      top:0;
+      left:0;
+      bottom:0;
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid #16212a;
@@ -288,6 +292,8 @@
       gap:10px;
       will-change:transform;
       pointer-events:auto;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -996,8 +1002,10 @@
     .impressum h3{font-size:1.2rem;margin-bottom:.6rem;font-weight:800}
 
     .toast-wrap{
-      position:fixed; inset:0;
-      display:grid; place-items:center;
+      position:fixed;
+      inset:0;
+      display:grid;
+      place-items:center;
       pointer-events:none;
       z-index:110;
       opacity:0;
@@ -1026,7 +1034,10 @@
       border-radius:.6rem;
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
-      color:#fff;font-weight:900;cursor:pointer;width:100%;
+      color:#fff;
+      font-weight:900;
+      cursor:pointer;
+      width:100%;
     }
     body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
     body.toast-on .toast{transform:translateY(0) scale(1)}
@@ -1193,14 +1204,14 @@
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
-    <a href="/index.html" class="drawer-link">Homepage 
-    <a href="/news.html" class="drawer-link">News 
-    <a href="/events.html" class="drawer-link">Events 
-    <a href="/newsets.html" class="drawer-link">New-Sets 
-    <a href="sale.html" class="drawer-link">Sale 
-    <a href="/wishlist.html" class="drawer-link">Wishlist
-    <a href="#impressum" class="drawer-link">Impressum 
-    <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden 
+    <a href="index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="news.html" class="drawer-link">News <small>Updates</small></a>
+    <a href="events.html" class="drawer-link">Events <small>Dates</small></a>
+    <a href="newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
+    <a href="sale.html" class="drawer-link">Sale <small>Deals</small></a>
+    <a href="wishlist.html" class="drawer-link">Wishlist <small>Saved</small></a>
+    <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
+    <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden <small>Google</small></button>
   </nav>
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 
@@ -1677,7 +1688,7 @@
 
       setTimeout(() => {
         window.location.href = href
-      }, 120)
+      }, 140)
     })
 
     const loginOpen = document.getElementById("loginOpen")
@@ -1713,7 +1724,7 @@
     loginIconBtn?.addEventListener("click", openLogin)
     loginOpenDrawer?.addEventListener("click", () => {
       closeDrawer()
-      openLogin()
+      setTimeout(openLogin, 120)
     })
     loginClose?.addEventListener("click", closeLogin)
     loginBackdrop?.addEventListener("click", closeLogin)
