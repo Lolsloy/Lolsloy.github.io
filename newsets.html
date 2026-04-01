@@ -6,7 +6,7 @@
   <title>SetHub New Sets</title>
   <meta name="description" content="SetHub New Sets" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png" />
+  <link rel="icon" type="image/png" href="/Bilder/lagos.png" />
 
   <style>
     :root{
@@ -58,6 +58,7 @@
       backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(15,26,34,.9);
       z-index:50;
+      pointer-events:none;
     }
     .topbar-inner{
       height:100%;
@@ -78,6 +79,9 @@
       min-width:0;
       transform:translateY(4px);
       padding-inline:120px;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .logo-svg{width:100%;height:100%;display:block}
     .nav-logo{
@@ -98,13 +102,15 @@
       color:#fff;
       font-size:1.6rem;
       white-space:nowrap;
+      user-select:none;
+      -webkit-user-select:none;
     }
 
     .burger{
       position:fixed;
       top:16px;
       left:14px;
-      z-index:60;
+      z-index:2000;
       width:46px;
       height:46px;
       border-radius:12px;
@@ -115,6 +121,10 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
+      touch-action:manipulation;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .burger .lines{width:20px;height:14px;position:relative}
@@ -135,7 +145,7 @@
       top:16px;
       left:68px;
       right:250px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       align-items:center;
@@ -152,11 +162,13 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
+      -webkit-user-select:none;
       font-weight:900;
       color:#fff;
       letter-spacing:.02em;
       white-space:nowrap;
       transition:transform .12s ease, filter .12s ease;
+      touch-action:manipulation;
     }
     .top-link:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .top-link span{color:#b7c2cc;font-weight:800}
@@ -165,7 +177,7 @@
       position:fixed;
       top:16px;
       right:68px;
-      z-index:60;
+      z-index:2000;
       display:flex;
       align-items:center;
       gap:10px;
@@ -204,6 +216,7 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      touch-action:manipulation;
     }
     .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .login-icon-btn svg{width:22px;height:22px;color:#fff}
@@ -212,7 +225,7 @@
       position:fixed;
       top:16px;
       right:14px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       align-items:center;
@@ -228,6 +241,7 @@
       place-items:center;
       cursor:pointer;
       position:relative;
+      touch-action:manipulation;
     }
     .top-ic:hover{background:rgba(19,32,42,.85)}
     .top-ic svg{width:20px;height:20px;color:#fff}
@@ -326,15 +340,9 @@
     }
 
     @media (max-width:390px){
-      .nav-brand{
-        padding-inline:82px;
-      }
-      .nav-logo{
-        height:30px;
-      }
-      .nav-text{
-        font-size:.96rem;
-      }
+      .nav-brand{padding-inline:82px}
+      .nav-logo{height:30px}
+      .nav-text{font-size:.96rem}
     }
 
     .drawer{
@@ -343,13 +351,15 @@
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid rgba(22,33,42,.9);
-      z-index:58;
+      z-index:1998;
       transform:translateX(-100%);
       transition:transform .32s ease;
       display:flex;
       flex-direction:column;
       padding:90px 18px 18px;
       gap:10px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body.drawer-open .drawer{transform:translateX(0)}
     .drawer a,
@@ -367,6 +377,9 @@
       cursor:pointer;
       width:100%;
       text-align:left;
+      touch-action:manipulation;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .drawer a:hover,
     .drawer button:hover{background:#13202a}
@@ -375,7 +388,7 @@
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      z-index:57;
+      z-index:1997;
       opacity:0;
       pointer-events:none;
       transition:opacity .25s ease;
@@ -482,6 +495,7 @@
       transition:transform .12s ease, filter .12s ease;
       user-select:none;
       white-space:nowrap;
+      touch-action:manipulation;
     }
     .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .btn small{
@@ -576,6 +590,7 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      touch-action:manipulation;
     }
     .wishBtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .wishBtn svg{width:18px;height:18px}
@@ -698,6 +713,7 @@
       font-weight:950;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+      touch-action:manipulation;
     }
     .pbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .pbtn:disabled{opacity:.45;cursor:default;transform:none;filter:none}
@@ -815,6 +831,7 @@
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
       color:#fff;font-weight:900;cursor:pointer;width:100%;
+      touch-action:manipulation;
     }
     body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
     body.toast-on .toast{transform:translateY(0) scale(1)}
@@ -887,6 +904,7 @@
       color:#d9e1e8;
       font-weight:900;
       cursor:pointer;
+      touch-action:manipulation;
     }
 
     .login-foot{
@@ -957,7 +975,7 @@
 </head>
 
 <body>
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
@@ -989,7 +1007,7 @@
     </a>
   </div>
 
-  <nav class="drawer" id="drawer" aria-label="Menü">
+  <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
@@ -1175,15 +1193,34 @@
 
     const burgerBtn = document.getElementById("burgerBtn")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
+    const drawer = document.getElementById("drawer")
     const wishBadgeTop = document.getElementById("wishBadgeTop")
 
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+    function openDrawer(){
+      document.body.classList.add("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","true")
+      drawer.setAttribute("aria-hidden","false")
+    }
 
-    burgerBtn.addEventListener("click", () => {
+    function closeDrawer(){
+      document.body.classList.remove("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","false")
+      drawer.setAttribute("aria-hidden","true")
+    }
+
+    function toggleDrawer(){
       document.body.classList.contains("drawer-open") ? closeDrawer() : openDrawer()
-    })
+    }
+
+    burgerBtn.addEventListener("click", toggleDrawer)
     drawerBackdrop.addEventListener("click", closeDrawer)
+
+    document.addEventListener("click", (e) => {
+      if(!document.body.classList.contains("drawer-open")) return
+      if(e.target.closest("#drawer")) return
+      if(e.target.closest("#burgerBtn")) return
+      closeDrawer()
+    })
 
     const loginOpen = document.getElementById("loginOpen")
     const loginIconBtn = document.getElementById("loginIconBtn")
@@ -1216,9 +1253,12 @@
 
     loginOpen?.addEventListener("click", openLogin)
     loginIconBtn?.addEventListener("click", openLogin)
-    loginOpenDrawer?.addEventListener("click", () => {
+    loginOpenDrawer?.addEventListener("click", (e) => {
+      e.preventDefault()
       closeDrawer()
-      openLogin()
+      setTimeout(() => {
+        openLogin()
+      }, 180)
     })
     loginClose?.addEventListener("click", closeLogin)
     loginBackdrop?.addEventListener("click", closeLogin)
@@ -1318,9 +1358,21 @@
     })
 
     document.querySelectorAll(".drawer-link").forEach(link => {
-      link.addEventListener("click", () => {
+      link.addEventListener("click", (e) => {
+        if(link.tagName === "BUTTON") return
+
         const href = link.getAttribute("href") || ""
-        if(!href.startsWith("#")) closeDrawer()
+
+        if(href.startsWith("#")){
+          e.preventDefault()
+          closeDrawer()
+          setTimeout(() => {
+            scrollToHash(href)
+          }, 180)
+          return
+        }
+
+        closeDrawer()
       })
     })
 
