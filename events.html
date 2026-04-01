@@ -1618,44 +1618,55 @@
   <script>
     const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
 
-    const burgerBtn = document.getElementById("burgerBtn")
-    const drawer = document.getElementById("drawer")
-    const drawerBackdrop = document.getElementById("drawerBackdrop")
+const burgerBtn = document.getElementById("burgerBtn")
+const drawer = document.getElementById("drawer")
+const drawerBackdrop = document.getElementById("drawerBackdrop")
 
-    function openDrawer(){
-      document.body.classList.add("drawer-open")
-      burgerBtn.setAttribute("aria-expanded","true")
-      drawer.setAttribute("aria-hidden","false")
-    }
+function openDrawer(){
+  document.body.classList.add("drawer-open")
+  burgerBtn.setAttribute("aria-expanded","true")
+  drawer.setAttribute("aria-hidden","false")
+}
 
-    function closeDrawer(){
-      document.body.classList.remove("drawer-open")
-      burgerBtn.setAttribute("aria-expanded","false")
-      drawer.setAttribute("aria-hidden","true")
-    }
+function closeDrawer(){
+  document.body.classList.remove("drawer-open")
+  burgerBtn.setAttribute("aria-expanded","false")
+  drawer.setAttribute("aria-hidden","true")
+}
 
-    function toggleDrawer(e){
-      if(e){
-        e.preventDefault()
-        e.stopPropagation()
-      }
+function toggleDrawer(){
+  if(document.body.classList.contains("drawer-open")) closeDrawer()
+  else openDrawer()
+}
 
-      if(document.body.classList.contains("drawer-open")) closeDrawer()
-      else openDrawer()
-    }
+burgerBtn.addEventListener("click", toggleDrawer)
+drawerBackdrop.addEventListener("click", closeDrawer)
 
-    burgerBtn.addEventListener("click", toggleDrawer)
-    burgerBtn.addEventListener("touchstart", toggleDrawer, { passive:false })
-    burgerBtn.addEventListener("pointerdown", toggleDrawer)
+document.addEventListener("click", (e) => {
+  if(!document.body.classList.contains("drawer-open")) return
+  if(e.target.closest("#drawer")) return
+  if(e.target.closest("#burgerBtn")) return
+  closeDrawer()
+})
 
-    drawerBackdrop.addEventListener("click", closeDrawer)
+document.querySelectorAll(".drawer-link").forEach(link => {
+  link.addEventListener("click", (e) => {
+    if(link.tagName === "BUTTON") return
 
-    document.addEventListener("click", (e) => {
-      if(!document.body.classList.contains("drawer-open")) return
-      if(e.target.closest("#drawer")) return
-      if(e.target.closest("#burgerBtn")) return
+    const href = link.getAttribute("href") || ""
+
+    if(href.startsWith("#")){
+      e.preventDefault()
       closeDrawer()
-    })
+      setTimeout(() => {
+        scrollToHash(href)
+      }, 180)
+      return
+    }
+
+    closeDrawer()
+  })
+})
 
     function scrollToHash(hash){
       if(!hash || hash === "#") return false
