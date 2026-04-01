@@ -26,20 +26,59 @@
       --bad:#ff5ea0;
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
     html{scroll-behavior:smooth}
+
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
       color:var(--fg-on);
       background:var(--bg);
       overflow-x:hidden;
       min-height:100vh;
+      -webkit-text-size-adjust:100%;
     }
+
+    body.drawer-open,
+    body.modal-open,
+    body.viewer-open,
+    body.login-open{
+      overscroll-behavior:none;
+    }
+
+    body.drawer-open{
+      overflow:hidden;
+      touch-action:none;
+    }
+
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
     button{font:inherit;color:inherit}
     input, textarea, select{font:inherit;color:inherit}
     ::selection{background:rgba(4,213,235,.25)}
+
+    a,
+    button,
+    input,
+    textarea,
+    select,
+    .drawer-link,
+    .burger,
+    .top-link,
+    .login-icon-btn,
+    .see-more,
+    .file-btn,
+    .btn,
+    .modal-top .x,
+    .viewer-close,
+    .ok{
+      touch-action:manipulation;
+    }
 
     header.site{
       position:fixed;
@@ -111,6 +150,8 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
@@ -149,6 +190,7 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
+      -webkit-user-select:none;
       font-weight:800;
       color:#fff;
       letter-spacing:.02em;
@@ -204,6 +246,8 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .login-icon-btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .login-icon-btn svg{width:22px;height:22px;color:#fff}
@@ -241,6 +285,7 @@
       flex-direction:column;
       padding:90px 18px 18px;
       gap:10px;
+      will-change:transform;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -258,6 +303,8 @@
       letter-spacing:.02em;
       cursor:pointer;
       text-align:left;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .drawer a:hover,
     .drawer button.drawer-link:hover{background:#13202a}
@@ -414,8 +461,6 @@
       font-weight:900;
       letter-spacing:.02em;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     .see-more:hover{background:rgba(19,32,42,.75)}
 
@@ -619,8 +664,6 @@
       background:rgba(16,24,32,.65);
       font-weight:900;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     .file-btn:hover{background:rgba(19,32,42,.85)}
     .file-name{
@@ -690,8 +733,6 @@
       background:rgba(16,24,32,.65);
       font-weight:900;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
       transition:transform .12s ease, filter .12s ease, background .12s ease;
     }
     .btn:hover{background:rgba(19,32,42,.88);transform:translateY(-1px)}
@@ -757,8 +798,6 @@
       opacity:0;
       pointer-events:none;
       transition:opacity .2s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
 
     .modal{
@@ -815,8 +854,6 @@
       display:grid;
       place-items:center;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     .modal-top .x:hover{background:rgba(19,32,42,.85)}
 
@@ -850,8 +887,6 @@
       cursor:pointer;
       transform:translateY(0);
       transition:transform .15s ease, border-color .15s ease;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     .g-item:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.16)}
     .g-item img{width:100%;height:100%;object-fit:cover}
@@ -867,8 +902,6 @@
       display:grid;
       place-items:center;
       padding:18px;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     body.viewer-open{
       overflow:hidden;
@@ -906,8 +939,6 @@
       display:grid;
       place-items:center;
       cursor:pointer;
-      -webkit-tap-highlight-color:transparent;
-      touch-action:manipulation;
     }
     .viewer-close:hover{background:rgba(19,32,42,.92)}
 
@@ -1135,13 +1166,11 @@
 </head>
 
 <body>
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
   </button>
-
- 
 
   <div class="login-float" aria-label="Account">
     <div class="status-pill" id="statusPill" aria-live="polite">
@@ -1160,7 +1189,7 @@
     </button>
   </div>
 
-  <nav class="drawer" id="drawer" aria-label="Menü">
+  <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
@@ -1580,15 +1609,26 @@
     const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
 
     const burgerBtn = document.getElementById("burgerBtn")
+    const drawer = document.getElementById("drawer")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
 
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+    function openDrawer(){
+      document.body.classList.add("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","true")
+      drawer.setAttribute("aria-hidden","false")
+    }
+
+    function closeDrawer(){
+      document.body.classList.remove("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","false")
+      drawer.setAttribute("aria-hidden","true")
+    }
 
     burgerBtn.addEventListener("click", () => {
       if(document.body.classList.contains("drawer-open")) closeDrawer()
       else openDrawer()
     })
+
     drawerBackdrop.addEventListener("click", closeDrawer)
 
     const loginOpen = document.getElementById("loginOpen")
@@ -1704,29 +1744,40 @@
       return true
     }
 
+    document.querySelectorAll(".drawer-link").forEach(link => {
+      link.addEventListener("click", (e) => {
+        const href = link.getAttribute("href") || ""
+
+        if(link.tagName === "BUTTON"){
+          return
+        }
+
+        if(href.startsWith("#")){
+          e.preventDefault()
+          closeDrawer()
+          requestAnimationFrame(() => scrollToHash(href))
+          return
+        }
+
+        closeDrawer()
+      })
+    })
+
     document.querySelectorAll('a[href^="#"]').forEach(link => {
+      if(link.classList.contains("drawer-link")) return
+
       link.addEventListener("click", (e) => {
         const href = link.getAttribute("href") || ""
         if(!href.startsWith("#")) return
 
         e.preventDefault()
 
-        const needsCloseDrawer = document.body.classList.contains("drawer-open")
         const needsCloseLogin = document.body.classList.contains("login-open")
-
-        if(needsCloseDrawer) closeDrawer()
         if(needsCloseLogin) closeLogin()
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
           scrollToHash(href)
-        }, (needsCloseDrawer || needsCloseLogin) ? 180 : 0)
-      })
-    })
-
-    document.querySelectorAll(".drawer-link").forEach(link => {
-      link.addEventListener("click", () => {
-        const href = link.getAttribute("href") || ""
-        if(!href.startsWith("#")) closeDrawer()
+        })
       })
     })
 
@@ -1741,10 +1792,12 @@
       document.body.classList.add("toast-on")
       toastWrap.setAttribute("aria-hidden","false")
     }
+
     function closeToast(){
       document.body.classList.remove("toast-on")
       toastWrap.setAttribute("aria-hidden","true")
     }
+
     toastOk.addEventListener("click", closeToast)
     toastWrap.addEventListener("click", e => {
       if(e.target === toastWrap) closeToast()
@@ -1786,6 +1839,7 @@
       lockScroll()
       galleryClose.focus({ preventScroll:true })
     }
+
     function closeGallery(){
       unlockScroll()
       closeViewer()
@@ -1796,20 +1850,18 @@
       document.body.classList.add("viewer-open")
       viewerClose.focus({ preventScroll:true })
     }
+
     function closeViewer(){
       document.body.classList.remove("viewer-open")
       viewerImg.src = ""
     }
 
     document.querySelectorAll("[data-open-gallery]").forEach(btn => {
-      btn.addEventListener("click", openGallery, { passive:true })
-      btn.addEventListener("touchend", (e) => { e.preventDefault(); openGallery() }, { passive:false })
+      btn.addEventListener("click", openGallery)
     })
 
     modalBackdrop.addEventListener("click", closeGallery)
-    modalBackdrop.addEventListener("touchend", (e) => { e.preventDefault(); closeGallery() }, { passive:false })
     galleryClose.addEventListener("click", closeGallery)
-    galleryClose.addEventListener("touchend", (e) => { e.preventDefault(); closeGallery() }, { passive:false })
 
     document.getElementById("galleryGrid").addEventListener("click", (e) => {
       const item = e.target.closest(".g-item")
@@ -1822,20 +1874,8 @@
     viewer.addEventListener("click", (e) => {
       if(e.target === viewer) closeViewer()
     })
-    viewer.addEventListener("touchend", (e) => {
-      if(e.target === viewer){
-        e.preventDefault()
-        closeViewer()
-      }
-    }, { passive:false })
 
     viewerClose.addEventListener("click", closeViewer)
-    viewerClose.addEventListener("touchend", (e) => { e.preventDefault(); closeViewer() }, { passive:false })
-
-    addEventListener("pointerdown", (e) => {
-      if(!document.body.classList.contains("modal-open")) return
-      if(e.target === modalBackdrop) closeGallery()
-    })
 
     const form = document.getElementById("setForm")
     const uName = document.getElementById("uName")
@@ -1963,12 +2003,14 @@
         dropZone.style.borderColor = "rgba(4,213,235,.55)"
       })
     })
+
     ;["dragleave","drop"].forEach(ev => {
       dropZone.addEventListener(ev, (e) => {
         e.preventDefault()
         dropZone.style.borderColor = "rgba(255,255,255,.18)"
       })
     })
+
     dropZone.addEventListener("drop", handleDrop)
 
     dropZone.addEventListener("keydown", (e) => {
