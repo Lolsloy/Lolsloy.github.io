@@ -1203,12 +1203,12 @@
   </div>
 
   <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
-    <a href="index.html" class="drawer-link">Homepage <small>Start</small></a>
-    <a href="news.html" class="drawer-link">News <small>Updates</small></a>
-    <a href="events.html" class="drawer-link">Events <small>Dates</small></a>
-    <a href="newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
-    <a href="Sales.html" class="drawer-link">Sale <small>Deals</small></a>
-    <a href="Wishlist.html" class="drawer-link">Wishlist <small>Saved</small></a>
+    <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
+    <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
+    <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
+    <a href="/newsets.html" class="drawer-link">New-Sets <small>New-Sets</small></a>
+    <a href="/sale.html" class="drawer-link">Sale <small>Deals</small></a>
+    <a href="/wishlist.html" class="drawer-link">Wishlist <small>Saved</small></a>
     <a href="#impressum" class="drawer-link">Impressum <small>Legal</small></a>
     <button class="drawer-link" id="loginOpenDrawer" type="button">Anmelden <small>Google</small></button>
   </nav>
@@ -1618,53 +1618,49 @@
 
   <script src="https://accounts.google.com/gsi/client" async defer></script>
 
-  <script>
-    const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
+ <script>
+  const GOOGLE_CLIENT_ID = "890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com"
 
-    const burgerBtn = document.getElementById("burgerBtn")
-    const drawer = document.getElementById("drawer")
-    const drawerBackdrop = document.getElementById("drawerBackdrop")
+  const burgerBtn = document.getElementById("burgerBtn")
+  const drawer = document.getElementById("drawer")
+  const drawerBackdrop = document.getElementById("drawerBackdrop")
 
-    function openDrawer(){
-      document.body.classList.add("drawer-open")
-      burgerBtn.setAttribute("aria-expanded","true")
-      drawer.setAttribute("aria-hidden","false")
-    }
+  function openDrawer(){
+    document.body.classList.add("drawer-open")
+    burgerBtn.setAttribute("aria-expanded","true")
+    drawer.setAttribute("aria-hidden","false")
+  }
 
-    function closeDrawer(){
-      document.body.classList.remove("drawer-open")
-      burgerBtn.setAttribute("aria-expanded","false")
-      drawer.setAttribute("aria-hidden","true")
-    }
+  function closeDrawer(){
+    document.body.classList.remove("drawer-open")
+    burgerBtn.setAttribute("aria-expanded","false")
+    drawer.setAttribute("aria-hidden","true")
+  }
 
-    burgerBtn.addEventListener("click", () => {
-      if(document.body.classList.contains("drawer-open")) closeDrawer()
-      else openDrawer()
-    })
+  burgerBtn.addEventListener("click", () => {
+    if(document.body.classList.contains("drawer-open")) closeDrawer()
+    else openDrawer()
+  })
 
-    drawerBackdrop.addEventListener("click", closeDrawer)
+  drawerBackdrop.addEventListener("click", closeDrawer)
 
-    function scrollToHash(hash){
-      if(!hash || hash === "#") return false
+  function scrollToHash(hash){
+    if(!hash || hash === "#") return false
 
-      const el = document.querySelector(hash)
-      if(!el) return false
+    const el = document.querySelector(hash)
+    if(!el) return false
 
-      const header = document.querySelector("header.site")
-      const headerH = header ? header.offsetHeight : 0
-      const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
+    const header = document.querySelector("header.site")
+    const headerH = header ? header.offsetHeight : 0
+    const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
 
-      window.scrollTo({ top:y, behavior:"smooth" })
-      return true
-    }
+    window.scrollTo({ top:y, behavior:"smooth" })
+    return true
+  }
 
-    drawer.addEventListener("click", (e) => {
-      const link = e.target.closest(".drawer-link")
-      if(!link) return
-
-      if(link.tagName === "BUTTON"){
-        return
-      }
+  document.querySelectorAll(".drawer-link").forEach(link => {
+    link.addEventListener("click", (e) => {
+      if(link.tagName === "BUTTON") return
 
       const href = link.getAttribute("href") || ""
 
@@ -1674,444 +1670,448 @@
         setTimeout(() => {
           scrollToHash(href)
         }, 180)
+        return
       }
-    })
 
-    const loginOpen = document.getElementById("loginOpen")
-    const loginIconBtn = document.getElementById("loginIconBtn")
-    const loginOpenDrawer = document.getElementById("loginOpenDrawer")
-    const loginBackdrop = document.getElementById("loginBackdrop")
-    const loginModal = document.getElementById("loginModal")
-    const loginClose = document.getElementById("loginClose")
-    const userName = document.getElementById("userName")
-    const userEmail = document.getElementById("userEmail")
-
-    function openLogin(){
-      document.body.classList.add("login-open")
-      loginBackdrop.setAttribute("aria-hidden","false")
-      loginModal.setAttribute("aria-hidden","false")
-      setTimeout(renderGsiFit, 0)
-    }
-
-    function closeLogin(){
-      document.body.classList.remove("login-open")
-      loginBackdrop.setAttribute("aria-hidden","true")
-      loginModal.setAttribute("aria-hidden","true")
-    }
-
-    function setUserUI(u){
-      if(!u) return
-      document.body.classList.add("user-on")
-      userName.textContent = u.name || "User"
-      userEmail.textContent = u.email || ""
-    }
-
-    loginOpen?.addEventListener("click", openLogin)
-    loginIconBtn?.addEventListener("click", openLogin)
-    loginOpenDrawer?.addEventListener("click", (e) => {
-      e.preventDefault()
       closeDrawer()
-      setTimeout(() => {
-        openLogin()
-      }, 180)
     })
-    loginClose?.addEventListener("click", closeLogin)
-    loginBackdrop?.addEventListener("click", closeLogin)
+  })
 
-    function onGoogleCredential(resp){
-      try{
-        const payload = JSON.parse(atob(resp.credential.split(".")[1]))
-        setUserUI({
-          name: payload.name || "User",
-          email: payload.email || ""
-        })
-        closeLogin()
-      }catch{
-        closeLogin()
-      }
-    }
+  const loginOpen = document.getElementById("loginOpen")
+  const loginIconBtn = document.getElementById("loginIconBtn")
+  const loginOpenDrawer = document.getElementById("loginOpenDrawer")
+  const loginBackdrop = document.getElementById("loginBackdrop")
+  const loginModal = document.getElementById("loginModal")
+  const loginClose = document.getElementById("loginClose")
+  const userName = document.getElementById("userName")
+  const userEmail = document.getElementById("userEmail")
 
-    function initGSI(){
-      if(!window.google || !google.accounts || !google.accounts.id) return
+  function openLogin(){
+    document.body.classList.add("login-open")
+    loginBackdrop.setAttribute("aria-hidden","false")
+    loginModal.setAttribute("aria-hidden","false")
+    setTimeout(renderGsiFit, 0)
+  }
 
-      google.accounts.id.initialize({
-        client_id: GOOGLE_CLIENT_ID,
-        callback: onGoogleCredential,
-        auto_select: false,
-        cancel_on_tap_outside: true
+  function closeLogin(){
+    document.body.classList.remove("login-open")
+    loginBackdrop.setAttribute("aria-hidden","true")
+    loginModal.setAttribute("aria-hidden","true")
+  }
+
+  function setUserUI(u){
+    if(!u) return
+    document.body.classList.add("user-on")
+    userName.textContent = u.name || "User"
+    userEmail.textContent = u.email || ""
+  }
+
+  loginOpen?.addEventListener("click", openLogin)
+  loginIconBtn?.addEventListener("click", openLogin)
+  loginOpenDrawer?.addEventListener("click", (e) => {
+    e.preventDefault()
+    closeDrawer()
+    setTimeout(() => {
+      openLogin()
+    }, 180)
+  })
+  loginClose?.addEventListener("click", closeLogin)
+  loginBackdrop?.addEventListener("click", closeLogin)
+
+  function onGoogleCredential(resp){
+    try{
+      const payload = JSON.parse(atob(resp.credential.split(".")[1]))
+      setUserUI({
+        name: payload.name || "User",
+        email: payload.email || ""
       })
+      closeLogin()
+    }catch{
+      closeLogin()
+    }
+  }
 
+  function initGSI(){
+    if(!window.google || !google.accounts || !google.accounts.id) return
+
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: onGoogleCredential,
+      auto_select: false,
+      cancel_on_tap_outside: true
+    })
+
+    renderGsiFit()
+  }
+
+  function renderGsiFit(){
+    const btn = document.getElementById("gsiButton")
+    if(!btn || !window.google || !google.accounts || !google.accounts.id) return
+
+    btn.innerHTML = ""
+    const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
+
+    google.accounts.id.renderButton(btn, {
+      theme: "filled_black",
+      size: "large",
+      type: "standard",
+      shape: "pill",
+      text: "signin_with",
+      logo_alignment: "left",
+      width: w
+    })
+  }
+
+  window.addEventListener("load", () => {
+    const start = Date.now()
+    const t = setInterval(() => {
+      if(window.google && google.accounts && google.accounts.id){
+        clearInterval(t)
+        initGSI()
+        return
+      }
+      if(Date.now() - start > 4000) clearInterval(t)
+    }, 50)
+  })
+
+  window.addEventListener("resize", () => {
+    if(document.body.classList.contains("login-open")){
       renderGsiFit()
     }
+  })
 
-    function renderGsiFit(){
-      const btn = document.getElementById("gsiButton")
-      if(!btn || !window.google || !google.accounts || !google.accounts.id) return
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    if(link.classList.contains("drawer-link")) return
 
-      btn.innerHTML = ""
-      const w = Math.max(240, Math.min(360, Math.floor(btn.getBoundingClientRect().width || 360)))
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href") || ""
+      if(!href.startsWith("#")) return
 
-      google.accounts.id.renderButton(btn, {
-        theme: "filled_black",
-        size: "large",
-        type: "standard",
-        shape: "pill",
-        text: "signin_with",
-        logo_alignment: "left",
-        width: w
-      })
-    }
+      e.preventDefault()
 
-    window.addEventListener("load", () => {
-      const start = Date.now()
-      const t = setInterval(() => {
-        if(window.google && google.accounts && google.accounts.id){
-          clearInterval(t)
-          initGSI()
-          return
-        }
-        if(Date.now() - start > 4000) clearInterval(t)
-      }, 50)
-    })
-
-    window.addEventListener("resize", () => {
       if(document.body.classList.contains("login-open")){
-        renderGsiFit()
+        closeLogin()
       }
-    })
 
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      if(link.classList.contains("drawer-link")) return
-
-      link.addEventListener("click", (e) => {
-        const href = link.getAttribute("href") || ""
-        if(!href.startsWith("#")) return
-
-        e.preventDefault()
-
-        if(document.body.classList.contains("login-open")){
-          closeLogin()
-        }
-
-        requestAnimationFrame(() => {
-          scrollToHash(href)
-        })
+      requestAnimationFrame(() => {
+        scrollToHash(href)
       })
     })
+  })
 
-    const toastWrap = document.getElementById("toastWrap")
-    const toastOk = document.getElementById("toastOk")
-    const toastTitle = document.getElementById("toastTitle")
-    const toastText = document.getElementById("toastText")
+  const toastWrap = document.getElementById("toastWrap")
+  const toastOk = document.getElementById("toastOk")
+  const toastTitle = document.getElementById("toastTitle")
+  const toastText = document.getElementById("toastText")
 
-    function toast(msg, title){
-      toastTitle.textContent = title || "Info"
-      toastText.textContent = msg || ""
-      document.body.classList.add("toast-on")
-      toastWrap.setAttribute("aria-hidden","false")
+  function toast(msg, title){
+    toastTitle.textContent = title || "Info"
+    toastText.textContent = msg || ""
+    document.body.classList.add("toast-on")
+    toastWrap.setAttribute("aria-hidden","false")
+  }
+
+  function closeToast(){
+    document.body.classList.remove("toast-on")
+    toastWrap.setAttribute("aria-hidden","true")
+  }
+
+  toastOk.addEventListener("click", closeToast)
+  toastWrap.addEventListener("click", e => {
+    if(e.target === toastWrap) closeToast()
+  })
+
+  const signupForm = document.getElementById("signupForm")
+  const signupEmail = document.getElementById("signupEmail")
+  const signupBtn = document.getElementById("signupBtn")
+
+  signupForm.addEventListener("submit", (e) => {
+    e.preventDefault()
+    const email = signupEmail.value.trim()
+    if(!email){
+      toast("Bitte gib eine Email ein","Fehler")
+      return
     }
 
-    function closeToast(){
-      document.body.classList.remove("toast-on")
-      toastWrap.setAttribute("aria-hidden","true")
+    signupBtn.disabled = true
+    signupBtn.textContent = "Sending"
+
+    setTimeout(() => {
+      signupForm.reset()
+      signupBtn.disabled = false
+      signupBtn.textContent = "Sign Up"
+      toast("Deine Email wurde geschickt Danke für dein Interesse","Gesendet")
+    }, 900)
+  })
+
+  const modalBackdrop = document.getElementById("modalBackdrop")
+  const galleryClose = document.getElementById("galleryClose")
+  const viewer = document.getElementById("viewer")
+  const viewerImg = document.getElementById("viewerImg")
+  const viewerClose = document.getElementById("viewerClose")
+
+  function lockScroll(){ document.body.classList.add("modal-open") }
+  function unlockScroll(){ document.body.classList.remove("modal-open") }
+
+  function openGallery(){
+    lockScroll()
+    galleryClose.focus({ preventScroll:true })
+  }
+
+  function closeGallery(){
+    unlockScroll()
+    closeViewer()
+  }
+
+  function openViewer(src){
+    viewerImg.src = src
+    document.body.classList.add("viewer-open")
+    viewerClose.focus({ preventScroll:true })
+  }
+
+  function closeViewer(){
+    document.body.classList.remove("viewer-open")
+    viewerImg.src = ""
+  }
+
+  document.querySelectorAll("[data-open-gallery]").forEach(btn => {
+    btn.addEventListener("click", openGallery)
+  })
+
+  modalBackdrop.addEventListener("click", closeGallery)
+  galleryClose.addEventListener("click", closeGallery)
+
+  document.getElementById("galleryGrid").addEventListener("click", (e) => {
+    const item = e.target.closest(".g-item")
+    if(!item) return
+    const src = item.getAttribute("data-view") || ""
+    if(!src) return
+    openViewer(src)
+  })
+
+  viewer.addEventListener("click", (e) => {
+    if(e.target === viewer) closeViewer()
+  })
+
+  viewerClose.addEventListener("click", closeViewer)
+
+  const form = document.getElementById("setForm")
+  const uName = document.getElementById("uName")
+  const uMail = document.getElementById("uMail")
+  const uTitle = document.getElementById("uTitle")
+  const uDesc = document.getElementById("uDesc")
+  const uFiles = document.getElementById("uFiles")
+  const uConsent = document.getElementById("uConsent")
+  const sendBtn = document.getElementById("sendBtn")
+  const statusEl = document.getElementById("status")
+  const fileName = document.getElementById("fileName")
+  const dropZone = document.getElementById("dropZone")
+
+  const preview = document.getElementById("preview")
+  const thumbImg = document.getElementById("thumbImg")
+  const previewTitle = document.getElementById("previewTitle")
+  const previewMeta = document.getElementById("previewMeta")
+
+  const saveDraft = document.getElementById("saveDraft")
+
+  const DRAFT_KEY = "sethub_set_draft_v1"
+
+  function setStatus(text, kind){
+    statusEl.textContent = text || ""
+    statusEl.classList.remove("ok","bad")
+    if(kind) statusEl.classList.add(kind)
+  }
+
+  function bytesToMB(n){
+    const mb = n / (1024 * 1024)
+    return Math.round(mb * 10) / 10
+  }
+
+  function validate(){
+    const baseOk =
+      uName.value.trim().length >= 2 &&
+      uTitle.value.trim().length >= 2 &&
+      uDesc.value.trim().length >= 10 &&
+      uConsent.checked
+
+    const hasFiles = uFiles.files && uFiles.files.length > 0
+    const filesOk = !hasFiles || (uFiles.files.length >= 1 && uFiles.files.length <= 5)
+
+    const ok = baseOk && filesOk
+    sendBtn.disabled = !ok
+    return ok
+  }
+
+  function updateFileUI(){
+    const files = uFiles.files
+    if(!files || files.length === 0){
+      fileName.textContent = "Noch kein Bild"
+      preview.style.display = "none"
+      thumbImg.src = ""
+      return
     }
 
-    toastOk.addEventListener("click", closeToast)
-    toastWrap.addEventListener("click", e => {
-      if(e.target === toastWrap) closeToast()
-    })
+    const first = files[0]
+    fileName.textContent = files.length === 1 ? first.name : files.length + " Bilder gewählt"
 
-    const signupForm = document.getElementById("signupForm")
-    const signupEmail = document.getElementById("signupEmail")
-    const signupBtn = document.getElementById("signupBtn")
+    const url = URL.createObjectURL(first)
+    thumbImg.src = url
+    previewTitle.textContent = first.name
+    const totalBytes = Array.from(files).reduce((s,f) => s + (f.size || 0), 0)
+    previewMeta.textContent = files.length + " Datei(en) " + bytesToMB(totalBytes) + " MB"
+    preview.style.display = "grid"
+  }
 
-    signupForm.addEventListener("submit", (e) => {
-      e.preventDefault()
-      const email = signupEmail.value.trim()
-      if(!email){
-        toast("Bitte gib eine Email ein","Fehler")
-        return
-      }
-
-      signupBtn.disabled = true
-      signupBtn.textContent = "Sending"
-
-      setTimeout(() => {
-        signupForm.reset()
-        signupBtn.disabled = false
-        signupBtn.textContent = "Sign Up"
-        toast("Deine Email wurde geschickt Danke für dein Interesse","Gesendet")
-      }, 900)
-    })
-
-    const modalBackdrop = document.getElementById("modalBackdrop")
-    const galleryClose = document.getElementById("galleryClose")
-    const viewer = document.getElementById("viewer")
-    const viewerImg = document.getElementById("viewerImg")
-    const viewerClose = document.getElementById("viewerClose")
-
-    function lockScroll(){ document.body.classList.add("modal-open") }
-    function unlockScroll(){ document.body.classList.remove("modal-open") }
-
-    function openGallery(){
-      lockScroll()
-      galleryClose.focus({ preventScroll:true })
+  function saveDraftToStorage(){
+    const draft = {
+      name: uName.value.trim(),
+      email: uMail.value.trim(),
+      title: uTitle.value.trim(),
+      desc: uDesc.value.trim(),
+      consent: uConsent.checked
     }
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
+    setStatus("Entwurf gespeichert", "ok")
+    setTimeout(() => setStatus("", ""), 1800)
+  }
 
-    function closeGallery(){
-      unlockScroll()
-      closeViewer()
-    }
+  function loadDraftFromStorage(){
+    try{
+      const raw = localStorage.getItem(DRAFT_KEY)
+      if(!raw) return
+      const d = JSON.parse(raw)
+      uName.value = d.name || ""
+      uMail.value = d.email || ""
+      uTitle.value = d.title || ""
+      uDesc.value = d.desc || ""
+      uConsent.checked = !!d.consent
+    }catch(_){}
+    validate()
+  }
 
-    function openViewer(src){
-      viewerImg.src = src
-      document.body.classList.add("viewer-open")
-      viewerClose.focus({ preventScroll:true })
-    }
+  function openMailFallback(){
+    const to = "post@sethub.example"
+    const subject = encodeURIComponent("Set Einsendung " + (uTitle.value.trim() || ""))
+    const lines = [
+      "Name " + (uName.value.trim() || ""),
+      "Mail " + (uMail.value.trim() || ""),
+      "Titel " + (uTitle.value.trim() || ""),
+      "",
+      (uDesc.value.trim() || "")
+    ]
+    const body = encodeURIComponent(lines.join("\n"))
+    location.href = "mailto:" + to + "?subject=" + subject + "&body=" + body
+  }
 
-    function closeViewer(){
-      document.body.classList.remove("viewer-open")
-      viewerImg.src = ""
-    }
-
-    document.querySelectorAll("[data-open-gallery]").forEach(btn => {
-      btn.addEventListener("click", openGallery)
-    })
-
-    modalBackdrop.addEventListener("click", closeGallery)
-    galleryClose.addEventListener("click", closeGallery)
-
-    document.getElementById("galleryGrid").addEventListener("click", (e) => {
-      const item = e.target.closest(".g-item")
-      if(!item) return
-      const src = item.getAttribute("data-view") || ""
-      if(!src) return
-      openViewer(src)
-    })
-
-    viewer.addEventListener("click", (e) => {
-      if(e.target === viewer) closeViewer()
-    })
-
-    viewerClose.addEventListener("click", closeViewer)
-
-    const form = document.getElementById("setForm")
-    const uName = document.getElementById("uName")
-    const uMail = document.getElementById("uMail")
-    const uTitle = document.getElementById("uTitle")
-    const uDesc = document.getElementById("uDesc")
-    const uFiles = document.getElementById("uFiles")
-    const uConsent = document.getElementById("uConsent")
-    const sendBtn = document.getElementById("sendBtn")
-    const statusEl = document.getElementById("status")
-    const fileName = document.getElementById("fileName")
-    const dropZone = document.getElementById("dropZone")
-
-    const preview = document.getElementById("preview")
-    const thumbImg = document.getElementById("thumbImg")
-    const previewTitle = document.getElementById("previewTitle")
-    const previewMeta = document.getElementById("previewMeta")
-
-    const saveDraft = document.getElementById("saveDraft")
-
-    const DRAFT_KEY = "sethub_set_draft_v1"
-
-    function setStatus(text, kind){
-      statusEl.textContent = text || ""
-      statusEl.classList.remove("ok","bad")
-      if(kind) statusEl.classList.add(kind)
-    }
-
-    function bytesToMB(n){
-      const mb = n / (1024 * 1024)
-      return Math.round(mb * 10) / 10
-    }
-
-    function validate(){
-      const baseOk =
-        uName.value.trim().length >= 2 &&
-        uTitle.value.trim().length >= 2 &&
-        uDesc.value.trim().length >= 10 &&
-        uConsent.checked
-
-      const hasFiles = uFiles.files && uFiles.files.length > 0
-      const filesOk = !hasFiles || (uFiles.files.length >= 1 && uFiles.files.length <= 5)
-
-      const ok = baseOk && filesOk
-      sendBtn.disabled = !ok
-      return ok
-    }
-
-    function updateFileUI(){
-      const files = uFiles.files
-      if(!files || files.length === 0){
-        fileName.textContent = "Noch kein Bild"
-        preview.style.display = "none"
-        thumbImg.src = ""
-        return
-      }
-
-      const first = files[0]
-      fileName.textContent = files.length === 1 ? first.name : files.length + " Bilder gewählt"
-
-      const url = URL.createObjectURL(first)
-      thumbImg.src = url
-      previewTitle.textContent = first.name
-      const totalBytes = Array.from(files).reduce((s,f) => s + (f.size || 0), 0)
-      previewMeta.textContent = files.length + " Datei(en) " + bytesToMB(totalBytes) + " MB"
-      preview.style.display = "grid"
-    }
-
-    function saveDraftToStorage(){
-      const draft = {
-        name: uName.value.trim(),
-        email: uMail.value.trim(),
-        title: uTitle.value.trim(),
-        desc: uDesc.value.trim(),
-        consent: uConsent.checked
-      }
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft))
-      setStatus("Entwurf gespeichert", "ok")
-      setTimeout(() => setStatus("", ""), 1800)
-    }
-
-    function loadDraftFromStorage(){
-      try{
-        const raw = localStorage.getItem(DRAFT_KEY)
-        if(!raw) return
-        const d = JSON.parse(raw)
-        uName.value = d.name || ""
-        uMail.value = d.email || ""
-        uTitle.value = d.title || ""
-        uDesc.value = d.desc || ""
-        uConsent.checked = !!d.consent
-      }catch(_){}
-      validate()
-    }
-
-    function openMailFallback(){
-      const to = "post@sethub.example"
-      const subject = encodeURIComponent("Set Einsendung " + (uTitle.value.trim() || ""))
-      const lines = [
-        "Name " + (uName.value.trim() || ""),
-        "Mail " + (uMail.value.trim() || ""),
-        "Titel " + (uTitle.value.trim() || ""),
-        "",
-        (uDesc.value.trim() || "")
-      ]
-      const body = encodeURIComponent(lines.join("\n"))
-      location.href = "mailto:" + to + "?subject=" + subject + "&body=" + body
-    }
-
-    function handleDrop(e){
-      e.preventDefault()
-      const dt = e.dataTransfer
-      if(!dt || !dt.files) return
-      const files = Array.from(dt.files).filter(f => (f.type || "").startsWith("image/")).slice(0,5)
-      const list = new DataTransfer()
-      files.forEach(f => list.items.add(f))
-      uFiles.files = list.files
-      updateFileUI()
-      validate()
-    }
-
-    ;["dragenter","dragover"].forEach(ev => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault()
-        dropZone.style.borderColor = "rgba(4,213,235,.55)"
-      })
-    })
-
-    ;["dragleave","drop"].forEach(ev => {
-      dropZone.addEventListener(ev, (e) => {
-        e.preventDefault()
-        dropZone.style.borderColor = "rgba(255,255,255,.18)"
-      })
-    })
-
-    dropZone.addEventListener("drop", handleDrop)
-
-    dropZone.addEventListener("keydown", (e) => {
-      if(e.key === "Enter" || e.key === " "){
-        e.preventDefault()
-        uFiles.click()
-      }
-    })
-
-    uFiles.addEventListener("change", () => {
-      updateFileUI()
-      validate()
-    })
-
-    ;[uName,uMail,uTitle,uDesc,uConsent].forEach(el => {
-      el.addEventListener("input", validate)
-      el.addEventListener("change", validate)
-    })
-
-    saveDraft.addEventListener("click", saveDraftToStorage)
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault()
-      if(!validate()) return
-
-      setStatus("Sende", "")
-      sendBtn.disabled = true
-
-      const ENDPOINT = ""
-      const hasEndpoint = typeof ENDPOINT === "string" && ENDPOINT.trim().length > 0
-
-      if(!hasEndpoint){
-        setStatus("Öffne Mail", "ok")
-        openMailFallback()
-        setTimeout(() => {
-          sendBtn.disabled = false
-          validate()
-          setStatus("", "")
-        }, 800)
-        return
-      }
-
-      try{
-        const fd = new FormData()
-        fd.append("name", uName.value.trim())
-        fd.append("email", uMail.value.trim())
-        fd.append("title", uTitle.value.trim())
-        fd.append("desc", uDesc.value.trim())
-
-        Array.from(uFiles.files || []).slice(0,5).forEach((f, i) => {
-          fd.append("image_" + (i+1), f, f.name)
-        })
-
-        const res = await fetch(ENDPOINT, { method:"POST", body:fd })
-        if(!res.ok) throw new Error("bad")
-
-        setStatus("Danke. Wir melden uns wenn dein Set online ist", "ok")
-        localStorage.removeItem(DRAFT_KEY)
-        form.reset()
-        updateFileUI()
-      }catch(_){
-        setStatus("Senden ging nicht. Mail wird geöffnet", "bad")
-        openMailFallback()
-      }finally{
-        sendBtn.disabled = false
-        validate()
-      }
-    })
-
-    loadDraftFromStorage()
+  function handleDrop(e){
+    e.preventDefault()
+    const dt = e.dataTransfer
+    if(!dt || !dt.files) return
+    const files = Array.from(dt.files).filter(f => (f.type || "").startsWith("image/")).slice(0,5)
+    const list = new DataTransfer()
+    files.forEach(f => list.items.add(f))
+    uFiles.files = list.files
     updateFileUI()
     validate()
+  }
 
-    addEventListener("keydown", (e) => {
-      if(e.key === "Escape"){
-        if(document.body.classList.contains("viewer-open")) closeViewer()
-        else if(document.body.classList.contains("modal-open")) closeGallery()
-        else if(document.body.classList.contains("drawer-open")) closeDrawer()
-
-        closeLogin()
-        closeToast()
-      }
+  ;["dragenter","dragover"].forEach(ev => {
+    dropZone.addEventListener(ev, (e) => {
+      e.preventDefault()
+      dropZone.style.borderColor = "rgba(4,213,235,.55)"
     })
-  </script>
+  })
+
+  ;["dragleave","drop"].forEach(ev => {
+    dropZone.addEventListener(ev, (e) => {
+      e.preventDefault()
+      dropZone.style.borderColor = "rgba(255,255,255,.18)"
+    })
+  })
+
+  dropZone.addEventListener("drop", handleDrop)
+
+  dropZone.addEventListener("keydown", (e) => {
+    if(e.key === "Enter" || e.key === " "){
+      e.preventDefault()
+      uFiles.click()
+    }
+  })
+
+  uFiles.addEventListener("change", () => {
+    updateFileUI()
+    validate()
+  })
+
+  ;[uName,uMail,uTitle,uDesc,uConsent].forEach(el => {
+    el.addEventListener("input", validate)
+    el.addEventListener("change", validate)
+  })
+
+  saveDraft.addEventListener("click", saveDraftToStorage)
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
+    if(!validate()) return
+
+    setStatus("Sende", "")
+    sendBtn.disabled = true
+
+    const ENDPOINT = ""
+    const hasEndpoint = typeof ENDPOINT === "string" && ENDPOINT.trim().length > 0
+
+    if(!hasEndpoint){
+      setStatus("Öffne Mail", "ok")
+      openMailFallback()
+      setTimeout(() => {
+        sendBtn.disabled = false
+        validate()
+        setStatus("", "")
+      }, 800)
+      return
+    }
+
+    try{
+      const fd = new FormData()
+      fd.append("name", uName.value.trim())
+      fd.append("email", uMail.value.trim())
+      fd.append("title", uTitle.value.trim())
+      fd.append("desc", uDesc.value.trim())
+
+      Array.from(uFiles.files || []).slice(0,5).forEach((f, i) => {
+        fd.append("image_" + (i+1), f, f.name)
+      })
+
+      const res = await fetch(ENDPOINT, { method:"POST", body:fd })
+      if(!res.ok) throw new Error("bad")
+
+      setStatus("Danke. Wir melden uns wenn dein Set online ist", "ok")
+      localStorage.removeItem(DRAFT_KEY)
+      form.reset()
+      updateFileUI()
+    }catch(_){
+      setStatus("Senden ging nicht. Mail wird geöffnet", "bad")
+      openMailFallback()
+    }finally{
+      sendBtn.disabled = false
+      validate()
+    }
+  })
+
+  loadDraftFromStorage()
+  updateFileUI()
+  validate()
+
+  addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){
+      if(document.body.classList.contains("viewer-open")) closeViewer()
+      else if(document.body.classList.contains("modal-open")) closeGallery()
+      else if(document.body.classList.contains("drawer-open")) closeDrawer()
+
+      closeLogin()
+      closeToast()
+    }
+  })
+</script>
 </body>
 </html>
