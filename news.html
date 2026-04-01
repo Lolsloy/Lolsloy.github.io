@@ -6,7 +6,7 @@
   <title>SetHub News</title>
   <meta name="description" content="SetHub News" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png" />
+  <link rel="icon" type="image/png" href="/Bilder/lagos.png" />
 
   <style>
     :root{
@@ -39,6 +39,7 @@
       backdrop-filter:blur(10px);
       border-bottom:1px solid #0f1a22;
       z-index:50;
+      pointer-events:none;
     }
 
     .topbar-inner{
@@ -60,6 +61,9 @@
       gap:.6rem;
       min-width:0;
       transform:translateY(4px);
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-select:none;
     }
 
     .logo-svg{width:100%;height:100%;display:block}
@@ -83,6 +87,8 @@
       color:#fff;
       font-size:1.6rem;
       white-space:nowrap;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .nav-text span{cursor:default}
 
@@ -90,7 +96,7 @@
       position:fixed;
       top:16px;
       left:14px;
-      z-index:60;
+      z-index:2000;
       width:46px;
       height:46px;
       border-radius:12px;
@@ -103,6 +109,8 @@
       opacity:1;
       pointer-events:auto;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
@@ -124,7 +132,7 @@
       position:fixed;
       top:16px;
       left:68px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       opacity:1;
@@ -156,7 +164,7 @@
       position:fixed;
       top:16px;
       right:14px;
-      z-index:60;
+      z-index:2000;
       display:flex;
       align-items:center;
       gap:10px;
@@ -230,13 +238,15 @@
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid #16212a;
-      z-index:58;
+      z-index:1998;
       transform:translateX(-100%);
       transition:transform .32s ease;
       display:flex;
       flex-direction:column;
       padding:90px 18px 18px;
       gap:10px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -262,7 +272,7 @@
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      z-index:57;
+      z-index:1997;
       opacity:0;
       pointer-events:none;
       transition:opacity .25s ease;
@@ -676,7 +686,7 @@
 </head>
 
 <body>
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
@@ -708,7 +718,7 @@
     </button>
   </div>
 
-  <nav class="drawer" id="drawer" aria-label="Menü">
+  <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
@@ -882,16 +892,60 @@
 
     const burgerBtn = document.getElementById("burgerBtn")
     const drawerBackdrop = document.getElementById("drawerBackdrop")
+    const drawer = document.getElementById("drawer")
 
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
+    function openDrawer(){
+      document.body.classList.add("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","true")
+      drawer.setAttribute("aria-hidden","false")
+    }
 
-    burgerBtn.addEventListener("click", () => {
+    function closeDrawer(){
+      document.body.classList.remove("drawer-open")
+      burgerBtn.setAttribute("aria-expanded","false")
+      drawer.setAttribute("aria-hidden","true")
+    }
+
+    function toggleDrawer(){
       if(document.body.classList.contains("drawer-open")) closeDrawer()
       else openDrawer()
-    })
+    }
+
+    burgerBtn.addEventListener("click", toggleDrawer)
     drawerBackdrop.addEventListener("click", closeDrawer)
-    document.querySelectorAll(".drawer-link").forEach(a => a.addEventListener("click", closeDrawer))
+
+    document.addEventListener("click", (e) => {
+      if(!document.body.classList.contains("drawer-open")) return
+      if(e.target.closest("#drawer")) return
+      if(e.target.closest("#burgerBtn")) return
+      closeDrawer()
+    })
+
+    document.querySelectorAll(".drawer-link").forEach(link => {
+      link.addEventListener("click", (e) => {
+        if(link.tagName === "BUTTON") return
+
+        const href = link.getAttribute("href") || ""
+
+        if(href.startsWith("#")){
+          e.preventDefault()
+          closeDrawer()
+
+          const el = document.querySelector(href)
+          if(el){
+            setTimeout(() => {
+              const header = document.querySelector("header.site")
+              const headerH = header ? header.offsetHeight : 0
+              const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
+              window.scrollTo({ top:y, behavior:"smooth" })
+            }, 180)
+          }
+          return
+        }
+
+        closeDrawer()
+      })
+    })
 
     const loginOpen = document.getElementById("loginOpen")
     const loginIconBtn = document.getElementById("loginIconBtn")
@@ -924,9 +978,12 @@
 
     loginOpen?.addEventListener("click", openLogin)
     loginIconBtn?.addEventListener("click", openLogin)
-    loginOpenDrawer?.addEventListener("click", () => {
+    loginOpenDrawer?.addEventListener("click", (e) => {
+      e.preventDefault()
       closeDrawer()
-      openLogin()
+      setTimeout(() => {
+        openLogin()
+      }, 180)
     })
     loginClose?.addEventListener("click", closeLogin)
     loginBackdrop?.addEventListener("click", closeLogin)
