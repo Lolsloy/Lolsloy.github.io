@@ -6,7 +6,7 @@
   <title>SetHub Sale</title>
   <meta name="description" content="SetHub Sale – Deals von Amazon, LEGO, Alternate" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png" />
+  <link rel="icon" type="image/png" href="/Bilder/lagos.png" />
 
   <style>
     :root{
@@ -31,7 +31,13 @@
       --sale:rgba(207,100,229,.55);
     }
 
-    *{box-sizing:border-box;margin:0;padding:0}
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      -webkit-tap-highlight-color:transparent;
+    }
+
     html{scroll-behavior:smooth}
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
@@ -39,7 +45,18 @@
       background:var(--bg);
       overflow-x:hidden;
       min-height:100vh;
+      -webkit-text-size-adjust:100%;
     }
+
+    body.drawer-open,
+    body.login-open{
+      overscroll-behavior:none;
+    }
+
+    body.drawer-open{
+      overflow:hidden;
+    }
+
     img{max-width:100%;display:block;height:auto}
     a{color:inherit;text-decoration:none}
     button,input,select{font:inherit}
@@ -47,6 +64,26 @@
       outline:3px solid rgba(0,229,255,.55);
       outline-offset:3px;
       border-radius:12px;
+    }
+
+    a,
+    button,
+    input,
+    select,
+    .drawer-link,
+    .burger,
+    .top-link,
+    .login-icon-btn,
+    .top-ic,
+    .iconbtn,
+    .btn,
+    .pagebtn,
+    .heart,
+    .toggle,
+    .store-btn,
+    .login-close,
+    .ok{
+      touch-action:manipulation;
     }
 
     header.site{
@@ -57,6 +94,7 @@
       backdrop-filter:blur(10px);
       border-bottom:1px solid rgba(255,255,255,.06);
       z-index:50;
+      pointer-events:none;
     }
 
     .topbar-inner{
@@ -79,6 +117,9 @@
       min-width:0;
       transform:translateY(4px);
       padding-inline:120px;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .logo-svg{width:100%;height:100%;display:block}
     .nav-logo{
@@ -99,13 +140,15 @@
       color:#fff;
       font-size:1.6rem;
       white-space:nowrap;
+      user-select:none;
+      -webkit-user-select:none;
     }
 
     .burger{
       position:fixed;
       top:16px;
       left:14px;
-      z-index:60;
+      z-index:2000;
       width:46px;
       height:46px;
       border-radius:12px;
@@ -116,6 +159,9 @@
       place-items:center;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .burger .lines{width:20px;height:14px;position:relative}
@@ -136,10 +182,12 @@
       top:16px;
       left:68px;
       right:250px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       align-items:center;
+      pointer-events:none;
+      opacity:0;
     }
     .top-link{
       height:46px;
@@ -153,10 +201,12 @@
       gap:10px;
       cursor:pointer;
       user-select:none;
+      -webkit-user-select:none;
       font-weight:800;
       color:#fff;
       letter-spacing:.02em;
       white-space:nowrap;
+      pointer-events:auto;
     }
     .top-link:hover{background:rgba(19,32,42,.85)}
     .top-link span{color:#b7c2cc;font-weight:700}
@@ -165,7 +215,7 @@
       position:fixed;
       top:16px;
       right:68px;
-      z-index:60;
+      z-index:2000;
       display:flex;
       align-items:center;
       gap:10px;
@@ -212,7 +262,7 @@
       position:fixed;
       top:16px;
       right:14px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       align-items:center;
@@ -229,6 +279,8 @@
       place-items:center;
       cursor:pointer;
       position:relative;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .top-ic:hover{background:rgba(19,32,42,.85)}
     .top-ic svg{width:20px;height:20px;color:#fff}
@@ -265,9 +317,6 @@
       .nav-text{font-size:1.32rem}
       .nav-brand{padding-inline:92px;gap:.45rem}
       .burger{width:44px;height:44px;top:14px}
-      .top-links{top:14px;left:64px;right:172px;gap:8px}
-      .top-link{height:44px;padding:0 12px}
-      .top-link span{display:none}
       .top-icons{top:14px;right:14px;gap:8px}
       .top-ic{height:44px;width:44px}
       .login-float{top:14px;right:66px}
@@ -277,7 +326,6 @@
 
     @media (max-width:520px){
       header.site{height:68px}
-      .top-links{display:none}
       .status-pill{display:none}
       #loginOpen{display:none}
       .login-icon-btn{display:grid}
@@ -344,13 +392,15 @@
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid rgba(255,255,255,.08);
-      z-index:58;
+      z-index:1998;
       transform:translateX(-100%);
       transition:transform .32s ease;
       display:flex;
       flex-direction:column;
       padding:90px 18px 18px;
       gap:10px;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body.drawer-open .drawer{transform:translateX(0)}
     .drawer a,
@@ -368,6 +418,9 @@
       color:inherit;
       width:100%;
       text-align:left;
+      user-select:none;
+      -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
     .drawer a:hover,
     .drawer button.drawer-link:hover{background:#13202a}
@@ -377,7 +430,7 @@
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      z-index:57;
+      z-index:1997;
       opacity:0;
       pointer-events:none;
       transition:opacity .25s ease;
@@ -489,6 +542,8 @@
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
       flex:0 0 auto;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .iconbtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .iconbtn svg{width:20px;height:20px;color:#fff}
@@ -513,6 +568,8 @@
       cursor:pointer;
       padding:0 14px;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .btn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .btn:disabled{opacity:.6;cursor:default;transform:none;filter:none}
@@ -566,6 +623,8 @@
       z-index:3;
       color:#e8eef4;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .heart:hover{filter:brightness(1.06);transform:translateY(-1px)}
     .heart svg{width:20px;height:20px}
@@ -704,6 +763,8 @@
       cursor:pointer;
       width:100%;
       transition:transform .12s ease, filter .12s ease, border-color .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .toggle:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .card.expanded .toggle{display:none}
@@ -747,6 +808,8 @@
       font-weight:900;
       transition:transform .12s ease, filter .12s ease, border-color .12s ease;
       text-align:left;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .store-btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
     .store-btn:focus-visible{box-shadow:0 0 0 4px rgba(0,229,255,.12)}
@@ -837,6 +900,8 @@
       font-weight:900;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .pagebtn:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .pagebtn:disabled{opacity:.5;cursor:default;transform:none;filter:none}
@@ -891,6 +956,8 @@
       font-weight:900;
       cursor:pointer;
       transition:transform .12s ease, filter .12s ease, opacity .12s ease;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .signup button:hover{transform:translateY(-1px);filter:brightness(1.06)}
     .signup button:disabled{opacity:.6;cursor:default;transform:none;filter:none}
@@ -938,6 +1005,8 @@
       border:1px solid rgba(207,100,229,.65);
       background:linear-gradient(180deg,#7a3bd0,#572B87);
       color:#fff;font-weight:900;cursor:pointer;width:100%;
+      user-select:none;
+      -webkit-user-select:none;
     }
     body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
     body.toast-on .toast{transform:translateY(0) scale(1)}
@@ -1010,6 +1079,8 @@
       color:#d9e1e8;
       font-weight:900;
       cursor:pointer;
+      user-select:none;
+      -webkit-user-select:none;
     }
 
     .login-foot{
@@ -1080,7 +1151,7 @@
 </head>
 
 <body>
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
@@ -1112,7 +1183,7 @@
     </a>
   </div>
 
-  <nav class="drawer" id="drawer" aria-label="Menü">
+  <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
@@ -1321,6 +1392,7 @@
     const els = {
       burgerBtn: document.getElementById("burgerBtn"),
       drawerBackdrop: document.getElementById("drawerBackdrop"),
+      drawer: document.getElementById("drawer"),
       filterBtn: document.getElementById("filterBtn"),
       filters: document.getElementById("filters"),
 
@@ -1360,16 +1432,32 @@
       toastText: document.getElementById("toastText")
     }
 
-    function openDrawer(){ document.body.classList.add("drawer-open") }
-    function closeDrawer(){ document.body.classList.remove("drawer-open") }
-
-    if(els.burgerBtn){
-      els.burgerBtn.addEventListener("click", () => {
-        if(document.body.classList.contains("drawer-open")) closeDrawer()
-        else openDrawer()
-      })
+    function openDrawer(){
+      document.body.classList.add("drawer-open")
+      els.burgerBtn?.setAttribute("aria-expanded","true")
+      els.drawer?.setAttribute("aria-hidden","false")
     }
-    if(els.drawerBackdrop) els.drawerBackdrop.addEventListener("click", closeDrawer)
+
+    function closeDrawer(){
+      document.body.classList.remove("drawer-open")
+      els.burgerBtn?.setAttribute("aria-expanded","false")
+      els.drawer?.setAttribute("aria-hidden","true")
+    }
+
+    function toggleDrawer(){
+      if(document.body.classList.contains("drawer-open")) closeDrawer()
+      else openDrawer()
+    }
+
+    els.burgerBtn?.addEventListener("click", toggleDrawer)
+    els.drawerBackdrop?.addEventListener("click", closeDrawer)
+
+    document.addEventListener("click", (e) => {
+      if(!document.body.classList.contains("drawer-open")) return
+      if(e.target.closest("#drawer")) return
+      if(e.target.closest("#burgerBtn")) return
+      closeDrawer()
+    })
 
     function openLogin(){
       document.body.classList.add("login-open")
@@ -1393,9 +1481,12 @@
 
     els.loginOpen?.addEventListener("click", openLogin)
     els.loginIconBtn?.addEventListener("click", openLogin)
-    els.loginOpenDrawer?.addEventListener("click", () => {
+    els.loginOpenDrawer?.addEventListener("click", (e) => {
+      e.preventDefault()
       closeDrawer()
-      openLogin()
+      setTimeout(() => {
+        openLogin()
+      }, 180)
     })
     els.loginClose?.addEventListener("click", closeLogin)
     els.loginBackdrop?.addEventListener("click", closeLogin)
@@ -1536,9 +1627,21 @@
     })
 
     document.querySelectorAll(".drawer-link").forEach(link => {
-      link.addEventListener("click", () => {
+      link.addEventListener("click", (e) => {
+        if(link.tagName === "BUTTON") return
+
         const href = link.getAttribute("href") || ""
-        if(!href.startsWith("#")) closeDrawer()
+
+        if(href.startsWith("#")){
+          e.preventDefault()
+          closeDrawer()
+          setTimeout(() => {
+            scrollToHash(href)
+          }, 180)
+          return
+        }
+
+        closeDrawer()
       })
     })
 
@@ -1749,13 +1852,27 @@
       return [...map.values()]
     }
 
+    function withTimeout(ms){
+      const controller = new AbortController()
+      const t = setTimeout(() => controller.abort(), ms)
+      return { signal: controller.signal, clear: () => clearTimeout(t) }
+    }
+
     async function fetchJson(url){
-      const res = await fetch(url, {
-        method:"GET",
-        mode:"cors",
-        cache:"no-store",
-        headers:{ "Accept":"application/json" }
-      })
+      const { signal, clear } = withTimeout(14000)
+      let res
+      try{
+        res = await fetch(url, {
+          method:"GET",
+          mode:"cors",
+          cache:"no-store",
+          headers:{ "Accept":"application/json" },
+          signal
+        })
+      } finally {
+        clear()
+      }
+
       if(!res.ok) throw new Error("bad status " + res.status)
       return await res.json()
     }
