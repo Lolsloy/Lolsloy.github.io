@@ -152,6 +152,7 @@
       transition:transform .12s ease, filter .12s ease;
       user-select:none;
       -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
     .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
@@ -286,6 +287,7 @@
       padding:90px 18px 18px;
       gap:10px;
       will-change:transform;
+      pointer-events:auto;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -305,6 +307,7 @@
       text-align:left;
       user-select:none;
       -webkit-user-select:none;
+      -webkit-touch-callout:none;
     }
     .drawer a:hover,
     .drawer button.drawer-link:hover{background:#13202a}
@@ -1631,6 +1634,52 @@
 
     drawerBackdrop.addEventListener("click", closeDrawer)
 
+    function scrollToHash(hash){
+      if(!hash || hash === "#") return false
+
+      const el = document.querySelector(hash)
+      if(!el) return false
+
+      const header = document.querySelector("header.site")
+      const headerH = header ? header.offsetHeight : 0
+      const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
+
+      window.scrollTo({ top:y, behavior:"smooth" })
+      return true
+    }
+
+    drawer.addEventListener("click", (e) => {
+      const link = e.target.closest(".drawer-link")
+      if(!link) return
+
+      if(link.tagName === "BUTTON"){
+        return
+      }
+
+      e.preventDefault()
+
+      const href = link.getAttribute("href") || ""
+
+      if(!href){
+        closeDrawer()
+        return
+      }
+
+      if(href.startsWith("#")){
+        closeDrawer()
+        requestAnimationFrame(() => {
+          scrollToHash(href)
+        })
+        return
+      }
+
+      closeDrawer()
+
+      setTimeout(() => {
+        window.location.href = href
+      }, 120)
+    })
+
     const loginOpen = document.getElementById("loginOpen")
     const loginIconBtn = document.getElementById("loginIconBtn")
     const loginOpenDrawer = document.getElementById("loginOpenDrawer")
@@ -1731,38 +1780,6 @@
       }
     })
 
-    function scrollToHash(hash){
-      if(!hash || hash === "#") return false
-      const el = document.querySelector(hash)
-      if(!el) return false
-
-      const header = document.querySelector("header.site")
-      const headerH = header ? header.offsetHeight : 0
-      const y = el.getBoundingClientRect().top + window.pageYOffset - (headerH + 14)
-
-      window.scrollTo({ top: y, behavior: "smooth" })
-      return true
-    }
-
-    document.querySelectorAll(".drawer-link").forEach(link => {
-      link.addEventListener("click", (e) => {
-        const href = link.getAttribute("href") || ""
-
-        if(link.tagName === "BUTTON"){
-          return
-        }
-
-        if(href.startsWith("#")){
-          e.preventDefault()
-          closeDrawer()
-          requestAnimationFrame(() => scrollToHash(href))
-          return
-        }
-
-        closeDrawer()
-      })
-    })
-
     document.querySelectorAll('a[href^="#"]').forEach(link => {
       if(link.classList.contains("drawer-link")) return
 
@@ -1772,8 +1789,9 @@
 
         e.preventDefault()
 
-        const needsCloseLogin = document.body.classList.contains("login-open")
-        if(needsCloseLogin) closeLogin()
+        if(document.body.classList.contains("login-open")){
+          closeLogin()
+        }
 
         requestAnimationFrame(() => {
           scrollToHash(href)
