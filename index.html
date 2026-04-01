@@ -6,7 +6,7 @@
   <title>SetHub</title>
   <meta name="description" content="SetHub – Enjoy your sets" />
   <meta name="theme-color" content="#0E141A" />
-  <link rel="icon" type="image/png" href="Bilder/lagos.png">
+  <link rel="icon" type="image/png" href="/Bilder/lagos.png">
 
   <style>
     :root{
@@ -55,7 +55,6 @@
 
     body.drawer-open{
       overflow:hidden;
-      touch-action:none;
     }
 
     :focus-visible{
@@ -93,7 +92,6 @@
     body.header-on header.site{
       transform:translateY(0);
       opacity:1;
-      pointer-events:auto;
     }
 
     .topbar-inner{
@@ -115,6 +113,9 @@
       gap:.6rem;
       min-width:0;
       transform:translateY(4px);
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-select:none;
     }
 
     .logo-svg{width:100%;height:100%;display:block}
@@ -138,6 +139,8 @@
       color:#fff;
       font-size:1.6rem;
       white-space:nowrap;
+      user-select:none;
+      -webkit-user-select:none;
     }
     .nav-text span{cursor:default}
 
@@ -145,7 +148,7 @@
       position:fixed;
       top:16px;
       left:14px;
-      z-index:60;
+      z-index:2000;
       width:46px;
       height:46px;
       border-radius:12px;
@@ -189,7 +192,7 @@
       position:fixed;
       top:16px;
       left:68px;
-      z-index:59;
+      z-index:1999;
       display:flex;
       gap:10px;
       opacity:0;
@@ -229,7 +232,7 @@
       position:fixed;
       top:16px;
       right:14px;
-      z-index:60;
+      z-index:2000;
       display:flex;
       align-items:center;
       gap:10px;
@@ -311,7 +314,7 @@
       width:min(320px,86vw);
       background:rgba(12,18,24,.98);
       border-right:1px solid #16212a;
-      z-index:58;
+      z-index:1998;
       transform:translateX(-100%);
       transition:transform .32s ease;
       display:flex;
@@ -319,6 +322,8 @@
       padding:90px 18px 18px;
       gap:10px;
       will-change:transform;
+      overflow-y:auto;
+      -webkit-overflow-scrolling:touch;
     }
     body.drawer-open .drawer{transform:translateX(0)}
 
@@ -347,7 +352,7 @@
       position:fixed;
       inset:0;
       background:rgba(0,0,0,.45);
-      z-index:57;
+      z-index:1997;
       opacity:0;
       pointer-events:none;
       transition:opacity .25s ease;
@@ -1357,7 +1362,7 @@
 </head>
 
 <body>
-  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" type="button">
+  <button class="burger" id="burgerBtn" aria-label="Menü öffnen" aria-expanded="false" type="button">
     <div class="lines" aria-hidden="true">
       <span></span><span></span><span></span>
     </div>
@@ -1380,7 +1385,7 @@
     </button>
   </div>
 
-  <nav class="drawer" id="drawer" aria-label="Menü">
+  <nav class="drawer" id="drawer" aria-label="Menü" aria-hidden="true">
     <a href="/index.html" class="drawer-link">Homepage <small>Start</small></a>
     <a href="/news.html" class="drawer-link">News <small>Updates</small></a>
     <a href="/events.html" class="drawer-link">Events <small>Dates</small></a>
@@ -1712,42 +1717,42 @@
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/Fabian.png" alt="Profil Fabian">
+            <img class="avatar" src="/Bilder/Fabian.png" alt="Profil Fabian">
             <div class="name">Fabian</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/kurz.png" alt="Profil Christoph Kurz">
+            <img class="avatar" src="/Bilder/kurz.png" alt="Profil Christoph Kurz">
             <div class="name">Christoph</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/Michell.png" alt="Profil Michelle">
+            <img class="avatar" src="/Bilder/Michell.png" alt="Profil Michelle">
             <div class="name">Michelle</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/Mert.png" alt="Profil Mert Aydin">
+            <img class="avatar" src="/Bilder/Mert.png" alt="Profil Mert Aydin">
             <div class="name">Mert</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
+            <img class="avatar" src="/Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
             <div class="name">Ibrahim</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/lukas.png" alt="Profil Lukas Zlavinker">
+            <img class="avatar" src="/Bilder/lukas.png" alt="Profil Lukas Zlavinker">
             <div class="name">Lukas</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/Hannes.png" alt="Profil Hannes Porhacka">
+            <img class="avatar" src="/Bilder/Hannes.png" alt="Profil Hannes Porhacka">
             <div class="name">Hannes</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="Bilder/hund.png" alt="Profil Loki">
+            <img class="avatar" src="/Bilder/hund.png" alt="Profil Loki">
             <div class="name">Loki</div>
           </div></div></div>
         </div>
@@ -1930,13 +1935,22 @@
       drawer.setAttribute('aria-hidden','true')
     }
 
+    function toggleDrawer(){
+      document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
+    }
+
     burgerBtn.setAttribute('aria-expanded','false')
     drawer.setAttribute('aria-hidden','true')
 
-    burgerBtn.addEventListener('click',()=>{
-      document.body.classList.contains('drawer-open') ? closeDrawer() : openDrawer()
-    })
+    burgerBtn.addEventListener('click', toggleDrawer)
     drawerBackdrop.addEventListener('click', closeDrawer)
+
+    document.addEventListener('click', (e) => {
+      if(!document.body.classList.contains('drawer-open')) return
+      if(e.target.closest('#drawer')) return
+      if(e.target.closest('#burgerBtn')) return
+      closeDrawer()
+    })
 
     function scrollToHash(hash){
       if(!hash || hash === '#') return false
@@ -2149,9 +2163,10 @@
 
     loginOpen.addEventListener('click', openLogin)
     loginIconBtn.addEventListener('click', openLogin)
-    loginOpenDrawer.addEventListener('click', ()=>{
+    loginOpenDrawer.addEventListener('click', (e)=>{
+      e.preventDefault()
       closeDrawer()
-      openLogin()
+      setTimeout(openLogin, 180)
     })
     loginClose.addEventListener('click', closeLogin)
     loginBackdrop.addEventListener('click', closeLogin)
@@ -2231,7 +2246,7 @@
       if(e.key === 'Escape'){
         closeDrawer()
         document.body.classList.remove('cookie-open')
-        document.body.classList.remove('login-open')
+        closeLogin()
         closeAI()
         closeToast()
       }
