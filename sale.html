@@ -420,7 +420,7 @@
             }
 
             .nav-logo {
-                height: 42px
+                height: 44px
             }
 
             .nav-text {
@@ -781,6 +781,11 @@
             .filters.on {
                 display: flex
             }
+
+        @media (max-width: 560px) {
+            .filters.on { flex-direction: column; align-items: stretch }
+            .filters select { width: 100%; min-height: 48px; font-size: 16px; touch-action: manipulation }
+        }
 
         .btn {
             height: 46px;
@@ -1174,9 +1179,14 @@
         .store-right {
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex: 0 0 auto;
+            gap: 6px;
+            flex-shrink: 0;
             white-space: nowrap;
+        }
+
+        @media (max-width: 400px) {
+            .store-old, .store-pct { display: none }
+            .store-btn { gap: 6px; padding: 10px 10px }
         }
 
         .store-price {
@@ -2727,7 +2737,9 @@
 
     if(els.filterBtn && els.filters){
       els.filterBtn.addEventListener("click", () => {
+        const wasOff = !els.filters.classList.contains("on")
         els.filters.classList.toggle("on")
+        if(wasOff) setTimeout(() => els.filters.scrollIntoView({behavior:"smooth",block:"nearest"}), 50)
       })
     }
 
