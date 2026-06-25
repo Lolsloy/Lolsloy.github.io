@@ -817,8 +817,13 @@
             display: grid;
             gap: 12px;
             grid-template-columns: repeat(2,minmax(0,1fr));
-            grid-auto-flow: dense;
             margin-top: 14px;
+            transition: grid-template-columns .25s ease;
+        }
+
+        @media (max-width: 699px) {
+            .grid[data-exp-col="left"]  { grid-template-columns: 3fr 2fr }
+            .grid[data-exp-col="right"] { grid-template-columns: 2fr 3fr }
         }
 
         @media (min-width:700px) {
@@ -2486,9 +2491,15 @@
       if(on){
         card.classList.add("expanded")
         card.setAttribute("aria-expanded","true")
+        if(els.grid && window.innerWidth <= 699){
+          const gr = els.grid.getBoundingClientRect()
+          const cr = card.getBoundingClientRect()
+          els.grid.dataset.expCol = (cr.left - gr.left) < gr.width * 0.5 ? "left" : "right"
+        }
       }else{
         card.classList.remove("expanded")
         card.setAttribute("aria-expanded","false")
+        if(els.grid) delete els.grid.dataset.expCol
       }
     }
 
