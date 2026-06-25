@@ -1077,22 +1077,23 @@
         }
 
         .details {
-            overflow: visible;
+            overflow: hidden;
             max-height: 0;
             opacity: 0;
-            transform: translateY(-4px);
-            transition: max-height .28s ease, opacity .18s ease, transform .18s ease, padding .18s ease;
+            transition: max-height .32s ease, opacity .22s ease, padding .22s ease;
             border-radius: 16px;
-            border: 1px solid rgba(255,255,255,.10);
-            background: rgba(16,24,32,.22);
+            border: 1px solid rgba(0,229,255,.15);
+            background: rgba(14,20,26,.7);
+            backdrop-filter: blur(10px);
             padding: 0;
+            margin-top: 0;
         }
 
         .card.expanded .details {
-            max-height: 1600px;
+            max-height: 400px;
             opacity: 1;
-            transform: translateY(0);
-            padding: 10px;
+            padding: 12px;
+            margin-top: 10px;
         }
 
         .stores {
@@ -2651,7 +2652,7 @@
           const willOpen = !card.classList.contains("expanded")
           closeAllCardsExcept(card)
           setExpanded(card, willOpen)
-          if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
+          if(willOpen) setTimeout(()=>{ const t=card.getBoundingClientRect().top+window.scrollY-90; window.scrollTo({top:t,behavior:"smooth"}) },80)
         })
 
         card.querySelectorAll(".store-btn").forEach(btn => {
@@ -2666,7 +2667,7 @@
           const willOpen = !card.classList.contains("expanded")
           closeAllCardsExcept(card)
           setExpanded(card, willOpen)
-          if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
+          if(willOpen) setTimeout(()=>{ const t=card.getBoundingClientRect().top+window.scrollY-90; window.scrollTo({top:t,behavior:"smooth"}) },80)
         })
 
         card.addEventListener("keydown", (e) => {
@@ -2675,7 +2676,7 @@
             const willOpen = !card.classList.contains("expanded")
             closeAllCardsExcept(card)
             setExpanded(card, willOpen)
-            if(willOpen) card.scrollIntoView({ block:"nearest", behavior:"smooth" })
+            if(willOpen) setTimeout(()=>{ const t=card.getBoundingClientRect().top+window.scrollY-90; window.scrollTo({top:t,behavior:"smooth"}) },80)
           }
         })
 
