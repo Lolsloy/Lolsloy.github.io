@@ -160,19 +160,14 @@
       display:grid;
       place-items:center;
       cursor:pointer;
-      opacity:0;
-      pointer-events:none;
-      transform:translateX(-18px) scale(.95);
-      transition:transform .28s ease, opacity .28s ease, filter .12s ease;
+      opacity:1;
+      pointer-events:auto;
+      transform:translateX(0) scale(1);
+      transition:filter .12s ease;
       user-select:none;
       -webkit-user-select:none;
     }
-    body.header-on .burger{
-      transform:translateX(0) scale(1);
-      opacity:1;
-      pointer-events:auto;
-    }
-    .burger:hover{transform:translateX(0) translateY(-1px) scale(1);filter:brightness(1.06)}
+    .burger:hover{transform:translateY(-1px);filter:brightness(1.06)}
 
     .burger .lines{width:20px;height:14px;position:relative}
     .burger .lines span{
@@ -238,12 +233,6 @@
       display:flex;
       align-items:center;
       gap:10px;
-      opacity:0;
-      pointer-events:none;
-      transform:translateX(10px);
-      transition:opacity .25s ease, transform .25s ease;
-    }
-    body.header-on .login-float{
       opacity:1;
       pointer-events:auto;
       transform:none;
@@ -481,12 +470,39 @@
       display:flex;
       flex-direction:column;
       gap:22px;
-      min-height:320px;
+      min-height:340px;
       transition:transform .18s ease, filter .18s ease;
     }
     .qcard:hover{
       transform:translateY(-8px);
       filter:brightness(1.08);
+    }
+
+    .qcard-preview{
+      position:absolute;
+      bottom:0;
+      right:-10px;
+      width:58%;
+      max-height:62%;
+      object-fit:contain;
+      object-position:bottom right;
+      z-index:1;
+      pointer-events:none;
+      user-select:none;
+      border-radius:14px 14px 0 0;
+      opacity:.85;
+      transform:perspective(600px) rotateY(-4deg) rotateX(2deg);
+      filter:drop-shadow(0 12px 40px rgba(0,0,0,.55));
+    }
+
+    .qcard::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(135deg, rgba(14,20,26,.9) 0%, rgba(14,20,26,.4) 45%, transparent 70%);
+      z-index:2;
+      pointer-events:none;
+      border-radius:28px;
     }
 
     .qcard::before{
@@ -532,6 +548,7 @@
 
     .q-head{
       position:relative;
+      z-index:3;
       display:flex;
       align-items:flex-start;
       justify-content:space-between;
@@ -594,6 +611,7 @@
 
     .q-desc{
       position:relative;
+      z-index:3;
       color:#d7dde3;
       font-weight:800;
       line-height:1.35;
@@ -604,6 +622,7 @@
 
     .q-arrow{
       position:relative;
+      z-index:3;
       margin-top:auto;
       display:flex;
       align-items:center;
@@ -1208,21 +1227,27 @@
 
     .slider-head{
       display:flex;
-      align-items:flex-end;
-      justify-content:space-between;
-      gap:12px;
+      align-items:center;
+      justify-content:center;
+      gap:16px;
       margin-bottom:14px;
+      padding:0 5%;
+      position:relative;
     }
 
     .slider-title{
       font-weight:900;
       letter-spacing:.01em;
       font-size:clamp(1.8rem,3vw,2.4rem);
+      text-align:center;
+      flex:1;
     }
 
     .slider-actions{
       display:flex;
       gap:10px;
+      position:absolute;
+      right:5%;
     }
 
     .sbtn{
@@ -1270,26 +1295,37 @@
 
     .pcard{
       flex:0 0 auto;
-      width:min(440px,72vw);
+      width:min(420px,44vw);
       height:480px;
       border-radius:26px;
-      border:1px solid #223041;
+      border:none;
       background:
-        radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.10), transparent 60%),
-        radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.10), transparent 60%),
-        rgba(16,24,32,.46);
+        radial-gradient(900px 520px at 12% -10%, rgba(0,229,255,.12), transparent 60%),
+        radial-gradient(900px 520px at 92% 120%, rgba(207,100,229,.12), transparent 60%),
+        rgba(16,24,32,.55);
       backdrop-filter:blur(16px);
-      box-shadow:0 34px 140px rgba(0,0,0,.60);
+      box-shadow:0 24px 80px rgba(0,0,0,.55);
       scroll-snap-align:start;
       position:relative;
       overflow:hidden;
-      padding:22px 22px 18px;
+      padding:22px 22px 0;
       color:#fff;
       transition:transform .18s ease, filter .18s ease;
     }
     .pcard:hover{
       transform:translateY(-6px);
       filter:brightness(1.06);
+    }
+
+    .pcard::after{
+      content:"";
+      position:absolute;
+      left:0; right:0; bottom:0;
+      height:55%;
+      background:linear-gradient(to top, rgba(14,20,26,.95) 0%, rgba(14,20,26,.5) 50%, transparent 100%);
+      z-index:2;
+      pointer-events:none;
+      border-radius:0 0 26px 26px;
     }
 
     .pcard-top{
@@ -1300,7 +1336,7 @@
 
     .pcard-title{
       margin-top:2px;
-      font-size:1.55rem;
+      font-size:1.45rem;
       line-height:1.1;
       font-weight:950;
       letter-spacing:.01em;
@@ -1309,16 +1345,16 @@
     .pcard-img{
       position:absolute;
       left:50%;
-      bottom:-8px;
+      bottom:0;
       transform:translateX(-50%);
-      width:92%;
-      max-width:520px;
-      max-height:86%;
+      width:88%;
+      max-width:500px;
+      max-height:84%;
       object-fit:contain;
       z-index:1;
       pointer-events:none;
       user-select:none;
-      filter:drop-shadow(0 28px 80px rgba(0,0,0,.7));
+      border-radius:16px 16px 0 0;
     }
 
     .pcard-dark{
@@ -1326,33 +1362,36 @@
         radial-gradient(900px 520px at 20% 10%, rgba(0,229,255,.08), transparent 60%),
         radial-gradient(900px 520px at 85% 90%, rgba(255,94,160,.10), transparent 62%),
         rgba(8,12,16,.92);
-      border:1px solid #1a2530;
+    }
+
+    @media (max-width:900px){
+      .pcard{ width:min(400px,60vw) }
     }
 
     @media (max-width:620px){
       .slider{
         gap:14px;
-        padding:18px 12px 34px;
-        scroll-padding-left:12px;
-        scroll-padding-right:12px;
+        padding:18px 5% 34px;
+        scroll-padding-left:5%;
+        scroll-padding-right:5%;
       }
 
       .pcard{
-        width:calc(100% - 24px);
+        width:calc(85vw);
         height:440px;
-        padding:18px;
+        padding:18px 18px 0;
         scroll-snap-align:center;
       }
 
       .pcard-title{
-        font-size:1.35rem;
+        font-size:1.3rem;
       }
 
       .pcard-img{
-        width:96%;
+        width:92%;
         max-width:none;
-        bottom:-6px;
-        max-height:88%;
+        bottom:0;
+        max-height:85%;
       }
     }
 
@@ -1511,6 +1550,7 @@
       <div class="quick-wrap">
         <div class="quick-cards" aria-label="Quick Navigation">
           <a class="qcard news" href="/news.html" aria-label="News öffnen">
+            <img class="qcard-preview" src="/Bilder/slider4.png" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">News</div>
@@ -1535,6 +1575,7 @@
           </a>
 
           <a class="qcard events" href="/events.html" aria-label="Events öffnen">
+            <img class="qcard-preview" src="/Bilder/slider1.png" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">Events</div>
@@ -1561,6 +1602,7 @@
           </a>
 
           <a class="qcard sale" href="/sale.html" aria-label="Sale öffnen">
+            <img class="qcard-preview" src="/Bilder/slider3.png" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">Sale</div>
@@ -1586,6 +1628,7 @@
           </a>
 
           <a class="qcard sets" href="/newsets.html" aria-label="New Sets öffnen">
+            <img class="qcard-preview" src="/Bilder/slider2.png" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">New Sets</div>
@@ -1614,7 +1657,7 @@
       <section class="section" id="featured">
         <div class="container">
           <div class="slider-head">
-            <h2 class="slider-title">Featured Products</h2>
+            <h2 class="slider-title">App Features</h2>
 
             <div class="slider-actions" aria-label="Slider Steuerung">
               <button class="sbtn" type="button" id="slidePrev" aria-label="Nach links">
@@ -1895,7 +1938,7 @@
     addEventListener('resize',updateBrand)
     updateBrand()
 
-    const target = new Date('2026-05-01T23:59:59')
+    const target = new Date('2026-11-25T23:59:59')
     const elD = document.getElementById('cd-d')
     const elH = document.getElementById('cd-h')
     const elM = document.getElementById('cd-m')
