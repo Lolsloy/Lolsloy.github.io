@@ -1228,26 +1228,23 @@
     .slider-head{
       display:flex;
       align-items:center;
-      justify-content:center;
+      justify-content:space-between;
       gap:16px;
       margin-bottom:14px;
       padding:0 5%;
-      position:relative;
     }
 
     .slider-title{
       font-weight:900;
       letter-spacing:.01em;
       font-size:clamp(1.8rem,3vw,2.4rem);
-      text-align:center;
-      flex:1;
+      text-align:left;
     }
 
     .slider-actions{
       display:flex;
       gap:10px;
-      position:absolute;
-      right:5%;
+      flex-shrink:0;
     }
 
     .sbtn{
@@ -1558,7 +1555,7 @@
       <div class="quick-wrap">
         <div class="quick-cards" aria-label="Quick Navigation">
           <a class="qcard news" href="/news.html" aria-label="News öffnen">
-            <img class="qcard-preview" src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true" crossorigin="anonymous">
             <div class="q-head">
               <div>
                 <div class="q-title">News</div>
@@ -1571,7 +1568,6 @@
                 </svg>
               </div>
             </div>
-            <div class="q-desc">Neue Updates. Releases. Infos.</div>
             <div class="q-arrow">
               Open
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1582,7 +1578,7 @@
           </a>
 
           <a class="qcard events" href="/events.html" aria-label="Events öffnen">
-            <img class="qcard-preview" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1560169897-fc0cdbdfa4d5?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true" crossorigin="anonymous">
             <div class="q-head">
               <div>
                 <div class="q-title">Events</div>
@@ -1597,7 +1593,6 @@
                 </svg>
               </div>
             </div>
-            <div class="q-desc">Messen. Store Dates. Kalender.</div>
             <div class="q-arrow">
               Open
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1608,7 +1603,7 @@
           </a>
 
           <a class="qcard sale" href="/sale.html" aria-label="Sale öffnen">
-            <img class="qcard-preview" src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1518331647614-7a1f04cd7a59?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true" crossorigin="anonymous">
             <div class="q-head">
               <div>
                 <div class="q-title">Sale</div>
@@ -1622,7 +1617,6 @@
                 </svg>
               </div>
             </div>
-            <div class="q-desc">Preis Drops. Bundles. Aktionen.</div>
             <div class="q-arrow">
               Open
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1633,7 +1627,7 @@
           </a>
 
           <a class="qcard sets" href="/newsets.html" aria-label="New Sets öffnen">
-            <img class="qcard-preview" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1614732414444-096e5f1122d5?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true" crossorigin="anonymous">
             <div class="q-head">
               <div>
                 <div class="q-title">New Sets</div>
@@ -1646,7 +1640,6 @@
                 </svg>
               </div>
             </div>
-            <div class="q-desc">Neue Sets. Leaks. Drops.</div>
             <div class="q-arrow">
               Open
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -1909,7 +1902,7 @@
       const endTop = 39
       const startLeft = w/2
       const endLeft = w/2
-      const t = clamp01(y/(h*0.35))
+      const t = clamp01(y/(h*0.20))
 
       const curTop = lerp(startTop, endTop, t)
       const curLeft = lerp(startLeft, endLeft, t)
@@ -1941,6 +1934,29 @@
     },{passive:true})
     addEventListener('resize',updateBrand)
     updateBrand()
+
+    const cardSlider = document.getElementById('cardSlider')
+    if(cardSlider){
+      let dragging = false, dragStartX = 0, dragScrollLeft = 0
+      cardSlider.addEventListener('mousedown', e => {
+        dragging = true
+        dragStartX = e.pageX - cardSlider.offsetLeft
+        dragScrollLeft = cardSlider.scrollLeft
+        cardSlider.style.cursor = 'grabbing'
+        e.preventDefault()
+      })
+      window.addEventListener('mouseup', () => {
+        if(!dragging) return
+        dragging = false
+        cardSlider.style.cursor = 'grab'
+      })
+      window.addEventListener('mousemove', e => {
+        if(!dragging) return
+        const x = e.pageX - cardSlider.offsetLeft
+        cardSlider.scrollLeft = dragScrollLeft - (x - dragStartX) * 1.5
+      })
+      cardSlider.style.cursor = 'grab'
+    }
 
     const target = new Date('2026-11-25T23:59:59')
     const elD = document.getElementById('cd-d')
