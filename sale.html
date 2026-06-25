@@ -860,6 +860,12 @@
                 border-color: rgba(0,229,255,.22)
             }
 
+        @media (max-width: 699px) {
+            .card.expanded {
+                grid-column: 1 / -1
+            }
+        }
+
         .thumb {
             position: relative;
             aspect-ratio: 1/1;
@@ -1184,9 +1190,8 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 400px) {
+        @media (max-width: 699px) {
             .store-old, .store-pct { display: none }
-            .store-btn { gap: 6px; padding: 10px 10px }
         }
 
         .store-price {
