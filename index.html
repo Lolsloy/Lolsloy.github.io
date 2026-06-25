@@ -843,6 +843,9 @@
       outline:none;
       font-weight:800;
       letter-spacing:.01em;
+      font-size:16px;
+      -webkit-user-select:text;
+      user-select:text;
     }
     .signup input::placeholder{color:#9aa4ae}
     .signup input:focus{box-shadow:0 0 0 4px rgba(207,100,229,.10)}
@@ -2200,7 +2203,7 @@
     function setUserUI(u){
       if(!u) return
       document.body.classList.add('user-on')
-      userName.textContent = u.name || 'User'
+      userName.textContent = (u.name || u.email || 'U').charAt(0).toUpperCase()
       userEmail.textContent = u.email || ''
     }
 
@@ -2226,28 +2229,29 @@
     loginClose.addEventListener('click', closeLogin)
     loginBackdrop.addEventListener('click', closeLogin)
 
-    async function onGoogleCredential(resp){
-      if(!GOOGLE_SUBSCRIBE_URL){
-        closeLogin()
-        toast('Anmeldung wird gerade eingerichtet. Versuch es später nochmal.','Info')
-        return
-      }
+    function decodeGoogleJwt(token){
       try{
-        const data = await postJson(GOOGLE_SUBSCRIBE_URL, {
-          credential: resp.credential,
-          origin: location.origin
-        })
+        const b = token.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')
+        return JSON.parse(decodeURIComponent(atob(b).split('').map(c=>'%'+('00'+c.charCodeAt(0).toString(16)).slice(-2)).join('')))
+      }catch{ return null }
+    }
+
+    async function onGoogleCredential(resp){
+      try{
+        const payload = decodeGoogleJwt(resp.credential)
+        if(!payload?.email){ toast('Google Anmeldung fehlgeschlagen','Fehler'); return }
+        const user = { name: payload.name || '', email: payload.email }
+
+        if(GOOGLE_SUBSCRIBE_URL){
+          try{ await postJson(GOOGLE_SUBSCRIBE_URL,{credential:resp.credential,origin:location.origin}) }catch{}
+        }
 
         closeLogin()
-        setUserUI({
-          name: data?.user?.name || data?.name || 'User',
-          email: data?.user?.email || data?.email || ''
-        })
-
-        toast(data?.message || 'Angemeldet und für News eingetragen','Erfolg')
+        setUserUI(user)
+        toast('Willkommen, ' + (user.name || user.email) + '!','Angemeldet')
       }catch(err){
         closeLogin()
-        toast(err.message || 'Anmelden fehlgeschlagen','Fehler')
+        toast('Anmelden fehlgeschlagen','Fehler')
       }
     }
 
