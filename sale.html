@@ -307,6 +307,7 @@
                 color: #94a3b8;
                 font-weight: 800
             }
+            #userEmail{display:none}
 
         body.user-on #loginOpen {
             display: none
@@ -1318,6 +1319,9 @@
                 outline: none;
                 font-weight: 800;
                 letter-spacing: .01em;
+                font-size: 16px;
+                -webkit-user-select: text;
+                user-select: text;
             }
 
                 .signup input::placeholder {
@@ -1903,7 +1907,7 @@
     function setUserUI(u){
       if(!u) return
       document.body.classList.add("user-on")
-      if(els.userName) els.userName.textContent = u.name || "User"
+      if(els.userName) els.userName.textContent = (u.name || u.email || 'U').charAt(0).toUpperCase()
       if(els.userEmail) els.userEmail.textContent = u.email || ""
     }
 
@@ -1999,7 +2003,19 @@
       if(e.target === els.toastWrap) closeToast()
     })
 
-    els.signupForm?.addEventListener("submit", (e) => {
+    function mailchimpSubscribe(email){
+      return new Promise((resolve)=>{
+        const cb = '_mc_' + Date.now()
+        const url = 'https://sethub.us3.list-manage.com/subscribe/post-json?u=853588392d41faaa04bccfeb4&id=eef7ff41b5&EMAIL=' + encodeURIComponent(email) + '&c=' + cb
+        const t = setTimeout(()=>{ delete window[cb]; script.remove(); resolve({result:'error',msg:'Zeitüberschreitung'}) }, 8000)
+        window[cb] = (data)=>{ clearTimeout(t); delete window[cb]; script.remove(); resolve(data) }
+        const script = document.createElement('script')
+        script.onerror = ()=>{ clearTimeout(t); delete window[cb]; script.remove(); resolve({result:'error',msg:'Verbindungsfehler'}) }
+        script.src = url; document.head.appendChild(script)
+      })
+    }
+
+    els.signupForm?.addEventListener("submit", async (e) => {
       e.preventDefault()
       const email = els.signupEmail?.value.trim() || ""
       if(!email){
@@ -2009,17 +2025,24 @@
 
       if(els.signupBtn){
         els.signupBtn.disabled = true
-        els.signupBtn.textContent = "Sending"
+        els.signupBtn.textContent = "Sending..."
       }
 
-      setTimeout(() => {
-        els.signupForm?.reset()
-        if(els.signupBtn){
-          els.signupBtn.disabled = false
-          els.signupBtn.textContent = "Sign Up"
-        }
-        toast("Deine Email wurde geschickt Danke für dein Interesse","Gesendet")
-      }, 900)
+      const data = await mailchimpSubscribe(email)
+
+      els.signupForm?.reset()
+      if(els.signupBtn){
+        els.signupBtn.disabled = false
+        els.signupBtn.textContent = "Sign Up"
+      }
+
+      if(data.result === 'success'){
+        toast("Danke! Du bist jetzt angemeldet.","Gesendet")
+      } else if(data.msg && data.msg.toLowerCase().includes('already')){
+        toast("Diese Email ist bereits angemeldet.","Info")
+      } else {
+        toast("Anmeldung fehlgeschlagen. Versuch es nochmal.","Fehler")
+      }
     })
 
     function scrollToHash(hash){
