@@ -1272,18 +1272,17 @@
 
     .slider{
       display:flex;
-      gap:22px;
+      gap:20px;
       overflow-x:auto;
       overflow-y:hidden;
       scroll-snap-type:x mandatory;
       scroll-behavior:smooth;
       -webkit-overflow-scrolling:touch;
-      padding:26px 5% 46px;
-      scroll-padding-left:5%;
-      scroll-padding-right:5%;
+      padding:26px 20px 46px;
+      scroll-padding-left:20px;
       overscroll-behavior-x:contain;
       scrollbar-width:none;
-      touch-action:pan-y;
+      touch-action:pan-x;
       pointer-events:auto;
       user-select:none;
       -webkit-user-select:none;
@@ -1291,8 +1290,8 @@
     .slider::-webkit-scrollbar{display:none}
 
     .pcard{
-      flex:0 0 auto;
-      width:min(360px,38vw);
+      flex:0 0 calc(50% - 30px);
+      width:calc(50% - 30px);
       height:480px;
       border-radius:26px;
       border:none;
@@ -1364,22 +1363,17 @@
         rgba(8,12,16,.92);
     }
 
-    @media (max-width:900px){
-      .pcard{ width:min(340px,52vw) }
-    }
-
     @media (max-width:620px){
       .slider{
         gap:14px;
-        padding:18px 5% 34px;
-        scroll-padding-left:5%;
-        scroll-padding-right:5%;
+        padding:18px 14px 34px;
+        scroll-padding-left:14px;
       }
 
       .pcard{
-        width:calc(85vw);
-        height:440px;
-        padding:0;
+        flex:0 0 calc(100% - 28px);
+        width:calc(100% - 28px);
+        height:420px;
         scroll-snap-align:center;
       }
 
