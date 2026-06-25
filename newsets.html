@@ -1650,6 +1650,7 @@
       document.body.classList.add("user-on")
       userName.textContent = (u.name || u.email || 'U').charAt(0).toUpperCase()
       userEmail.textContent = u.email || ""
+      try{ localStorage.setItem('sethub_user', JSON.stringify({name:u.name||'',email:u.email||''})) }catch{}
     }
 
     loginOpen?.addEventListener("click", openLogin)
@@ -1709,6 +1710,8 @@
     }
 
     window.addEventListener("load", () => {
+      try{ const _u=JSON.parse(localStorage.getItem('sethub_user')||'null'); if(_u?.email) setUserUI(_u) }catch{}
+
       const start = Date.now()
       const t = setInterval(() => {
         if(window.google && google.accounts && google.accounts.id){
