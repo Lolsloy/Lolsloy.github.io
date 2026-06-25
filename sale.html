@@ -817,6 +817,7 @@
             display: grid;
             gap: 12px;
             grid-template-columns: repeat(2,minmax(0,1fr));
+            grid-auto-flow: dense;
             margin-top: 14px;
         }
 
@@ -828,7 +829,7 @@
 
         @media (min-width:1100px) {
             .grid {
-                grid-template-columns: repeat(5,minmax(0,1fr))
+                grid-template-columns: repeat(4,minmax(0,1fr))
             }
         }
 
@@ -857,14 +858,9 @@
             }
 
             .card.expanded {
-                border-color: rgba(0,229,255,.22)
-            }
-
-        @media (max-width: 699px) {
-            .card.expanded {
+                border-color: rgba(0,229,255,.22);
                 grid-column: 1 / -1
             }
-        }
 
         .thumb {
             position: relative;
@@ -1188,10 +1184,6 @@
             gap: 6px;
             flex-shrink: 0;
             white-space: nowrap;
-        }
-
-        @media (max-width: 699px) {
-            .store-old, .store-pct { display: none }
         }
 
         .store-price {
