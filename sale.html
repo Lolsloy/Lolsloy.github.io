@@ -92,15 +92,10 @@
         .pagebtn,
         .heart,
         .toggle,
-        a,
-        button,
-        input,
         .store-btn,
         .login-close,
         .ok,
-        .card,
-        .toggle,
-        .heart {
+        .card {
             touch-action: manipulation;
         }
 
@@ -429,7 +424,7 @@
             }
 
             .nav-text {
-                font-size: 1.32rem
+                font-size: 1.45rem
             }
 
             .nav-brand {
@@ -528,8 +523,8 @@
             }
 
             .nav-text {
-                font-size: 1.08rem;
-                letter-spacing: .02em;
+                font-size: 1.45rem;
+                letter-spacing: .04em;
             }
         }
 
@@ -543,7 +538,7 @@
             }
 
             .nav-text {
-                font-size: .96rem;
+                font-size: 1.45rem;
             }
         }
 
@@ -734,6 +729,10 @@
             padding: 0 12px;
             font-weight: 850;
             width: 100%;
+            font-size: 16px;
+            -webkit-user-select: text;
+            user-select: text;
+            touch-action: manipulation;
         }
 
             .field:focus {
@@ -1144,6 +1143,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex: 1;
             min-width: 0;
         }
 
@@ -1167,7 +1167,8 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 150px;
+            min-width: 0;
+            flex: 1;
         }
 
         .store-right {
