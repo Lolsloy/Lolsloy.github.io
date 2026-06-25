@@ -59,6 +59,24 @@ mailchimp.setConfig({
   server: MAILCHIMP_SERVER_PREFIX
 })
 
+let resolvedAudienceId = MAILCHIMP_AUDIENCE_ID
+async function resolveAudienceId(){
+  if(resolvedAudienceId) return
+  try{
+    const response = await mailchimp.lists.getAllLists({ count: 1 })
+    const first = response?.lists?.[0]
+    if(first?.id){
+      resolvedAudienceId = first.id
+      console.log(`Mailchimp Audience ID automatisch erkannt: ${resolvedAudienceId}`)
+    } else {
+      console.error('Keine Mailchimp Audience gefunden')
+    }
+  }catch(e){
+    console.error('Mailchimp Audience ID konnte nicht abgerufen werden:', e?.message)
+  }
+}
+resolveAudienceId()
+
 const googleClient = new OAuth2Client(GOOGLE_CLIENT_ID)
 
 function sha256LowerEmail(email){
@@ -100,7 +118,7 @@ function setSessionCookie(res, user){
 async function upsertMailchimpContact({ email, firstName = '', lastName = '' }){
   const subscriberHash = sha256LowerEmail(email)
 
-  await mailchimp.lists.setListMember(MAILCHIMP_AUDIENCE_ID, subscriberHash, {
+  await mailchimp.lists.setListMember(resolvedAudienceId, subscriberHash, {
     email_address: email,
     status_if_new: 'subscribed',
     status: 'subscribed',
