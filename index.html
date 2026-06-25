@@ -1935,29 +1935,6 @@
     addEventListener('resize',updateBrand)
     updateBrand()
 
-    const cardSlider = document.getElementById('cardSlider')
-    if(cardSlider){
-      let dragging = false, dragStartX = 0, dragScrollLeft = 0
-      cardSlider.addEventListener('mousedown', e => {
-        dragging = true
-        dragStartX = e.pageX - cardSlider.offsetLeft
-        dragScrollLeft = cardSlider.scrollLeft
-        cardSlider.style.cursor = 'grabbing'
-        e.preventDefault()
-      })
-      window.addEventListener('mouseup', () => {
-        if(!dragging) return
-        dragging = false
-        cardSlider.style.cursor = 'grab'
-      })
-      window.addEventListener('mousemove', e => {
-        if(!dragging) return
-        const x = e.pageX - cardSlider.offsetLeft
-        cardSlider.scrollLeft = dragScrollLeft - (x - dragStartX) * 1.5
-      })
-      cardSlider.style.cursor = 'grab'
-    }
-
     const target = new Date('2026-11-25T23:59:59')
     const elD = document.getElementById('cd-d')
     const elH = document.getElementById('cd-h')
