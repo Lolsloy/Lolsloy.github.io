@@ -2299,23 +2299,31 @@
     const signupEmail = document.getElementById("signupEmail")
     const signupBtn = document.getElementById("signupBtn")
 
-    signupForm.addEventListener("submit", (e) => {
+    function mailchimpSubscribe(email){
+      return new Promise((resolve)=>{
+        const cb = '_mc_' + Date.now()
+        const url = `https://sethub.us3.list-manage.com/subscribe/post-json?u=853588392d41faaa04bccfeb4&id=eef7ff41b5&EMAIL=${encodeURIComponent(email)}&c=${cb}`
+        const t = setTimeout(()=>{ delete window[cb]; script.remove(); resolve({result:'error',msg:'Zeitüberschreitung'}) }, 8000)
+        window[cb] = (data)=>{ clearTimeout(t); delete window[cb]; script.remove(); resolve(data) }
+        const script = document.createElement('script')
+        script.onerror = ()=>{ clearTimeout(t); delete window[cb]; script.remove(); resolve({result:'error',msg:'Verbindungsfehler'}) }
+        script.src = url; document.head.appendChild(script)
+      })
+    }
+
+    signupForm.addEventListener("submit", async (e) => {
       e.preventDefault()
       const email = signupEmail.value.trim()
-      if(!email){
-        toast("Bitte gib eine Email ein","Fehler")
-        return
-      }
-
-      signupBtn.disabled = true
-      signupBtn.textContent = "Sending"
-
-      setTimeout(() => {
+      if(!email){ toast("Bitte gib eine Email ein","Fehler"); return }
+      signupBtn.disabled = true; signupBtn.textContent = "Sending"
+      const data = await mailchimpSubscribe(email)
+      if(data.result === 'success'){
         signupForm.reset()
-        signupBtn.disabled = false
-        signupBtn.textContent = "Sign Up"
-        toast("Deine Email wurde geschickt Danke für dein Interesse","Gesendet")
-      }, 900)
+        toast("Danke! Bestätige bitte deine Email.","Gesendet")
+      } else {
+        toast(data.msg?.includes('already subscribed') ? 'Du bist bereits angemeldet.' : (data.msg || 'Anmeldung fehlgeschlagen'), 'Info')
+      }
+      signupBtn.disabled = false; signupBtn.textContent = "Sign Up"
     })
 
     const modalBackdrop = document.getElementById("modalBackdrop")

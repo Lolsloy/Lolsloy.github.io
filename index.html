@@ -1275,7 +1275,7 @@
       gap:20px;
       overflow-x:auto;
       overflow-y:hidden;
-      scroll-snap-type:x mandatory;
+      scroll-snap-type:x proximity;
       scroll-behavior:smooth;
       -webkit-overflow-scrolling:touch;
       padding:26px 20px 46px;
@@ -1371,10 +1371,10 @@
       }
 
       .pcard{
-        flex:0 0 calc(100% - 28px);
-        width:calc(100% - 28px);
-        height:420px;
-        scroll-snap-align:center;
+        flex:0 0 calc(50% - 21px);
+        width:calc(50% - 21px);
+        height:320px;
+        scroll-snap-align:start;
       }
 
       .pcard-title{
@@ -2098,6 +2098,25 @@
     const signupEmail = document.getElementById('signupEmail')
     const signupBtn = document.getElementById('signupBtn')
 
+    function mailchimpSubscribe(email){
+      return new Promise((resolve)=>{
+        const cb = '_mc_' + Date.now()
+        const url = `https://sethub.us3.list-manage.com/subscribe/post-json?u=853588392d41faaa04bccfeb4&id=eef7ff41b5&EMAIL=${encodeURIComponent(email)}&c=${cb}`
+        const t = setTimeout(()=>{
+          delete window[cb]; script.remove()
+          resolve({result:'error', msg:'Zeitüberschreitung'})
+        }, 8000)
+        window[cb] = (data)=>{
+          clearTimeout(t); delete window[cb]; script.remove()
+          resolve(data)
+        }
+        const script = document.createElement('script')
+        script.onerror = ()=>{ clearTimeout(t); delete window[cb]; script.remove(); resolve({result:'error',msg:'Verbindungsfehler'}) }
+        script.src = url
+        document.head.appendChild(script)
+      })
+    }
+
     signupForm.addEventListener('submit', async (e)=>{
       e.preventDefault()
 
@@ -2107,22 +2126,17 @@
         return
       }
 
-      if(!NEWSLETTER_SUBSCRIBE_URL){
-        toast('Newsletter wird gerade eingerichtet. Versuch es später nochmal.','Info')
-        return
-      }
-
       setLoading(signupBtn, true, 'Sign Up', 'Sending')
 
-      try{
-        const data = await postJson(NEWSLETTER_SUBSCRIBE_URL, { email })
+      const data = await mailchimpSubscribe(email)
+      if(data.result === 'success'){
         signupForm.reset()
-        toast(data?.message || 'Du wurdest für News eingetragen','Gesendet')
-      }catch(err){
-        toast(err.message || 'Newsletter Anmeldung fehlgeschlagen','Fehler')
-      }finally{
-        setLoading(signupBtn, false, 'Sign Up', 'Sending')
+        toast('Danke! Bestätige bitte deine Email.','Gesendet')
+      } else {
+        const msg = data.msg || 'Anmeldung fehlgeschlagen'
+        toast(msg.includes('already subscribed') ? 'Du bist bereits angemeldet.' : msg, 'Info')
       }
+      setLoading(signupBtn, false, 'Sign Up', 'Sending')
     })
 
     const aiFab = document.getElementById('aiFab')
