@@ -85,15 +85,10 @@
       background:rgba(16,24,32,.65);
       backdrop-filter:blur(10px);
       border-bottom:1px solid var(--border2);
-      transform:translateY(-100%);
-      opacity:0;
-      transition:transform .4s ease, opacity .4s ease;
-      z-index:50;
-      pointer-events:none;
-    }
-    body.header-on header.site{
       transform:translateY(0);
       opacity:1;
+      z-index:50;
+      pointer-events:auto;
     }
 
     .topbar-inner{
@@ -118,6 +113,11 @@
       pointer-events:none;
       user-select:none;
       -webkit-user-select:none;
+      opacity:0;
+      transition:opacity .35s ease;
+    }
+    body.header-on .nav-brand{
+      opacity:1;
     }
 
     .logo-svg{width:100%;height:100%;display:block}
@@ -1308,7 +1308,7 @@
       scroll-snap-align:start;
       position:relative;
       overflow:hidden;
-      padding:22px 22px 0;
+      padding:0;
       color:#fff;
       transition:transform .18s ease, filter .18s ease;
     }
@@ -1329,32 +1329,35 @@
     }
 
     .pcard-top{
-      position:relative;
-      z-index:3;
-      max-width:28ch;
+      position:absolute;
+      bottom:26px;
+      left:24px;
+      right:24px;
+      z-index:4;
     }
 
     .pcard-title{
-      margin-top:2px;
-      font-size:1.45rem;
-      line-height:1.1;
-      font-weight:950;
+      font-size:1.5rem;
+      line-height:1.15;
+      font-weight:900;
       letter-spacing:.01em;
+      color:#fff;
+      text-shadow:0 2px 12px rgba(0,0,0,.7);
     }
 
     .pcard-img{
       position:absolute;
       left:50%;
-      bottom:0;
-      transform:translateX(-50%);
-      width:88%;
-      max-width:500px;
-      max-height:84%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      width:86%;
+      max-width:480px;
+      max-height:88%;
       object-fit:contain;
       z-index:1;
       pointer-events:none;
       user-select:none;
-      border-radius:16px 16px 0 0;
+      border-radius:18px;
     }
 
     .pcard-dark{
@@ -1379,12 +1382,17 @@
       .pcard{
         width:calc(85vw);
         height:440px;
-        padding:18px 18px 0;
+        padding:0;
         scroll-snap-align:center;
       }
 
       .pcard-title{
-        font-size:1.3rem;
+        font-size:1.2rem;
+      }
+      .pcard-top{
+        bottom:20px;
+        left:20px;
+        right:20px;
       }
 
       .pcard-img{
@@ -1550,11 +1558,10 @@
       <div class="quick-wrap">
         <div class="quick-cards" aria-label="Quick Navigation">
           <a class="qcard news" href="/news.html" aria-label="News öffnen">
-            <img class="qcard-preview" src="/Bilder/slider4.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1587654780291-39c9404d746b?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">News</div>
-                <div class="q-sub">Updates</div>
               </div>
               <div class="q-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
@@ -1575,11 +1582,10 @@
           </a>
 
           <a class="qcard events" href="/events.html" aria-label="Events öffnen">
-            <img class="qcard-preview" src="/Bilder/slider1.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">Events</div>
-                <div class="q-sub">Dates</div>
               </div>
               <div class="q-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
@@ -1602,11 +1608,10 @@
           </a>
 
           <a class="qcard sale" href="/sale.html" aria-label="Sale öffnen">
-            <img class="qcard-preview" src="/Bilder/slider3.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">Sale</div>
-                <div class="q-sub">Deals</div>
               </div>
               <div class="q-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
@@ -1628,11 +1633,10 @@
           </a>
 
           <a class="qcard sets" href="/newsets.html" aria-label="New Sets öffnen">
-            <img class="qcard-preview" src="/Bilder/slider2.png" alt="" loading="lazy" aria-hidden="true">
+            <img class="qcard-preview" src="https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=600&q=80&fit=crop&auto=format" alt="" loading="lazy" aria-hidden="true">
             <div class="q-head">
               <div>
                 <div class="q-title">New Sets</div>
-                <div class="q-sub">News</div>
               </div>
               <div class="q-ico" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none">
