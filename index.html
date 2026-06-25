@@ -1292,7 +1292,7 @@
 
     .pcard{
       flex:0 0 auto;
-      width:min(420px,44vw);
+      width:min(360px,38vw);
       height:480px;
       border-radius:26px;
       border:none;
@@ -1365,7 +1365,7 @@
     }
 
     @media (max-width:900px){
-      .pcard{ width:min(400px,60vw) }
+      .pcard{ width:min(340px,52vw) }
     }
 
     @media (max-width:620px){
@@ -1902,7 +1902,7 @@
       const endTop = 39
       const startLeft = w/2
       const endLeft = w/2
-      const t = clamp01(y/(h*0.20))
+      const t = clamp01(y/(h*0.30))
 
       const curTop = lerp(startTop, endTop, t)
       const curLeft = lerp(startLeft, endLeft, t)
