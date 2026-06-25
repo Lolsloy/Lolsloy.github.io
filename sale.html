@@ -1440,7 +1440,7 @@
             backdrop-filter: blur(14px);
             transform: translateY(10px) scale(.98);
             transition: transform .25s ease, opacity .25s ease;
-            pointer-events: auto;
+            pointer-events: none;
         }
 
             .toast h4 {
@@ -1477,7 +1477,8 @@
         }
 
         body.toast-on .toast {
-            transform: translateY(0) scale(1)
+            transform: translateY(0) scale(1);
+            pointer-events: auto
         }
 
         .login-backdrop {
