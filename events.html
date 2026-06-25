@@ -7,6 +7,8 @@
   <meta name="description" content="SetHub Events" />
   <meta name="theme-color" content="#0E141A" />
   <link rel="icon" type="image/png" href="/Bilder/lagos.png" />
+  <link rel="preconnect" href="https://accounts.google.com">
+  <link rel="dns-prefetch" href="https://accounts.google.com">
 
   <style>
     :root{
@@ -2007,7 +2009,10 @@
       const first = files[0]
       fileName.textContent = files.length === 1 ? first.name : files.length + " Bilder gewählt"
 
+      const prevUrl = thumbImg.dataset.blobUrl
+      if(prevUrl) URL.revokeObjectURL(prevUrl)
       const url = URL.createObjectURL(first)
+      thumbImg.dataset.blobUrl = url
       thumbImg.src = url
       previewTitle.textContent = first.name
       const totalBytes = Array.from(files).reduce((s,f) => s + (f.size || 0), 0)

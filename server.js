@@ -13,15 +13,46 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || ''
 const MAILCHIMP_API_KEY = process.env.MAILCHIMP_API_KEY || ''
 const MAILCHIMP_SERVER_PREFIX = process.env.MAILCHIMP_SERVER_PREFIX || 'us15'
 const MAILCHIMP_AUDIENCE_ID = process.env.MAILCHIMP_AUDIENCE_ID || ''
-const SESSION_SECRET = process.env.SESSION_SECRET || 'change-this-secret'
+const SESSION_SECRET = process.env.SESSION_SECRET || ''
+
+if(!SESSION_SECRET){
+  console.error('FATAL: SESSION_SECRET is not set. Set it in your .env file.')
+  process.exit(1)
+}
+
+if(SESSION_SECRET === 'change-this-secret'){
+  console.error('FATAL: SESSION_SECRET is still the default value. Change it to a strong random secret.')
+  process.exit(1)
+}
 
 app.use(cors({
   origin: FRONTEND_ORIGIN,
   credentials: true
 }))
 
-app.use(express.json({ limit: '1mb' }))
+app.use(express.json({ limit: '50kb' }))
 app.use(cookieParser())
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+const rateLimitMap = new Map()
+function rateLimit(key, maxRequests = 5, windowMs = 60000){
+  const now = Date.now()
+  const entry = rateLimitMap.get(key) || { count: 0, reset: now + windowMs }
+  if(now > entry.reset){
+    entry.count = 0
+    entry.reset = now + windowMs
+  }
+  entry.count++
+  rateLimitMap.set(key, entry)
+  return entry.count > maxRequests
+}
+setInterval(() => {
+  const now = Date.now()
+  for(const [key, entry] of rateLimitMap){
+    if(now > entry.reset) rateLimitMap.delete(key)
+  }
+}, 300000)
 
 mailchimp.setConfig({
   apiKey: MAILCHIMP_API_KEY,
@@ -111,32 +142,33 @@ app.get('/api/auth/me', (req, res) => {
 })
 
 app.post('/api/newsletter/subscribe', async (req, res) => {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown'
+  if(rateLimit(`newsletter:${ip}`, 5, 60000)){
+    return res.status(429).json({ ok: false, message: 'Zu viele Anfragen. Bitte warte einen Moment.' })
+  }
+
   try{
     const email = String(req.body?.email || '').trim().toLowerCase()
 
-    if(!email){
-      return res.status(400).json({
-        ok: false,
-        message: 'Email fehlt'
-      })
+    if(!email || !EMAIL_RE.test(email)){
+      return res.status(400).json({ ok: false, message: 'Ungültige Email-Adresse' })
     }
 
     await upsertMailchimpContact({ email })
 
-    return res.json({
-      ok: true,
-      message: 'Du wurdest für den Newsletter eingetragen'
-    })
+    return res.json({ ok: true, message: 'Du wurdest für den Newsletter eingetragen' })
   }catch(error){
-    console.error(error)
-    return res.status(500).json({
-      ok: false,
-      message: 'Newsletter Anmeldung fehlgeschlagen'
-    })
+    console.error('[newsletter]', error?.message)
+    return res.status(500).json({ ok: false, message: 'Newsletter Anmeldung fehlgeschlagen' })
   }
 })
 
 app.post('/api/auth/google-subscribe', async (req, res) => {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown'
+  if(rateLimit(`google-auth:${ip}`, 10, 60000)){
+    return res.status(429).json({ ok: false, message: 'Zu viele Anfragen. Bitte warte einen Moment.' })
+  }
+
   try{
     const credential = String(req.body?.credential || '')
     if(!credential){
@@ -178,7 +210,7 @@ app.post('/api/auth/google-subscribe', async (req, res) => {
       user
     })
   }catch(error){
-    console.error(error)
+    console.error('[google-auth]', error?.message)
     return res.status(500).json({
       ok: false,
       message: 'Google Anmeldung fehlgeschlagen'

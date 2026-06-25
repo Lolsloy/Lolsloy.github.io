@@ -7,6 +7,8 @@
   <meta name="description" content="SetHub – Enjoy your sets" />
   <meta name="theme-color" content="#0E141A" />
   <link rel="icon" type="image/png" href="/Bilder/lagos.png">
+  <link rel="preconnect" href="https://accounts.google.com">
+  <link rel="dns-prefetch" href="https://accounts.google.com">
 
   <style>
     :root{
@@ -1634,35 +1636,35 @@
                 <div class="pcard-top">
                   <div class="pcard-title">Theme Page - All Your Sets in One Place</div>
                 </div>
-                <img class="pcard-img" src="/Bilder/slider1.png" alt="">
+                <img class="pcard-img" src="/Bilder/slider1.png" alt="Theme Page Vorschau" loading="lazy">
               </a>
 
               <a class="pcard" href="/info.html?id=wishlist" aria-label="Wishlist">
                 <div class="pcard-top">
                   <div class="pcard-title">Wishlists - Highlight your future Sets</div>
                 </div>
-                <img class="pcard-img" src="/Bilder/slider2.png" alt="">
+                <img class="pcard-img" src="/Bilder/slider2.png" alt="Wishlist Vorschau" loading="lazy">
               </a>
 
               <a class="pcard" href="/info.html?id=boxes" aria-label="Boxes">
                 <div class="pcard-top">
                   <div class="pcard-title">Convenient - Manage Sets in Boxes</div>
                 </div>
-                <img class="pcard-img" src="/Bilder/slider3.png" alt="">
+                <img class="pcard-img" src="/Bilder/slider3.png" alt="Boxes Vorschau" loading="lazy">
               </a>
 
               <a class="pcard pcard-dark" href="/info.html?id=news" aria-label="News">
                 <div class="pcard-top">
                   <div class="pcard-title">Informative - Recent LEGO News all in one place</div>
                 </div>
-                <img class="pcard-img" src="/Bilder/slider4.png" alt="">
+                <img class="pcard-img" src="/Bilder/slider4.png" alt="News Vorschau" loading="lazy">
               </a>
 
               <a class="pcard" href="/info.html?id=scan" aria-label="Scan">
                 <div class="pcard-top">
                   <div class="pcard-title">Simple - Add Sets with just one scan</div>
                 </div>
-                <img class="pcard-img" src="/Bilder/slider5.png" alt="">
+                <img class="pcard-img" src="/Bilder/slider5.png" alt="Scan Vorschau" loading="lazy">
               </a>
             </div>
           </div>
@@ -1712,47 +1714,47 @@
 
         <div class="team-grid">
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/niklas.png" alt="Profil Niklas Hack">
+            <img class="avatar" src="/Bilder/niklas.png" alt="Profil Niklas Hack" loading="lazy">
             <div class="name">Niklas</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/Fabian.png" alt="Profil Fabian">
+            <img class="avatar" src="/Bilder/Fabian.png" alt="Profil Fabian" loading="lazy">
             <div class="name">Fabian</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/kurz.png" alt="Profil Christoph Kurz">
+            <img class="avatar" src="/Bilder/kurz.png" alt="Profil Christoph Kurz" loading="lazy">
             <div class="name">Christoph</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/Michell.png" alt="Profil Michelle">
+            <img class="avatar" src="/Bilder/Michell.png" alt="Profil Michelle" loading="lazy">
             <div class="name">Michelle</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/Mert.png" alt="Profil Mert Aydin">
+            <img class="avatar" src="/Bilder/Mert.png" alt="Profil Mert Aydin" loading="lazy">
             <div class="name">Mert</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein">
+            <img class="avatar" src="/Bilder/Ibrahim.png" alt="Profil Ibrahim Hussein" loading="lazy">
             <div class="name">Ibrahim</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/lukas.png" alt="Profil Lukas Zlavinker">
+            <img class="avatar" src="/Bilder/lukas.png" alt="Profil Lukas Zlavinker" loading="lazy">
             <div class="name">Lukas</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/Hannes.png" alt="Profil Hannes Porhacka">
+            <img class="avatar" src="/Bilder/Hannes.png" alt="Profil Hannes Porhacka" loading="lazy">
             <div class="name">Hannes</div>
           </div></div></div>
 
           <div class="card-wrap"><div class="card"><div class="card-face front">
-            <img class="avatar" src="/Bilder/hund.png" alt="Profil Loki">
+            <img class="avatar" src="/Bilder/hund.png" alt="Profil Loki" loading="lazy">
             <div class="name">Loki</div>
           </div></div></div>
         </div>
@@ -1839,10 +1841,11 @@
   <script>
     const GOOGLE_CLIENT_ID = '890924938500-pnnf2pm7uslq92acq08nj1kk46c07ajh.apps.googleusercontent.com'
 
-    const API_BASE = 'Backend URL hier einfügen'
-    const GOOGLE_SUBSCRIBE_URL = `${API_BASE}/api/auth/google-subscribe`
-    const NEWSLETTER_SUBSCRIBE_URL = `${API_BASE}/api/newsletter/subscribe`
-    const SESSION_ME_URL = `${API_BASE}/api/auth/me`
+    // Backend URL setzen, z.B. 'https://api.sethub.io'
+    const API_BASE = ''
+    const GOOGLE_SUBSCRIBE_URL = API_BASE ? `${API_BASE}/api/auth/google-subscribe` : ''
+    const NEWSLETTER_SUBSCRIBE_URL = API_BASE ? `${API_BASE}/api/newsletter/subscribe` : ''
+    const SESSION_ME_URL = API_BASE ? `${API_BASE}/api/auth/me` : ''
 
     const brandLine = document.getElementById('brandLine')
     const brandFixed = document.getElementById('brandFixed')
@@ -2040,10 +2043,6 @@
 
       const text = await res.text()
 
-      console.log('POST URL:', url)
-      console.log('STATUS:', res.status)
-      console.log('RAW RESPONSE:', text)
-
       let data = null
       try{
         data = text ? JSON.parse(text) : null
@@ -2071,6 +2070,11 @@
       const email = signupEmail.value.trim()
       if(!email){
         toast('Bitte gib eine Email ein','Fehler')
+        return
+      }
+
+      if(!NEWSLETTER_SUBSCRIBE_URL){
+        toast('Newsletter wird gerade eingerichtet. Versuch es später nochmal.','Info')
         return
       }
 
@@ -2151,6 +2155,7 @@
     }
 
     async function loadSessionUser(){
+      if(!SESSION_ME_URL) return
       try{
         const res = await fetch(SESSION_ME_URL, { credentials:'include' })
         if(!res.ok) return
@@ -2172,6 +2177,11 @@
     loginBackdrop.addEventListener('click', closeLogin)
 
     async function onGoogleCredential(resp){
+      if(!GOOGLE_SUBSCRIBE_URL){
+        closeLogin()
+        toast('Anmeldung wird gerade eingerichtet. Versuch es später nochmal.','Info')
+        return
+      }
       try{
         const data = await postJson(GOOGLE_SUBSCRIBE_URL, {
           credential: resp.credential,
