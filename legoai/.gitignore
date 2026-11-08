@@ -1,0 +1,11 @@
+# Geheime Keys – niemals hochladen!
+.env
+.env.*
+
+# Wird mit "npm install" neu erzeugt
+node_modules/
+
+# Sonstiges
+npm-debug.log*
+.DS_Store
+Thumbs.db
