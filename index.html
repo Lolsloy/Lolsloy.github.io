@@ -523,6 +523,42 @@
     }
 
 
+    /* ---------- release / countdown (AUSGEBLENDET – zum Aktivieren Kommentar entfernen) ----------
+    .release{
+      position:relative;overflow:hidden;border-radius:36px;
+      padding:clamp(40px,6vw,80px) clamp(22px,5vw,70px);
+      background:
+        radial-gradient(900px 500px at 10% 0%,rgba(4,213,235,.22),transparent 60%),
+        radial-gradient(900px 600px at 100% 100%,rgba(207,100,229,.28),transparent 60%),
+        linear-gradient(180deg,#101a24,#0c131a);
+      border:1px solid var(--line2);
+      display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
+    }
+    .release .studs{opacity:.35}
+    .release h2{font-size:clamp(2.4rem,5.2vw,4.4rem);line-height:1;letter-spacing:-.035em;font-weight:800}
+    .release p{margin-top:16px;color:var(--fg2);font-size:1.1rem;line-height:1.6;max-width:30rem}
+    .release .btn{margin-top:28px}
+    .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;position:relative;z-index:1}
+    .cd-box{
+      background:rgba(8,13,18,.55);border:1px solid var(--line2);border-radius:20px;
+      backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+      padding:20px 8px;text-align:center;
+    }
+    .cd-num{font-size:clamp(2rem,4vw,3.4rem);font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+    .cd-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.16em;margin-top:4px;font-weight:700}
+    .release-copy{position:relative;z-index:1}
+    @media (max-width:960px){
+      .release{grid-template-columns:1fr;text-align:center}
+      .release p{margin-inline:auto}
+    }
+    @media (max-width:420px){
+      .countdown{gap:8px}
+      .cd-box{padding:14px 4px;border-radius:14px}
+      .cd-label{font-size:.62rem;letter-spacing:.1em}
+    }
+
+    ---------- Ende Countdown-CSS ---------- */
+
     /* ---------- team ---------- */
     .team-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
     .team-grid .tcard{flex:0 0 calc((100% - 60px) / 4)}
@@ -828,10 +864,12 @@
           <div class="hero-cta hero-in d3">
             <a class="store-btn" id="heroStore" href="#contact" data-store="android"><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
             <a class="store-btn" id="heroStoreIos" href="#contact" data-store="ios"><svg class="ap" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="st"><small data-store-label>Bald im</small>App Store</span></a>
+            <!-- AUSGEBLENDET (später wieder einblenden):
             <a class="btn btn-ghost" href="#how">
               So funktioniert's
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a>
+            -->
           </div>
           <div class="socials hero-social hero-in d4">
             <span class="lbl">Folge uns</span>
@@ -1006,6 +1044,7 @@
             </div>
           </article>
 
+          <!-- AUSGEBLENDET: Kacheln "Verkaufen" und "Sammlung drucken" (später wieder einblenden)
           <article class="bcard b-span-5 reveal" style="--accent:#2E8CFF">
             <span class="bico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12V4h8l10 10-8 8L3 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>
             <h3>Verkaufen</h3>
@@ -1031,9 +1070,34 @@
               </div></div>
             </div>
           </article>
+          -->
         </div>
       </div>
     </section>
+
+    <!-- ================= RELEASE / COUNTDOWN (AUSGEBLENDET) =================
+         Zum Aktivieren: diesen Kommentar entfernen, CSS-Block "release / countdown" und
+         JS-Block "countdown" ebenfalls entkommentieren, Nav-Link <a href="#release">Release</a> ergänzen.
+    <section class="section" id="release" aria-labelledby="releaseTitle" style="padding-top:0">
+      <div class="wrap">
+        <div class="release reveal">
+          <div class="studs" aria-hidden="true"></div>
+          <div class="release-copy">
+            <span class="sec-kicker">Release Countdown</span>
+            <h2 id="releaseTitle">Enjoy<br><span class="grad-text">your Sets.</span></h2>
+            <p>SetHub startet bald. Trag dich ein und erfahre als Erstes, wenn die App verfügbar ist.</p>
+            <a class="btn btn-primary" href="#contact">Benachrichtige mich</a>
+          </div>
+          <div class="countdown" id="countdown" aria-live="polite">
+            <div class="cd-box"><div class="cd-num" id="cd-d">00</div><div class="cd-label">Tage</div></div>
+            <div class="cd-box"><div class="cd-num" id="cd-h">00</div><div class="cd-label">Std</div></div>
+            <div class="cd-box"><div class="cd-num" id="cd-m">00</div><div class="cd-label">Min</div></div>
+            <div class="cd-box"><div class="cd-num" id="cd-s">00</div><div class="cd-label">Sek</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    ================= Ende Countdown ================= -->
 
     <!-- ================= TEAM ================= -->
     <section class="section" id="team" aria-labelledby="teamTitle" style="padding-top:0">
@@ -1415,6 +1479,27 @@
         })
       }
     })
+
+    /* ---------- countdown (AUSGEBLENDET – zum Aktivieren Kommentar entfernen) ----------
+    const target = new Date('2026-11-25T23:59:59')
+    const elD = document.getElementById('cd-d')
+    const elH = document.getElementById('cd-h')
+    const elM = document.getElementById('cd-m')
+    const elS = document.getElementById('cd-s')
+    function tick(){
+      let diff = Math.max(0, target - new Date())
+      const d = Math.floor(diff/86400000); diff -= d*86400000
+      const h = Math.floor(diff/3600000);  diff -= h*3600000
+      const m = Math.floor(diff/60000);    diff -= m*60000
+      const s = Math.floor(diff/1000)
+      elD.textContent = String(d).padStart(2,'0')
+      elH.textContent = String(h).padStart(2,'0')
+      elM.textContent = String(m).padStart(2,'0')
+      elS.textContent = String(s).padStart(2,'0')
+    }
+    tick()
+    setInterval(tick,1000)
+    ---------- Ende Countdown-JS ---------- */
 
     /* ---------- cookies (assets/consent.js) ---------- */
     if(window.SetHubConsent && SetHubConsent.get()) setTimeout(openWelcome, 1600)
