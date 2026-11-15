@@ -334,7 +334,7 @@
       animation:wheel 1.8s ease-in-out infinite;
     }
     @keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(10px)}}
-    body.scrolled .scroll-hint{opacity:0}
+    body.scrolled .scroll-hint{opacity:0;pointer-events:none}
 
     @media (max-width:1100px){
       .hero-visual .ph-main{--w:270px}
@@ -726,7 +726,7 @@
         rgba(12,18,24,.98);
       border:1px solid var(--glass-border);border-radius:20px;padding:20px;
       box-shadow:0 24px 80px rgba(0,0,0,.6);backdrop-filter:blur(14px);
-      transform:translateY(10px) scale(.98);transition:transform .25s ease,opacity .25s ease;pointer-events:auto;
+      transform:translateY(10px) scale(.98);transition:transform .25s ease,opacity .25s ease;pointer-events:none;
     }
     .toast h4{font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:6px}
     .toast p{color:#cfd6dd;font-size:.98rem;line-height:1.5}
@@ -735,6 +735,7 @@
       background:linear-gradient(180deg,#22B8FF,#1A7DF0);color:#fff;font-weight:800;cursor:pointer;width:100%;
     }
     body.toast-on .toast-wrap{opacity:1;pointer-events:auto}
+    body.toast-on .toast{pointer-events:auto}
     body.toast-on .toast{transform:translateY(0) scale(1);animation:toastPop .45s ease}
     @keyframes toastPop{0%{transform:translateY(16px) scale(.96)}60%{transform:translateY(-4px) scale(1.01)}100%{transform:translateY(0) scale(1)}}
 
@@ -1196,6 +1197,8 @@
     </div>
   </footer>
 
+  <!-- AUSGEBLENDET: Willkommens-Fenster beim Seitenbesuch (Android/iPhone + Instagram/TikTok).
+       Zum Aktivieren: Kommentar entfernen und unten im Script WELCOME_ENABLED = true setzen.
   <aside class="welcome" id="welcome" aria-labelledby="welcomeTitle" aria-hidden="true">
     <div class="welcome-card">
       <button class="welcome-x" id="welcomeClose" type="button" aria-label="Schließen">
@@ -1216,6 +1219,7 @@
       </div>
     </div>
   </aside>
+  -->
 
   <div class="toast-wrap" id="toastWrap" aria-hidden="true">
     <div class="toast" role="status" aria-live="polite">
@@ -1442,21 +1446,24 @@
     })
 
     /* ---------- welcome popup ---------- */
+    const WELCOME_ENABLED = false   // true = Willkommens-Fenster wieder anzeigen (HTML oben entkommentieren)
     const welcomeEl = document.getElementById('welcome')
     function welcomeSeen(){ try{ return localStorage.getItem('sethub_welcome_seen') === '1' }catch{ return false } }
     function openWelcome(){
-      if(welcomeSeen()) return
+      if(!WELCOME_ENABLED || !welcomeEl || welcomeSeen()) return
       document.body.classList.add('welcome-on')
       welcomeEl.setAttribute('aria-hidden','false')
     }
     function closeWelcome(){
-      if(!document.body.classList.contains('welcome-on')) return
+      if(!welcomeEl || !document.body.classList.contains('welcome-on')) return
       document.body.classList.remove('welcome-on')
       welcomeEl.setAttribute('aria-hidden','true')
       try{ localStorage.setItem('sethub_welcome_seen','1') }catch{}
     }
-    document.getElementById('welcomeClose').addEventListener('click', closeWelcome)
-    welcomeEl.querySelectorAll('.soc').forEach(a=>a.addEventListener('click', closeWelcome))
+    if(welcomeEl){
+      document.getElementById('welcomeClose').addEventListener('click', closeWelcome)
+      welcomeEl.querySelectorAll('.soc').forEach(a=>a.addEventListener('click', closeWelcome))
+    }
 
     /* ---------- store buttons (Google Play + App Store) ---------- */
     const STORES = {
