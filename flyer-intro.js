@@ -1,13 +1,13 @@
 /* SetHub Flyer-Intro  (Version 2)
    Spielt eine kurze Stein-Animation, wenn jemand über den QR-Code eines Flyers kommt.
-   Aufruf:  /hund  /katze  /rakete  /alien  /herz   (Ordner leiten auf /?f=<name> weiter)
+   Aufruf:  /hund  /katze  /rakete  /alien  /herz  /dino   (Ordner leiten auf /?f=<name> weiter)
    oder direkt:  /?f=hund
    Ohne Parameter passiert nichts. Tippen überspringt die Animation. */
 (function () {
   try {
     var qs = new URLSearchParams(location.search);
     var key = (qs.get('f') || qs.get('flyer') || location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0] || '').toLowerCase();
-    if (!{ hund: 1, katze: 1, rakete: 1, alien: 1, herz: 1 }[key]) return;
+    if (!{ hund: 1, katze: 1, rakete: 1, alien: 1, herz: 1, dino: 1 }[key]) return;
 
     // ---------- Bühne: 1000 Einheiten breit, Höhe passt sich dem Bildschirm an
     var vw = Math.max(1, window.innerWidth), vh = Math.max(1, window.innerHeight);
@@ -15,7 +15,7 @@
     var TALL = VH >= 1500, K = TALL ? 1.25 : 1;
     var GY = VH - Math.max(300, VH * .3);              // Bodenlinie
     var NAVY = '#0B1117';
-    var KEY = { B: '#2E8CFF', P: '#FF5EA0', Y: '#FFD300', G: '#00C27A', V: '#7A5CFF', C: '#04D5EB', W: '#FFFFFF', K: '#0B1117', O: '#FF9F1C', R: '#FF4D4D', S: '#CBD5E1', D: '#64748B', N: '#9A6B3F', T: '#F2D0A0', E: '#6B4A2B', Q: '#E8860C' };
+    var KEY = { B: '#2E8CFF', P: '#FF5EA0', Y: '#FFD300', G: '#00C27A', V: '#7A5CFF', C: '#04D5EB', W: '#FFFFFF', K: '#0B1117', O: '#FF9F1C', R: '#FF4D4D', S: '#CBD5E1', D: '#64748B', N: '#9A6B3F', T: '#F2D0A0', E: '#6B4A2B', Q: '#E8860C', L: '#7CE0A8', H: '#00A862' };
 
     function rgb(h) { var n = parseInt(h.slice(1), 16); return [n >> 16, (n >> 8) & 255, n & 255]; }
     function hx(a) { return '#' + a.map(function (v) { return Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0'); }).join(''); }
@@ -243,6 +243,65 @@
         if (t > 2.4) for (var k = 0; k < 7; k++) { var hp = pr(t, 2.5 + k * .16, 4.6 + k * .16); if (hp > 0 && hp < 1) s += '<path transform="translate(' + R(cx + (k - 3) * u * 1.3 + Math.sin(hp * 6 + k) * 24) + ' ' + R(cy + u * 2 - hp * u * 9) + ') scale(' + R(.5 + (k % 3) * .25) + ')" d="M0 30C-60-20-30-70 0-40C30-70 60-20 0 30Z" fill="' + (k % 2 ? '#fff' : '#FF7BB5') + '" opacity="' + R(.9 * (1 - hp)) + '"/>'; }
         s += star(cx - 4.6 * u, cy - 3 * u, 22, '#fff', .5 + .5 * Math.sin(t * 5)) + star(cx + 4.8 * u, cy - 2 * u, 28, '#fff', .5 + .5 * Math.sin(t * 4 + 1)) + star(cx + 3.6 * u, cy + 3.8 * u, 20, '#fff', .5 + .5 * Math.sin(t * 6 + 2));
         return s + brand(t, 3.6, false, 'Für alle, die Steine lieben.', cy + 4 * u + (TALL ? 330 : 300));
+      }
+    };
+
+
+    /* ======================= DINO ======================= */
+    function dinoFig(u, o) {
+      // o: la, lb (Beinanhebung in u), tail (Grad), jaw (Grad, Maul offen), blink
+      var s = '';
+      function legA(dy) { return sprite(['GGGG', 'GG..', 'GGG.'], u, 3 * u, 10 * u - dy * u); }
+      function legB(dy) { return sprite(['GGG', 'GG.', 'GGG'], u, 9 * u, 10 * u - dy * u); }
+      s += '<g opacity=".9">' + legB(o.lb).replace(/#00C27A/g, KEY.H) + '</g>';
+      s += rotAt(sprite(['Y..', 'GY.', 'GGY', '.GG'], u, 0, 5 * u), o.tail, 3 * u, 8.5 * u);
+      s += sprite(['.........GGGG...', '........GGGGGG..', '......GGGGLLG.G.', '...GGGGGGLLLG...', '...GGGGGGLLLG...'], u, 0, 5 * u);
+      s += fb(u, 8 * u, u, 2, KEY.G);
+      s += legA(o.la);
+      // Kopf: Unterkiefer fest, Oberkopf klappt auf
+      if (o.jaw > 1) s += '<rect x="' + R(9.6 * u) + '" y="' + R(3.4 * u) + '" width="' + R(5.6 * u) + '" height="' + R(1.4 * u) + '" rx="' + R(u * .3) + '" fill="#7A1730"/>' + fb(10.4 * u, 3.9 * u, u * .9, 3, '#FF5EA0', false);
+      s += sprite(['.........GGGWW..'], u, 0, 4 * u);
+      var h = sprite(['..........GGGG..', '.........GGGGGG.', '.........GKGGGG.', '.........GGGGGG.'], u, 0, 0);
+      if (o.blink) h += '<rect x="' + R(10 * u) + '" y="' + R(2 * u) + '" width="' + R(u) + '" height="' + R(u) + '" fill="' + KEY.G + '"/><rect x="' + R(10.1 * u) + '" y="' + R(2.45 * u) + '" width="' + R(u * .8) + '" height="' + R(u * .16) + '" rx="2" fill="' + NAVY + '"/>';
+      if (o.jaw > 1) h += '<rect x="' + R(12.6 * u) + '" y="' + R(3.7 * u) + '" width="' + R(.7 * u) + '" height="' + R(.45 * u) + '" fill="#fff"/><rect x="' + R(13.7 * u) + '" y="' + R(3.7 * u) + '" width="' + R(.7 * u) + '" height="' + R(.45 * u) + '" fill="#fff"/>';
+      s += rotAt(h, -o.jaw, 9.6 * u, 4 * u);
+      return s;
+    }
+    S.dino = {
+      d: 6.4, bg: '#BFF0D4', dark: true, draw: function (t) {
+        var u = 34 * K, STEP = .42, walkEnd = 2.1;
+        // Stampfen: jeder Schritt schüttelt kurz das Bild
+        var ph = t / STEP, since = (t % STEP), stomp = t < walkEnd ? Math.exp(-since * 14) : 0;
+        var roar = pr(t, 2.45, 2.6) * (1 - pr(t, 3.35, 3.6));
+        var shake = stomp * 10 * Math.sin(t * 90) + roar * 7 * Math.sin(t * 70);
+        var shakeY = stomp * 14 * Math.abs(Math.sin(t * 60));
+        var s = BIG + '#BFF0D4"/>';
+        var sy = TALL ? 300 : 180;
+        s += '<circle cx="800" cy="' + sy + '" r="100" fill="#FFD300"/>' + cloud(110 + t * 8 + shake * .3, sy - 30, 1) + cloud(470 - t * 5, sy + 120, .7);
+        s += '<g transform="translate(' + R(shake) + ' ' + R(shakeY * .5) + ')">';
+        s += '<ellipse cx="760" cy="' + R(GY + 40) + '" rx="620" ry="170" fill="#8FE3B0"/>' + ground('#5FD08A', '#49BD77');
+        // kleine Steine am Boden hüpfen bei jedem Schritt
+        [[120, '#2E8CFF', 2, 10], [280, '#FF5EA0', 1, -20], [860, '#FFD300', 1, 25], [940, '#7A5CFF', 2, -8]].forEach(function (b, i) {
+          var hp = (stomp + roar * Math.abs(Math.sin(t * 22 + i))) * (60 + i * 12);
+          s += G(fb(-22 * b[2], -22, 44, b[2], b[1]), b[0], GY + 70 - hp, 1, b[3] + hp * (i % 2 ? .6 : -.6));
+        });
+        // Dino läuft herein
+        var x = lerp(-17 * u, 500 - 8.8 * u, eo(pr(t, 0, walkEnd))), moving = t < walkEnd;
+        var la = moving ? Math.max(0, Math.sin(ph * Math.PI)) * 1.1 : 0, lb = moving ? Math.max(0, -Math.sin(ph * Math.PI)) * 1.1 : 0;
+        var bob = moving ? Math.abs(Math.sin(ph * Math.PI)) * 10 : 0;
+        var lean = t > 2.2 && t < 2.5 ? -6 * Math.sin(pr(t, 2.2, 2.5) * Math.PI / 2) : (roar > 0 ? 4 * roar : 0);
+        var o = { la: la, lb: lb, tail: Math.sin(t * (t > 3.6 ? 9 : 5)) * (t > 3.6 ? 14 : 8), jaw: 24 * roar, blink: (t > 3.95 && t < 4.08) || (t > 5.3 && t < 5.42) };
+        var y = GY - 13 * u - bob;
+        s += '<ellipse cx="' + R(x + 7.5 * u) + '" cy="' + R(GY + 6) + '" rx="' + R(6.8 * u) + '" ry="18" fill="#000" opacity=".15"/>';
+        if (moving) { var k = Math.floor(ph); s += dust(x + (k % 2 ? 10 : 4.5) * u, GY, t, k * STEP, 5, '#fff'); }
+        s += rotAt(G(dinoFig(u, o), x, y), lean, x + 7 * u, GY);
+        // Brüllen: Schallwellen und Wort
+        var mx = x + 15.4 * u, my = y + 3.6 * u;
+        for (var q = 0; q < 3; q++) { var rp = pr(t, 2.55 + q * .22, 3.4 + q * .22); if (rp > 0 && rp < 1) s += '<path d="M' + R(mx + 20 + 150 * rp) + ' ' + R(my - 90 - 130 * rp) + 'Q' + R(mx + 70 + 200 * rp) + ' ' + R(my) + ' ' + R(mx + 20 + 150 * rp) + ' ' + R(my + 90 + 130 * rp) + '" stroke="#fff" stroke-width="' + R(16 * (1 - rp)) + '" fill="none" stroke-linecap="round" opacity="' + R(.9 * (1 - rp)) + '"/>'; }
+        var wp = pr(t, 2.55, 2.85); if (wp > 0) s += G(txt('ROAR!', 0, 40, 130, NAVY), 520, y - 1.8 * u, back(wp) * (1 + roar * .06 * Math.sin(t * 40)), -7, cl(wp * 3) * (1 - pr(t, 3.9, 4.2)));
+        s += confetti(500 + 5 * u, y + 2 * u, t, 3.6, 16, 41);
+        s += '</g>';
+        return s + brand(t, 4.2, true, 'Deine Sammlung wird riesig.', GY + (VH - GY) * .5 + 60);
       }
     };
 
