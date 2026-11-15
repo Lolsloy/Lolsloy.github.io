@@ -559,6 +559,12 @@
 
     ---------- Ende Countdown-CSS ---------- */
 
+    /* ---------- immer das ganze Handy zeigen ---------- */
+    .bcard .peek,.bcard.wide .peek,.bcard.b-span-4 .peek{height:auto !important;min-height:0 !important;padding:30px 0 34px !important;align-items:center}
+    .bcard .peek .phone{position:relative !important;top:0 !important}
+    .bcard.wide .peek{padding:0 !important}
+    @media (max-width:960px){.bcard.wide .peek{padding:28px 0 32px !important}}
+
     /* ---------- team ---------- */
     .team-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
     .team-grid .tcard{flex:0 0 calc((100% - 60px) / 4)}
