@@ -642,6 +642,7 @@
     }
     .store-btn:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.45);background:#0b1016}
     .store-btn .gp{width:24px;height:26px;flex:0 0 auto}
+    .store-btn .ap{width:24px;height:28px;flex:0 0 auto;margin-top:-3px}
     .store-btn .st{display:flex;flex-direction:column;line-height:1.05;font-weight:800;font-size:1.25rem;letter-spacing:-.01em;text-align:left}
     .store-btn .st small{font-size:.66rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#b8c3ce;margin-bottom:3px}
     .store-btn.soon::after{
@@ -662,7 +663,11 @@
     .soc.tt:hover{background:rgba(255,255,255,.08);border-color:rgba(37,244,238,.6);box-shadow:-3px 0 0 -1px rgba(37,244,238,.6),3px 0 0 -1px rgba(254,44,85,.6)}
     .hero-social{margin-top:30px}
     @media (max-width:960px){.hero-social{justify-content:center}}
-    @media (max-width:600px){.hero-cta .store-btn{flex:1 1 100%;justify-content:center}}
+    @media (max-width:600px){
+      .hero-cta .store-btn{flex:1 1 calc(50% - 6px);justify-content:center;padding:0 12px;gap:9px}
+      .hero-cta .store-btn .st{font-size:1.05rem}
+    }
+    @media (max-width:350px){.hero-cta .store-btn{flex-basis:100%}}
 
     /* ---------- welcome popup ---------- */
     .welcome{
@@ -694,7 +699,10 @@
     .welcome-top .wlogo svg{width:40px;height:30px;transform:translateY(3px)}
     .welcome h3{font-size:1.25rem;font-weight:800;letter-spacing:-.01em;line-height:1.2}
     .welcome p{margin-top:12px;color:var(--fg2);line-height:1.55;font-size:.95rem}
-    .welcome .store-btn{margin-top:16px;width:100%;justify-content:center}
+    .welcome .stores{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+    .welcome .store-btn{justify-content:center;padding:0 12px;gap:9px;height:54px}
+    .welcome .store-btn .st{font-size:1.05rem}
+    @media (max-width:340px){.welcome .stores{grid-template-columns:1fr}}
     .welcome .socials{margin-top:10px}
     .welcome .soc{flex:1 1 0;justify-content:center}
     @media (max-width:520px){
@@ -954,7 +962,8 @@
           <h1 id="heroTitle" class="hero-in d1">Deine Sets.<br><span class="grad-text">Perfekt organisiert.</span></h1>
           <p class="lead hero-in d2">SetHub ist die App für deine LEGO Sammlung. Finden, sammeln, ordnen und den Überblick behalten – mit Themen, Boxen, Wunschliste und Statistiken.</p>
           <div class="hero-cta hero-in d3">
-            <a class="store-btn" id="heroStore" href="#contact" data-store><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
+            <a class="store-btn" id="heroStore" href="#contact" data-store="android"><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
+            <a class="store-btn" id="heroStoreIos" href="#contact" data-store="ios"><svg class="ap" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="st"><small data-store-label>Bald im</small>App Store</span></a>
             <a class="btn btn-ghost" href="#how">
               So funktioniert's
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1274,8 +1283,11 @@
         <span class="wlogo" aria-hidden="true"><svg viewBox="0 0 3326 2408"><use href="#sethub-logo"></use></svg></span>
         <h3 id="welcomeTitle">Willkommen bei SetHub!</h3>
       </div>
-      <p>Die App kommt bald für Android. Folge uns auf Instagram und TikTok für Sneak-Peeks, neue Features und alles rund um LEGO.</p>
-      <a class="store-btn" id="welcomeStore" href="#contact" data-store><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
+      <p>Die App kommt bald für Android und iPhone. Folge uns auf Instagram und TikTok für Sneak-Peeks, neue Features und alles rund um LEGO.</p>
+      <div class="stores">
+        <a class="store-btn" id="welcomeStore" href="#contact" data-store="android"><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
+        <a class="store-btn" id="welcomeStoreIos" href="#contact" data-store="ios"><svg class="ap" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="st"><small data-store-label>Bald im</small>App Store</span></a>
+      </div>
       <div class="socials">
         <a class="soc ig" href="https://www.instagram.com/sethub.io/" target="_blank" rel="noopener" aria-label="SetHub auf Instagram"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.25" fill="currentColor"/></svg><span>Instagram</span></a>
             <a class="soc tt" href="https://www.tiktok.com/@sethub.io" target="_blank" rel="noopener" aria-label="SetHub auf TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.530.63 3.090 1.750 4.170 1.120 1.110 2.700 1.620 4.240 1.790v4.030c-1.440-.050-2.890-.350-4.200-.970-.570-.260-1.100-.590-1.620-.930-.010 2.920.010 5.840-.020 8.750-.080 1.400-.540 2.790-1.350 3.940-1.310 1.920-3.580 3.170-5.910 3.210-1.430.080-2.860-.310-4.080-1.030-2.020-1.190-3.440-3.370-3.650-5.710-.020-.500-.030-1-.010-1.490.180-1.900 1.120-3.720 2.580-4.960 1.660-1.440 3.980-2.130 6.150-1.720.020 1.480-.040 2.960-.040 4.440-.990-.320-2.150-.230-3.020.370-.630.410-1.110 1.040-1.360 1.750-.210.510-.150 1.070-.140 1.610.240 1.640 1.820 3.020 3.500 2.870 1.120-.010 2.190-.660 2.770-1.610.190-.330.400-.670.410-1.060.100-1.790.060-3.570.070-5.360.010-4.030-.010-8.050.020-12.070z"/></svg><span>TikTok</span></a>
@@ -1313,13 +1325,14 @@
 
   <script>
     /* ================= EINSTELLUNGEN =================
-       ANDROID_URL: Google-Play-Link eintragen, sobald die App im Store ist.
+       ANDROID_URL / IOS_URL: Store-Links eintragen, sobald die App im Store ist.
          Solange leer, zeigt der Button "Bald bei Google Play" und führt zum Newsletter.
        MAILCHIMP: Werte aus Mailchimp -> Audience -> Signup forms -> Embedded forms.
          Im Code steht dort eine URL wie
          https://XXXX.us15.list-manage.com/subscribe/post?u=AAAA&amp;id=BBBB
          -> host = 'XXXX.us15.list-manage.com', u = 'AAAA', id = 'BBBB'          */
-    const ANDROID_URL = ''
+    const ANDROID_URL = ''   // z.B. https://play.google.com/store/apps/details?id=...
+    const IOS_URL = ''       // z.B. https://apps.apple.com/app/...
     const MAILCHIMP = {
       host: 'sethub.us15.list-manage.com',
       u:    '7ec946cee576bceb6230c39d1',
@@ -1536,17 +1549,22 @@
     document.getElementById('welcomeClose').addEventListener('click', closeWelcome)
     welcomeEl.querySelectorAll('.soc').forEach(a=>a.addEventListener('click', closeWelcome))
 
-    /* ---------- Android store buttons ---------- */
+    /* ---------- store buttons (Google Play + App Store) ---------- */
+    const STORES = {
+      android: { url: ANDROID_URL, name: 'Google Play', now: 'Jetzt bei' },
+      ios:     { url: IOS_URL,     name: 'App Store',   now: 'Laden im' }
+    }
     document.querySelectorAll('[data-store]').forEach(a=>{
-      if(ANDROID_URL){
-        a.href = ANDROID_URL
+      const st = STORES[a.dataset.store] || STORES.android
+      if(st.url){
+        a.href = st.url
         a.target = '_blank'
         a.rel = 'noopener'
-        a.querySelector('[data-store-label]').textContent = 'Jetzt bei'
-        a.setAttribute('aria-label','SetHub bei Google Play herunterladen')
+        a.querySelector('[data-store-label]').textContent = st.now
+        a.setAttribute('aria-label','SetHub im ' + st.name + ' herunterladen')
       }else{
         a.classList.add('soon')
-        a.setAttribute('aria-label','SetHub kommt bald zu Google Play – für den Newsletter eintragen')
+        a.setAttribute('aria-label','SetHub kommt bald in den ' + st.name + ' – für den Newsletter eintragen')
         a.addEventListener('click', e=>{
           e.preventDefault()
           e.stopImmediatePropagation()
