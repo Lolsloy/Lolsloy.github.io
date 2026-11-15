@@ -132,7 +132,7 @@
     .nav-logo{height:32px;width:auto;display:block}
     .logo-svg{width:100%;height:100%;display:block}
     .nav-text{font-weight:800;font-size:1.35rem;letter-spacing:.01em;color:#fff}
-    .nav-links{display:flex;gap:4px;margin-left:auto;margin-right:200px}
+    .nav-links{display:flex;gap:4px;margin-left:auto;margin-right:0} /* mit Login: margin-right:200px */
     .nav-links a{
       padding:.55rem .85rem;border-radius:10px;font-weight:600;color:var(--fg2);font-size:.95rem;
       transition:color .15s ease,background .15s ease;
@@ -786,6 +786,7 @@
   <script src="/flyer-intro.js"></script>
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
+  <!-- AUSGEBLENDET: Anmelden (Login mit Google) – zum Aktivieren Kommentar entfernen, ebenso Login-Dialog unten und JS-Block "login"
   <div class="login-float" aria-label="Account">
     <div class="status-pill" id="statusPill" aria-live="polite">
       <strong id="userName">User</strong><span id="userEmail">Email</span>
@@ -800,6 +801,7 @@
       </svg>
     </button>
   </div>
+  -->
 
 
 
@@ -1224,6 +1226,7 @@
   </div>
 
 
+  <!-- AUSGEBLENDET: Login-Dialog
   <div class="login-backdrop" id="loginBackdrop" aria-hidden="true"></div>
   <div class="login-modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true">
     <div class="login-card">
@@ -1244,6 +1247,7 @@
       </div>
     </div>
   </div>
+  -->
 
   <script src="/assets/consent.js"></script>
 
@@ -1609,7 +1613,8 @@
       setLoading(signupBtn, false, 'Sign Up', 'Sending')
     })
 
-    /* ---------- login ---------- */
+    /* ---------- login (AUSGEBLENDET – zum Aktivieren diesen Kommentar und die Platzhalter darunter entfernen) ----------
+    // ---------- login ----------
     const loginOpen = document.getElementById('loginOpen')
     const loginIconBtn = document.getElementById('loginIconBtn')
     const loginBackdrop = document.getElementById('loginBackdrop')
@@ -1732,6 +1737,10 @@
     window.addEventListener('resize', ()=>{
       if(document.body.classList.contains('login-open')) renderGsiFit()
     })
+    ---------- Ende Login ---------- */
+    // Platzhalter, solange der Login ausgeblendet ist:
+    function applyComfort(){}
+    function closeLogin(){}
 
     addEventListener('keydown', e => {
       if(e.key === 'Escape'){
