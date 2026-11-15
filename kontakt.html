@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kontakt – SetHub</title>
+  <meta name="description" content="Kontakt zum SetHub-Team – schreib uns deine Fragen, Ideen und Feedback.">
+  <meta name="theme-color" content="#0B1117">
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+  <link rel="preload" href="/assets/fonts/jakarta-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site.css">
+</head>
+<body class="page">
+  <header class="page-header">
+    <div class="wrap">
+      <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="34" height="32">SetHub</a>
+      <nav class="page-nav" aria-label="Navigation">
+        <a href="/" class="hide-sm">Startseite</a>
+        <a href="/kontakt.html" aria-current="page">Kontakt</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="page-hero">
+      <div class="wrap">
+        <span class="kicker">Kontakt</span>
+        <h1>Schreib uns – <span class="grad-text">wir lesen alles.</span></h1>
+        <p>Fragen, Ideen, Feedback oder ein Fehler in der App? Wir sind ein kleines Team von LEGO Fans und antworten so schnell wir können.</p>
+      </div>
+    </section>
+    <div class="wrap contact-grid">
+      <aside class="contact-info">
+        <div class="info-card" style="--accent:#04D5EB">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="3" stroke="currentColor" stroke-width="2"/><path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <div><h3>E-Mail</h3><p><a href="mailto:support@sethub.io">support@sethub.io</a><br>Wir melden uns meist innerhalb von 1–2 Werktagen.</p></div>
+        </div>
+        <div class="info-card" style="--accent:#CF64E5">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.9V16h5v-.2c0-.8.4-1.5 1-1.9A6 6 0 0 0 12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+          <div><h3>Ideen &amp; Wünsche</h3><p>Dir fehlt eine Funktion? Erzähl uns davon – viele Features in SetHub kommen direkt aus der Community.</p></div>
+        </div>
+        <div class="info-card" style="--accent:#FF5EA0">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></svg></span>
+          <div><h3>Folge uns</h3><p><a href="https://www.instagram.com/sethub.io/" target="_blank" rel="noopener">Instagram</a> · <a href="https://www.tiktok.com/@sethub.io" target="_blank" rel="noopener">TikTok</a></p></div>
+        </div>
+      </aside>
+
+      <div class="contact-card" id="contactCard">
+        <h2>Nachricht senden</h2>
+        <p>Alle Felder mit * sind Pflichtfelder.</p>
+        <form id="contactForm" novalidate>
+          <div class="field-row">
+            <div class="field"><label for="cName">Name *</label><input id="cName" name="name" autocomplete="name" required maxlength="100"></div>
+            <div class="field"><label for="cEmail">E-Mail *</label><input id="cEmail" name="email" type="email" autocomplete="email" required maxlength="150"></div>
+          </div>
+          <div class="field">
+            <label for="cTopic">Worum geht's?</label>
+            <select id="cTopic" name="topic">
+              <option>Allgemeine Frage</option>
+              <option>Feedback &amp; Ideen</option>
+              <option>Fehler in der App melden</option>
+              <option>Konto &amp; Datenschutz</option>
+              <option>Kooperation &amp; Presse</option>
+            </select>
+          </div>
+          <div class="field"><label for="cMsg">Nachricht *</label><textarea id="cMsg" name="message" required maxlength="5000" placeholder="Erzähl uns, wie wir helfen können …"></textarea></div>
+          <div class="hp" aria-hidden="true"><label>Bitte leer lassen <input name="_honey" tabindex="-1" autocomplete="off"></label></div>
+          <label class="check"><input type="checkbox" id="cPrivacy" required><span>Ich bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verarbeitet und dafür über FormSubmit weitergeleitet werden. Mehr in der <a href="/datenschutz.html#kontakt">Datenschutzerklärung</a>. *</span></label>
+          <button class="btn btn-primary" type="submit" id="cSend" style="width:100%">Nachricht senden</button>
+          <div class="form-status" id="cStatus" role="alert"></div>
+        </form>
+        <div class="form-success" role="status">
+          <div class="ok-ic"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <h2>Danke für deine Nachricht!</h2>
+          <p>Wir haben sie erhalten und melden uns so schnell wie möglich bei dir.</p>
+          <a class="btn btn-ghost" href="/">Zur Startseite</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function(){
+        const ENDPOINT = 'https://formsubmit.co/ajax/support@sethub.io'
+        const form = document.getElementById('contactForm')
+        const card = document.getElementById('contactCard')
+        const btn = document.getElementById('cSend')
+        const status = document.getElementById('cStatus')
+        const err = m => { status.textContent = m; status.className = 'form-status err' }
+        form.addEventListener('submit', async e => {
+          e.preventDefault()
+          status.className = 'form-status'
+          const el = form.elements
+          const name = el.namedItem('name').value.trim(), email = el.namedItem('email').value.trim(), message = el.namedItem('message').value.trim(), topic = el.namedItem('topic').value
+          if(el.namedItem('_honey').value) return
+          if(!name || !email || !message) return err('Bitte fülle Name, E-Mail und Nachricht aus.')
+          if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return err('Bitte gib eine gültige E-Mail-Adresse ein.')
+          if(!document.getElementById('cPrivacy').checked) return err('Bitte bestätige die Datenschutz-Einwilligung.')
+          btn.disabled = true; btn.textContent = 'Wird gesendet …'
+          try{
+            const res = await fetch(ENDPOINT, {
+              method:'POST',
+              headers:{'Content-Type':'application/json','Accept':'application/json'},
+              body: JSON.stringify({
+                name, email, Thema: topic, Nachricht: message,
+                _subject: 'SetHub Kontakt: ' + topic + ' – ' + name,
+                _replyto: email, _template: 'table', _captcha: 'false'
+              })
+            })
+            const data = await res.json().catch(()=>({}))
+            if(res.ok && String(data.success) === 'true'){
+              card.classList.add('sent')
+              card.scrollIntoView({behavior:'smooth', block:'center'})
+            }else{
+              throw new Error(data.message || 'Fehler')
+            }
+          }catch(x){
+            err('Das hat leider nicht geklappt. Bitte versuch es später noch einmal oder schreib uns direkt an support@sethub.io.')
+          }finally{
+            btn.disabled = false; btn.textContent = 'Nachricht senden'
+          }
+        })
+      })()
+    </script>
+  </main>
+  <footer class="site-footer">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="/"><img src="/assets/logo.svg" alt="" width="34" height="32">SetHub</a>
+        <p>Die App für deine LEGO Sammlung. Gemacht von LEGO Fans aus Mödling – nicht von einem Konzern.</p>
+        <div class="f-social">
+          <a href="https://www.instagram.com/sethub.io/" target="_blank" rel="noopener" aria-label="SetHub auf Instagram"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="2"/><circle cx="17.4" cy="6.6" r="1.25" fill="currentColor"/></svg></a>
+          <a href="https://www.tiktok.com/@sethub.io" target="_blank" rel="noopener" aria-label="SetHub auf TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>SetHub</h4>
+        <nav aria-label="SetHub">
+          <a href="/#how">So funktioniert's</a>
+          <a href="/#team">Über uns</a>
+          <a href="/#contact">Newsletter</a>
+          <a href="/kontakt.html">Kontakt</a>
+        </nav>
+      </div>
+      <div>
+        <h4>Rechtliches</h4>
+        <nav aria-label="Rechtliches">
+          <a href="/impressum.html">Impressum</a>
+          <a href="/datenschutz.html">Datenschutz</a>
+          <a href="/agb.html">AGB</a>
+          <button type="button" data-cookie-settings>Cookie-Einstellungen</button>
+        </nav>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 SetHub · ITFS e.U. · Enjoy your Sets</span>
+      <span>LEGO® ist eine Marke der LEGO Gruppe, die diese Website weder sponsert noch autorisiert oder unterstützt.</span>
+    </div>
+  </footer>
+  <script src="/assets/consent.js" defer></script>
+</body>
+</html>
