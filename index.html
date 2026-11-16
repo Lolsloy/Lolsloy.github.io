@@ -6,17 +6,17 @@
   <title>SetHub – Deine LEGO Sammlung an einem Ort</title>
   <link rel="canonical" href="https://lolsloy.github.io/">
   <meta name="description" content="SetHub – Enjoy your sets. Sets finden, sammeln, ordnen, verkaufen und drucken. Mit Themen, Boxen, Wunschliste und Statistiken." />
-  <meta name="theme-color" content="#0B1117" />
+  <meta name="theme-color" content="#0C1B2E" />
   <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
   <link rel="preload" href="/assets/fonts/jakarta-latin.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="/assets/site.css">
 
   <style>
     :root{
-      --bg:#0B1117;
-      --bg2:#0F171F;
-      --card:#111B24;
-      --card2:#142130;
+      --bg:#0C1B2E;
+      --bg2:#0F2236;
+      --card:#11263B;
+      --card2:#16304A;
       --line:rgba(255,255,255,.08);
       --line2:rgba(255,255,255,.14);
       --fg:#EEF2F6;
@@ -29,8 +29,8 @@
       --yellow:#FFD300;
       --green:#00E08A;
       --grad:linear-gradient(100deg,#04D5EB 0%,#2E8CFF 45%,#CF64E5 100%);
-      --glass:rgba(17,27,36,.62);
-      --glass2:rgba(16,24,32,.72);
+      --glass:rgba(17,38,60,.62);
+      --glass2:rgba(16,36,58,.72);
       --border:#1f2a35;
       --glass-border:#213140;
       --radius:28px;
@@ -113,12 +113,12 @@
 
     header.site{
       position:fixed;left:0;right:0;top:0;height:76px;z-index:50;
-      background:rgba(11,17,23,.0);
+      background:rgba(12,27,46,.0);
       border-bottom:1px solid transparent;
       transition:background .3s ease,border-color .3s ease,backdrop-filter .3s ease;
     }
     body.scrolled header.site{
-      background:rgba(11,17,23,.72);
+      background:rgba(12,27,46,.72);
       backdrop-filter:blur(14px) saturate(1.4);
       -webkit-backdrop-filter:blur(14px) saturate(1.4);
       border-bottom-color:var(--line);
@@ -247,7 +247,7 @@
     .aurora{position:absolute;inset:-10% -10% 0;pointer-events:none;z-index:0;filter:blur(70px);opacity:.75}
     .aurora i{position:absolute;border-radius:50%;display:block;will-change:transform}
     .aurora i:nth-child(1){width:46vw;height:46vw;left:48%;top:4%;background:radial-gradient(circle,rgba(4,213,235,.45),transparent 65%);animation:blob1 18s ease-in-out infinite}
-    .aurora i:nth-child(2){width:40vw;height:40vw;left:66%;top:34%;background:radial-gradient(circle,rgba(207,100,229,.42),transparent 65%);animation:blob2 22s ease-in-out infinite}
+    .aurora i:nth-child(2){width:40vw;height:40vw;left:66%;top:34%;background:radial-gradient(circle,rgba(58,140,255,.40),transparent 65%);animation:blob2 22s ease-in-out infinite}
     .aurora i:nth-child(3){width:38vw;height:38vw;left:-8%;top:40%;background:radial-gradient(circle,rgba(46,140,255,.30),transparent 65%);animation:blob3 26s ease-in-out infinite}
     @keyframes blob1{50%{transform:translate(-8vw,6vh) scale(1.1)}}
     @keyframes blob2{50%{transform:translate(-10vw,-8vh) scale(.9)}}
@@ -305,7 +305,7 @@
       position:absolute;z-index:5;
       display:flex;align-items:center;gap:.65rem;
       padding:.7rem .95rem .7rem .7rem;border-radius:16px;
-      background:rgba(17,27,36,.78);border:1px solid var(--line2);
+      background:rgba(17,38,60,.78);border:1px solid var(--line2);
       backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
       box-shadow:0 20px 50px -15px rgba(0,0,0,.7);
       font-weight:700;font-size:.9rem;white-space:nowrap;
@@ -362,7 +362,7 @@
       .chip{font-size:.8rem;padding:.55rem .75rem .55rem .55rem}
       .chip .ic{width:28px;height:28px;border-radius:9px}
       .chip small{display:none}
-      .chip.c1{left:0;top:10%}
+      .chip.c1{left:0;top:56%}
       .chip.c2{right:0;top:68%}
       .chip.c3{display:none}
     }
@@ -513,12 +513,16 @@
     .bcard:hover .peek .phone{transform:translateY(-14px)}
     .b-span-7{grid-column:span 7}
     .b-span-5{grid-column:span 5}
+    .b-span-4{grid-column:span 4}
+    .bcard.b-span-4 .peek{height:auto;padding:26px 0 30px}
+    .b-span-4 .peek .phone{--w:210px;position:relative;top:0}
+    .b-span-4:hover .peek .phone{transform:translateY(-8px)}
     .bcard.wide{flex-direction:row;align-items:stretch;gap:20px;padding:34px}
     .bcard.wide .btext{flex:1 1 50%;display:flex;flex-direction:column;justify-content:center}
     .bcard.wide .peek{flex:1 1 50%;margin:0;padding:0;height:auto;min-height:450px}
     .bcard.wide .peek .phone{top:10px}
     @media (max-width:960px){
-      .b-span-7,.b-span-5{grid-column:span 12}
+      .b-span-7,.b-span-5,.b-span-4{grid-column:span 12}
       .bcard.wide{flex-direction:column;padding:30px 26px 0}
       .bcard.wide .btext{flex:0 0 auto}
       .bcard.wide .peek{flex:0 0 auto;min-height:0;height:330px;padding-top:30px}
@@ -531,6 +535,8 @@
       .bcard h3{font-size:1.35rem}
       .bcard .peek,.bcard.wide .peek{height:290px}
       .bcard .peek .phone{--w:220px}
+      .bcard.b-span-4 .peek{height:auto}
+      .bcard.b-span-4 .peek .phone{--w:210px}
     }
 
 
@@ -541,7 +547,7 @@
       background:
         radial-gradient(900px 500px at 10% 0%,rgba(4,213,235,.22),transparent 60%),
         radial-gradient(900px 600px at 100% 100%,rgba(207,100,229,.28),transparent 60%),
-        linear-gradient(180deg,#101a24,#0c131a);
+        linear-gradient(180deg,#10243A,#0B1A2C);
       border:1px solid var(--line2);
       display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;
     }
@@ -570,6 +576,21 @@
 
     ---------- Ende Countdown-CSS ---------- */
 
+    /* ---------- Kacheln mit App-Screen ---------- */
+    .b-span-6{grid-column:span 6}
+    .bcard.shot-card{flex-direction:row;align-items:center;gap:22px;padding:34px;min-height:0}
+    .shot-card .btext{flex:1 1 55%}
+    .shot-card .shot{flex:0 0 220px}
+    .shot-card .shot{display:flex;justify-content:center}
+    .shot-card .shot .phone{--w:220px;transition:transform .5s var(--ease)}
+    .shot-card:hover .shot .phone{transform:translateY(-8px) rotate(-1.5deg)}
+    .ticks{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+    .ticks li{display:flex;gap:10px;align-items:center;color:#d8e1ea;font-weight:600;font-size:.95rem}
+    .ticks li::before{content:"";width:18px;height:18px;flex:0 0 auto;border-radius:6px;background:color-mix(in srgb,var(--accent) 22%,transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
+    @media (max-width:1100px){.bcard.shot-card{flex-direction:column;align-items:flex-start}.shot-card .shot{flex-basis:auto;width:min(240px,70%);align-self:center}}
+    @media (max-width:960px){.b-span-6{grid-column:span 12}.bcard.shot-card{flex-direction:row;align-items:center}.shot-card .shot{width:auto;flex:0 0 200px}}
+    @media (max-width:600px){.bcard.shot-card{flex-direction:column;align-items:flex-start;padding:26px 22px}.shot-card .shot{width:min(230px,72%);flex-basis:auto}}
+
     /* ---------- immer das ganze Handy zeigen ---------- */
     .bcard .peek,.bcard.wide .peek,.bcard.b-span-4 .peek{height:auto !important;min-height:0 !important;padding:30px 0 34px !important;align-items:center}
     .bcard .peek .phone{position:relative !important;top:0 !important}
@@ -590,7 +611,7 @@
     .tcard .name{
       position:absolute;left:12px;right:12px;bottom:12px;
       padding:12px 16px;border-radius:16px;
-      background:rgba(11,17,23,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+      background:rgba(12,27,46,.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
       border:1px solid var(--line2);
       font-weight:800;font-size:1.05rem;
     }
@@ -599,7 +620,7 @@
     @media (max-width:420px){.tcard .name{font-size:.9rem;padding:9px 12px;left:8px;right:8px;bottom:8px}}
 
     /* ---------- footer ---------- */
-    .footer-cta{border-top:1px solid var(--line);background:#0A0F14;padding:70px 0 20px}
+    .footer-cta{border-top:1px solid var(--line);background:#0A1828;padding:70px 0 20px}
     .cta-inner{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;padding-bottom:50px}
     .cta-head{display:flex;align-items:center;gap:.4rem}
     .cta-title{font-size:2rem;font-weight:800}
@@ -680,7 +701,7 @@
       background:
         radial-gradient(500px 260px at 0% 0%,rgba(4,213,235,.22),transparent 60%),
         radial-gradient(500px 300px at 100% 100%,rgba(207,100,229,.26),transparent 60%),
-        rgba(13,20,27,.96);
+        rgba(13,30,50,.96);
       border:1px solid var(--line2);
       box-shadow:0 30px 80px -20px rgba(0,0,0,.85);
       backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
@@ -740,7 +761,7 @@
       background:
         radial-gradient(900px 420px at 10% -10%,rgba(4,213,235,.2),transparent 60%),
         radial-gradient(800px 520px at 90% 120%,rgba(207,100,229,.22),transparent 60%),
-        rgba(12,18,24,.98);
+        rgba(12,27,46,.98);
       border:1px solid var(--glass-border);border-radius:20px;padding:20px;
       box-shadow:0 24px 80px rgba(0,0,0,.6);backdrop-filter:blur(14px);
       transform:translateY(10px) scale(.98);transition:transform .25s ease,opacity .25s ease;pointer-events:none;
@@ -766,7 +787,7 @@
       background:
         radial-gradient(900px 420px at 12% -10%,rgba(4,213,235,.2),transparent 60%),
         radial-gradient(800px 520px at 92% 120%,rgba(207,100,229,.24),transparent 60%),
-        rgba(12,18,24,.97);
+        rgba(12,27,46,.97);
       border:1px solid var(--glass-border);border-radius:20px;padding:18px;
       box-shadow:0 24px 80px rgba(0,0,0,.6);max-height:86vh;overflow:auto;
     }
@@ -777,7 +798,7 @@
     .login-foot a:hover{color:#fff}
     body.login-open .login-backdrop{opacity:1;pointer-events:auto}
     body.login-open .login-modal{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) translateY(0) scale(1)}
-    .ai-close{height:36px;padding:0 14px;border-radius:12px;border:1px solid #2a3641;background:#111b23;color:#d9e1e8;font:inherit;font-weight:800;cursor:pointer}
+    .ai-close{height:36px;padding:0 14px;border-radius:12px;border:1px solid #2a3641;background:#13283d;color:#d9e1e8;font:inherit;font-weight:800;cursor:pointer}
     .ai-close:hover{filter:brightness(1.2)}
     #gsiButton{width:100%;display:flex;justify-content:center;align-items:center}
     .login-consent{display:none;padding:14px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid var(--line2);color:var(--fg2);font-size:.92rem;line-height:1.5}
@@ -880,7 +901,7 @@
         <div class="hero-copy">
           <span class="eyebrow hero-in"><span class="dot"></span>Release am 25. November</span>
           <h1 id="heroTitle" class="hero-in d1">Deine Sets.<br>Perfekt organisiert.</h1>
-          <p class="lead hero-in d2">SetHub ist die App für deine LEGO Sammlung. Finden, sammeln, ordnen und den Überblick behalten – mit Themen, Boxen, Wunschliste und Statistiken.</p>
+          <p class="lead hero-in d2">SetHub ist die App für deine LEGO Sammlung. Über 24.000 Sets – einfach scannen, sammeln und ordnen. Mit Themen, Boxen, Wunschliste, Zustands-Rating und Statistik.</p>
           <div class="hero-cta hero-in d3">
             <a class="store-btn" id="heroStore" href="#contact" data-store="android"><svg class="gp" viewBox="0 0 24 26" aria-hidden="true"><path d="M1.2.6 13.5 13 1.2 25.4c-.5-.3-.8-.8-.8-1.5V2.1c0-.7.3-1.2.8-1.5Z" fill="#00D7FE"/><path d="m17.6 8.9-4.1 4.1-12.3-12.4c.3-.2.8-.3 1.3-.1Z" fill="#00F076"/><path d="m17.6 17.1-15.1 8.4c-.5.2-1 .1-1.3-.1L13.5 13Z" fill="#FF3A44"/><path d="M22.4 11.6c1 .6 1 2.2 0 2.8l-4.8 2.7-4.1-4.1 4.1-4.1Z" fill="#FFD400"/></svg><span class="st"><small data-store-label>Bald bei</small>Google Play</span></a>
             <a class="store-btn" id="heroStoreIos" href="#contact" data-store="ios"><svg class="ap" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span class="st"><small data-store-label>Bald im</small>App Store</span></a>
@@ -902,36 +923,36 @@
           <div class="phone ph-left">
             <div class="screen"><div class="island"></div>
               <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-              <video muted loop playsinline autoplay preload="auto" poster="/media/themes.jpg" src="/media/themes.mp4"></video>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/boxen.jpg" src="/media/v2/boxen.mp4"></video>
               <div class="glare"></div>
             </div>
           </div>
           <div class="phone ph-right">
             <div class="screen"><div class="island"></div>
               <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-              <video muted loop playsinline autoplay preload="auto" poster="/media/wishlist.jpg" src="/media/wishlist.mp4"></video>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/wunschliste.jpg" src="/media/v2/wunschliste.mp4"></video>
               <div class="glare"></div>
             </div>
           </div>
           <div class="phone ph-main">
             <div class="screen"><div class="island"></div>
               <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-              <video muted loop playsinline autoplay preload="auto" poster="/media/detail.jpg" src="/media/detail.mp4"></video>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/sammlung.jpg" src="/media/v2/sammlung.mp4"></video>
               <div class="glare"></div>
             </div>
           </div>
 
           <div class="chip c1">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span>
-            <span>Zur Sammlung hinzugefügt<small>Imperial Star Destroyer · 10030</small></span>
+            <span>32 Sets · 56.645 Teile<small>deine Sammlung in Zahlen</small></span>
           </div>
           <div class="chip c2">
-            <span class="ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7.5-4.6-9.6-9.3C.9 8.3 3 4.5 6.7 4.5c2.1 0 3.6 1.1 4.3 2.4h2c.7-1.3 2.2-2.4 4.3-2.4 3.7 0 5.8 3.8 4.3 7.2C19.5 16.4 12 21 12 21Z"/></svg></span>
-            <span>Auf der Wunschliste<small>8 Sets gemerkt</small></span>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0Z M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span>13 von 18 Erfolgen<small>Nächstes: Weltenbummler</small></span>
           </div>
           <div class="chip c3">
-            <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M4 18l5-6 4 3 7-9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span>1.005 € Sammlungswert<small>11 Sets · 11.325 Teile</small></span>
+            <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+            <span>Gold-Rating · 100 %<small>Originalversiegelt · MISB</small></span>
           </div>
         </div>
       </div>
@@ -944,8 +965,8 @@
       <div class="wrap">
         <div class="sec-head reveal">
           <span class="sec-kicker">So funktioniert's</span>
-          <h2 id="howTitle">Von der Suche bis ins Regal –<br><span class="grad-text">in wenigen Taps.</span></h2>
-          <p>Scroll durch und sieh dir die echte App in Aktion an.</p>
+          <h2 id="howTitle">Von der Suche bis ins Regal –<br>in wenigen Taps.</h2>
+          <p>Scroll durch – das ist die echte App, aufgenommen in der neuesten Version.</p>
         </div>
 
         <div class="how-grid">
@@ -955,10 +976,14 @@
               <div class="screen"><div class="island"></div>
                 <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
                 <div class="stack" id="howStack">
-                  <video class="on" muted loop playsinline preload="none" poster="/media/search.jpg" data-src="/media/search.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/themes.jpg" data-src="/media/themes.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/detail.jpg" data-src="/media/detail.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/wishlist.jpg" data-src="/media/wishlist.mp4"></video>
+                  <video class="on" muted loop playsinline preload="none" poster="/media/v2/sammlung.jpg" data-src="/media/v2/sammlung.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/tour/scan.jpg" data-src="/media/tour/scan.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/rating.jpg" data-src="/media/v2/rating.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/suche.jpg" data-src="/media/v2/suche.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/boxen.jpg" data-src="/media/v2/boxen.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/wunschliste.jpg" data-src="/media/v2/wunschliste.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/profil.jpg" data-src="/media/v2/profil.mp4"></video>
                 </div>
                 <div class="glare"></div>
               </div>
@@ -970,56 +995,112 @@
 
             <article class="step" data-i="0" style="--accent:#04D5EB">
               <span class="num">01</span>
-              <span class="tag">Finden &amp; Sammeln</span>
-              <h3>Jedes Set in Sekunden gefunden.</h3>
-              <p>Such nach Name, Set-Nummer oder Thema. Ein Tap auf <strong>+</strong> und das Set ist in deiner Sammlung – das Herz legt es auf die Wunschliste.</p>
+              <span class="tag">Sammlung</span>
+              <h3>Deine ganze Sammlung, nach Themen sortiert.</h3>
+              <p>Alle deine Sets an einem Ort – automatisch nach Themen geordnet, mit Bild, Name und Box-Symbol. Ein Wisch und du siehst alles, was du besitzt.</p>
+              <ul><li>Automatisch sortiert</li><li>Alle Sets auf einen Blick</li><li>Eigene Themen-Bilder</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/sammlung.jpg" data-src="/media/v2/sammlung.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="1" style="--accent:#3AA8FF">
+              <span class="num">02</span>
+              <span class="tag">Scannen</span>
+              <h3>Scannen. Fertig.</h3>
+              <p>Tipp auf den Scan-Button und halte die Kamera auf den Karton – SetHub erkennt sogar mehrere Sets auf einmal. Im Laden zeigt dir der <strong>Shop-Modus</strong>, ob ein Set schon auf deiner Wunschliste steht.</p>
+              <ul><li>Barcode-Scan</li><li>Mehrere Sets gleichzeitig</li><li>Shop-Modus</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/scan.jpg" data-src="/media/tour/scan.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="2" style="--accent:#2E8CFF">
+              <span class="num">03</span>
+              <span class="tag">Set-Details</span>
+              <h3>Jedes Set mit allen Details.</h3>
+              <p>Teile, Minifiguren, Alter, Erscheinungsjahr, Kartongröße und EAN – mit Bildergalerie und der Info, in welcher Box das Set bei dir steht.</p>
+              <ul><li>Alle Set-Daten</li><li>Bildergalerie</li><li>Box-Zuordnung</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="3" style="--accent:#FFC21A">
+              <span class="num">04</span>
+              <span class="tag">Zustand &amp; Rating</span>
+              <h3>Halte den Zustand deiner Sets fest.</h3>
+              <p>Originalversiegelt? Karton mit Dellen? Was hast du bezahlt? Beantworte ein paar kurze Fragen – je mehr du ausfüllst, desto höher steigt dein Rating, bis zum <strong>Gold-Rating</strong>.</p>
+              <ul><li>Verpackung &amp; Karton</li><li>Kaufpreis &amp; Datum</li><li>Eigene Fotos</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/rating.jpg" data-src="/media/v2/rating.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="4" style="--accent:#7A9CFF">
+              <span class="num">05</span>
+              <span class="tag">Suche</span>
+              <h3>Über 24.000 Sets in Sekunden gefunden.</h3>
+              <p>Such nach Name, Set-Nummer oder Thema – auch Sets, die du noch nicht hast. Ein Tap und es ist in deiner Sammlung oder auf der Wunschliste.</p>
               <ul><li>Name &amp; Nummer</li><li>Letzte Suchen</li><li>Ein-Tap-Sammeln</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/search.jpg" data-src="/media/search.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/suche.jpg" data-src="/media/v2/suche.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="1" style="--accent:#2E8CFF">
-              <span class="num">02</span>
-              <span class="tag">Themen</span>
-              <h3>Ordnung, wie du sie willst.</h3>
-              <p>Deine Sets landen automatisch im passenden Thema – Star Wars, Super Mario, Icons und mehr. Umbenennen, ausblenden und per Drag &amp; Drop sortieren.</p>
-              <ul><li>Automatisch sortiert</li><li>Drag &amp; Drop</li><li>Eigene Namen</li></ul>
+            <article class="step" data-i="5" style="--accent:#00E08A">
+              <span class="num">06</span>
+              <span class="tag">Boxen</span>
+              <h3>Du weißt, wo jedes Set liegt.</h3>
+              <p>Leg für jede Kiste oder jedes Regal eine Box an – Vitrine, Regal, Dachboden, Keller – mit eigener Farbe und eigenem Symbol. Dann pack deine Sets hinein.</p>
+              <ul><li>Farben &amp; Symbole</li><li>Eigene Boxen</li><li>Sets verschieben</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/themes.jpg" data-src="/media/themes.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/boxen.jpg" data-src="/media/v2/boxen.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="2" style="--accent:#00E08A">
-              <span class="num">03</span>
-              <span class="tag">Set-Details</span>
-              <h3>Alles über dein Set. Auf einen Blick.</h3>
-              <p>Teile, Minifiguren, Alter, Erscheinungsjahr, Kartongröße und mehr – plus in welcher Box das Set bei dir zuhause steht.</p>
-              <ul><li>Teile &amp; Minifiguren</li><li>Bildergalerie</li><li>Box-Zuordnung</li></ul>
-              <div class="step-phone" aria-hidden="true">
-                <div class="phone"><div class="screen"><div class="island"></div>
-                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/detail.jpg" data-src="/media/detail.mp4"></video><div class="glare"></div>
-                </div></div>
-              </div>
-            </article>
-
-            <article class="step" data-i="3" style="--accent:#FF5EA0">
-              <span class="num">04</span>
+            <article class="step" data-i="6" style="--accent:#FF5EA0">
+              <span class="num">07</span>
               <span class="tag">Wunschliste</span>
-              <h3>Merk dir deine nächsten Sets.</h3>
-              <p>Filtere nach Sale oder Preis und teile die Liste mit Freunden. Gekauft? Ein Tap – und das Set wandert direkt in deine Sammlung.</p>
-              <ul><li>Sale-Filter</li><li>Teilen</li><li>„Gekauft“ in einem Tap</li></ul>
+              <h3>Deine Wunschliste zum Teilen.</h3>
+              <p>Sammle Sets, die du dir wünschst, und teile die Liste mit Familie und Freunden – sie öffnen sie einfach im Browser. Gekauft? Ein Tap und das Set wandert in deine Sammlung.</p>
+              <ul><li>Teilen per Link</li><li>Ohne App ansehen</li><li>„Gekauft“ in einem Tap</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/wishlist.jpg" data-src="/media/wishlist.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/wunschliste.jpg" data-src="/media/v2/wunschliste.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="7" style="--accent:#CF64E5">
+              <span class="num">08</span>
+              <span class="tag">Profil &amp; Erfolge</span>
+              <h3>Dein Profil, deine Erfolge.</h3>
+              <p>Profilbild und Banner aussuchen, deine Sammlung in Zahlen sehen und beim Sammeln Erfolge freischalten – vom Entdecker bis zum Weltenbummler.</p>
+              <ul><li>Profilbild &amp; Banner</li><li>18 Erfolge</li><li>Statistik</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/profil.jpg" data-src="/media/v2/profil.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
@@ -1038,32 +1119,30 @@
         </div>
 
         <div class="bento">
-          <article class="bcard b-span-7 wide reveal" style="--accent:#00E08A">
+          <article class="bcard b-span-6 shot-card reveal" style="--accent:#00E08A">
             <div class="btext">
               <span class="bico"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V10M10 19V5M16 19v-7M22 19H2" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg></span>
-              <h3>Statistiken</h3>
-              <p>Geschätzter Wert, Teile, Minifiguren, deine Top-Themen und Highlights wie das wertvollste oder älteste Set deiner Sammlung.</p>
+              <h3>Deine Sammlung in Zahlen</h3>
+              <p>Wie viele Sets, Teile und Minifiguren hast du? Welche Themen dominieren? Die Statistik zeigt es dir auf einen Blick.</p>
+              <ul class="ticks"><li>Sets, Teile &amp; Minifiguren</li><li>Top-Themen als Diagramm</li><li>Ausgelieferte &amp; Box-Übersicht</li></ul>
             </div>
-            <div class="peek">
-              <div class="phone"><div class="screen"><div class="island"></div>
-                <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                <video class="lazy-play" muted loop playsinline preload="none" poster="/media/stats.jpg" data-src="/media/stats.mp4"></video><div class="glare"></div>
-              </div></div>
-            </div>
+            <div class="shot"><div class="phone"><div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/statistik.jpg" data-src="/media/v2/statistik.mp4"></video><div class="glare"></div>
+            </div></div></div>
           </article>
-
-          <article class="bcard b-span-5 reveal d1" style="--accent:#FFB020">
-            <span class="bico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 8l9-5 9 5v8l-9 5-9-5Z M3 8l9 5 9-5 M12 13v8" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
-            <h3>Boxen</h3>
-            <p>Leg für jede Kiste oder jedes Regal eine Box an – mit Farbe, Symbol oder eigenem Foto. So weißt du immer, wo welches Set steht.</p>
-            <div class="peek">
-              <div class="phone"><div class="screen"><div class="island"></div>
-                <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                <video class="lazy-play" muted loop playsinline preload="none" poster="/media/boxes.jpg" data-src="/media/boxes.mp4"></video><div class="glare"></div>
-              </div></div>
+          <article class="bcard b-span-6 shot-card reveal d1" style="--accent:#3AA8FF">
+            <div class="btext">
+              <span class="bico"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="2"/><path d="M12 11v6M12 7.5v.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span>
+              <h3>Jedes Set mit allen Details</h3>
+              <p>Teile, Minifiguren, Alter, Erscheinungsjahr, Kartongröße und EAN – plus in welcher Box das Set bei dir zuhause steht.</p>
+              <ul class="ticks"><li>Alle Set-Daten</li><li>Bildergalerie</li><li>Box-Zuordnung &amp; Rating</li></ul>
             </div>
+            <div class="shot"><div class="phone"><div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video><div class="glare"></div>
+            </div></div></div>
           </article>
-
           <!-- AUSGEBLENDET: Kacheln "Verkaufen" und "Sammlung drucken" (später wieder einblenden)
           <article class="bcard b-span-5 reveal" style="--accent:#2E8CFF">
             <span class="bico"><svg viewBox="0 0 24 24" fill="none"><path d="M3 12V4h8l10 10-8 8L3 12Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="7.5" cy="8.5" r="1.6" fill="currentColor"/></svg></span>
@@ -1104,7 +1183,7 @@
           <div class="studs" aria-hidden="true"></div>
           <div class="release-copy">
             <span class="sec-kicker">Release Countdown</span>
-            <h2 id="releaseTitle">Enjoy<br><span class="grad-text">your Sets.</span></h2>
+            <h2 id="releaseTitle">Enjoy<br>your Sets.</h2>
             <p>SetHub startet bald. Trag dich ein und erfahre als Erstes, wenn die App verfügbar ist.</p>
             <a class="btn btn-primary" href="#contact">Benachrichtige mich</a>
           </div>
@@ -1124,7 +1203,7 @@
       <div class="wrap">
         <div class="about reveal">
           <span class="sec-kicker">Über uns</span>
-          <h2 id="teamTitle">Kein Konzern.<br><span class="grad-text">Einfach LEGO Fans.</span></h2>
+          <h2 id="teamTitle">Kein Konzern.<br>Einfach LEGO Fans.</h2>
           <p>Hinter SetHub steckt kein großes Unternehmen, sondern eine kleine Gruppe von LEGO Liebhabern aus Mödling. Wir bauen selbst, sammeln selbst – und haben irgendwann den Überblick über Kisten, Regale und Wunschlisten verloren. <strong>Also haben wir die App gebaut, die wir uns selbst immer gewünscht haben.</strong></p>
         </div>
         <div class="values">
@@ -1308,6 +1387,7 @@
       scrollProgress.style.transform = `scaleX(${max > 0 ? y / max : 0})`
       document.body.classList.toggle('scrolled', y > 20)
       updateRail()
+      pickStep()
       rafPending = false
     }
     addEventListener('scroll', ()=>{
@@ -1417,12 +1497,18 @@
       howGlow.style.setProperty('--glow', accent + '59')
     }
 
-    const stepIO = new IntersectionObserver(entries=>{
-      entries.forEach(en=>{
-        if(en.isIntersecting) setStep(Number(en.target.dataset.i))
+    // Aktiver Schritt = der, dessen Mitte der Bildschirmmitte am nächsten ist (bei jedem Scroll neu berechnet)
+    function pickStep(){
+      if(!steps.length) return
+      const mid = innerHeight / 2
+      let best = 0, bestD = Infinity
+      steps.forEach((st,k)=>{
+        const r = st.getBoundingClientRect()
+        const d = Math.abs(r.top + r.height / 2 - mid)
+        if(d < bestD){ bestD = d; best = k }
       })
-    }, {rootMargin:'-45% 0px -45% 0px'})
-    steps.forEach(s=>stepIO.observe(s))
+      setStep(best)
+    }
 
     const howSection = document.getElementById('how')
     new IntersectionObserver(entries=>{
