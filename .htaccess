@@ -1,0 +1,23 @@
+# SetHub – Einstellungen für den World4You-Server (Apache)
+# Alles in <IfModule> verpackt: fehlt ein Modul, wird der Block einfach ignoriert.
+
+# Flyer-QR-Codes: auch /Dino, /HUND, /Rakete usw. (Groß-/Kleinschreibung egal)
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^hund/?$   /?f=hund   [NC,R=302,L]
+  RewriteRule ^katze/?$  /?f=katze  [NC,R=302,L]
+  RewriteRule ^rakete/?$ /?f=rakete [NC,R=302,L]
+  RewriteRule ^alien/?$  /?f=alien  [NC,R=302,L]
+  RewriteRule ^herz/?$   /?f=herz   [NC,R=302,L]
+  RewriteRule ^dino/?$   /?f=dino   [NC,R=302,L]
+</IfModule>
+
+# Seiten und Skripte immer frisch prüfen (verhindert alte Versionen am iPhone)
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|js|css)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+  <FilesMatch "\.(mp4|jpg|jpeg|png|svg|woff2)$">
+    Header set Cache-Control "public, max-age=604800"
+  </FilesMatch>
+</IfModule>
