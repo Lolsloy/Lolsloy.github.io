@@ -369,6 +369,17 @@
     }
 
 
+
+    /* ---------- Handy-Ansicht: erst Text & Buttons, Handys erscheinen beim Scrollen ---------- */
+    @media (max-width:960px){
+      .hero{padding-bottom:40px}
+      .hero-copy{min-height:calc(100svh - 120px);justify-content:center;padding-bottom:70px}
+      .hero-visual.hero-in{animation:none;opacity:0;transform:translateY(70px) scale(.94);transition:opacity .9s var(--ease),transform 1.1s var(--ease)}
+      .hero-visual.hero-in.shown{opacity:1;transform:none}
+      .scroll-hint{display:flex;bottom:auto;top:calc(100svh - 74px)}
+      body.scrolled .scroll-hint{opacity:0}
+    }
+
     /* ---------- section heads ---------- */
     .section{padding:clamp(80px,10vw,140px) 0}
     .sec-head{max-width:760px;margin:0 auto clamp(48px,6vw,80px);text-align:center}
@@ -566,39 +577,14 @@
 
     ---------- Ende Countdown-CSS ---------- */
 
-    /* ---------- Hero-Fächer aus App-Screens ---------- */
-    .fan{position:absolute;inset:0;--fw:236px;--gap:.68px}
-    .fan-item{
-      position:absolute;left:50%;top:50%;width:var(--fw);z-index:var(--z);
-      transform:translate(-50%,-50%) translateX(0) rotate(0) scale(.6);opacity:0;
-      transition:transform 1.1s cubic-bezier(.2,.9,.2,1) var(--d),opacity .6s ease var(--d);
-    }
-    .fan.in .fan-item{
-      opacity:1;
-      transform:translate(-50%,-50%)
-        translateX(calc(var(--x) * var(--gap) + var(--mx,0) * (4 - var(--z)) * 6px))
-        translateY(calc(var(--my,0) * (4 - var(--z)) * 5px + (3 - var(--z)) * 26px))
-        rotate(var(--r)) scale(var(--s));
-    }
-    .fan-item img{
-      display:block;width:100%;height:auto;border-radius:24px;
-      box-shadow:0 40px 80px -24px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.07);
-      animation:fanFloat 6s ease-in-out infinite;animation-delay:calc(var(--d) * -8);
-    }
-    .fan-item:nth-child(3) img{box-shadow:0 50px 100px -24px rgba(0,0,0,.9),0 0 0 1px rgba(90,180,255,.35),0 0 80px -10px rgba(46,140,255,.45)}
-    @keyframes fanFloat{50%{transform:translateY(-12px)}}
-    @media (max-width:1100px){.fan{--fw:206px;--gap:.6px}}
-    @media (max-width:960px){.fan{--fw:230px;--gap:.95px}}
-    @media (max-width:600px){.fan{--fw:178px;--gap:.66px}}
-    @media (max-width:380px){.fan{--fw:160px;--gap:.6px}}
-
     /* ---------- Kacheln mit App-Screen ---------- */
     .b-span-6{grid-column:span 6}
     .bcard.shot-card{flex-direction:row;align-items:center;gap:22px;padding:34px;min-height:0}
     .shot-card .btext{flex:1 1 55%}
     .shot-card .shot{flex:0 0 220px}
-    .shot-card .shot img{display:block;width:100%;height:auto;border-radius:20px;box-shadow:0 30px 60px -24px rgba(0,0,0,.85),0 0 0 1px rgba(255,255,255,.07);transition:transform .5s var(--ease)}
-    .shot-card:hover .shot img{transform:translateY(-8px) rotate(-1.5deg)}
+    .shot-card .shot{display:flex;justify-content:center}
+    .shot-card .shot .phone{--w:220px;transition:transform .5s var(--ease)}
+    .shot-card:hover .shot .phone{transform:translateY(-8px) rotate(-1.5deg)}
     .ticks{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
     .ticks li{display:flex;gap:10px;align-items:center;color:#d8e1ea;font-weight:600;font-size:.95rem}
     .ticks li::before{content:"";width:18px;height:18px;flex:0 0 auto;border-radius:6px;background:color-mix(in srgb,var(--accent) 22%,transparent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/12px no-repeat}
@@ -935,25 +921,39 @@
         </div>
 
         <div class="hero-visual hero-in" id="heroVisual" aria-hidden="true">
-          <div class="fan" id="fan">
-            <div class="fan-item" style="--x:-310;--r:-13deg;--s:0.74;--z:1;--d:0.24s"><img src="/media/app/themen.jpg" alt="Deine ganze Sammlung, nach Themen sortiert" width="462" height="1035" loading="lazy" decoding="async"></div>
-            <div class="fan-item" style="--x:-165;--r:-6.5deg;--s:0.86;--z:2;--d:0.12s"><img src="/media/app/zustand.jpg" alt="Halte den Zustand deiner Sets fest" width="462" height="1035" loading="lazy" decoding="async"></div>
-            <div class="fan-item" style="--x:0;--r:0deg;--s:1;--z:3;--d:0.00s"><img src="/media/app/scannen.jpg" alt="Scannen. Fertig." width="462" height="1035" fetchpriority="high" decoding="async"></div>
-            <div class="fan-item" style="--x:165;--r:6.5deg;--s:0.86;--z:2;--d:0.12s"><img src="/media/app/wunschliste.jpg" alt="Deine Wunschliste zum Teilen" width="462" height="1035" loading="lazy" decoding="async"></div>
-            <div class="fan-item" style="--x:310;--r:13deg;--s:0.74;--z:1;--d:0.24s"><img src="/media/app/profil.jpg" alt="Dein Profil, deine Erfolge" width="462" height="1035" loading="lazy" decoding="async"></div>
+          <div class="phone ph-left">
+            <div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/boxen.jpg" src="/media/v2/boxen.mp4"></video>
+              <div class="glare"></div>
+            </div>
+          </div>
+          <div class="phone ph-right">
+            <div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/wunschliste.jpg" src="/media/v2/wunschliste.mp4"></video>
+              <div class="glare"></div>
+            </div>
+          </div>
+          <div class="phone ph-main">
+            <div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video muted loop playsinline autoplay preload="auto" poster="/media/v2/sammlung.jpg" src="/media/v2/sammlung.mp4"></video>
+              <div class="glare"></div>
+            </div>
           </div>
 
           <div class="chip c1">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></span>
-            <span>2 Sets gescannt<small>direkt in deiner Sammlung</small></span>
+            <span>32 Sets · 56.645 Teile<small>deine Sammlung in Zahlen</small></span>
           </div>
           <div class="chip c2">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0Z M7 6H4v1a3 3 0 0 0 3 3M17 6h3v1a3 3 0 0 1-3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <span>Erfolg freigeschaltet!<small>Sammler · 10 Sets</small></span>
+            <span>13 von 18 Erfolgen<small>Nächstes: Weltenbummler</small></span>
           </div>
           <div class="chip c3">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6 6.6 19.5l1.2-6-4.5-4.2 6.1-.7Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
-            <span>Gold-Rating · 100 %<small>jedes Detail dokumentiert</small></span>
+            <span>Gold-Rating · 100 %<small>Originalversiegelt · MISB</small></span>
           </div>
         </div>
       </div>
@@ -967,7 +967,7 @@
         <div class="sec-head reveal">
           <span class="sec-kicker">So funktioniert's</span>
           <h2 id="howTitle">Von der Suche bis ins Regal –<br>in wenigen Taps.</h2>
-          <p>Scroll durch die echte App-Tour der neuesten Version.</p>
+          <p>Scroll durch – das ist die echte App, aufgenommen in der neuesten Version.</p>
         </div>
 
         <div class="how-grid">
@@ -977,13 +977,14 @@
               <div class="screen"><div class="island"></div>
                 <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
                 <div class="stack" id="howStack">
-                  <video class="on" muted loop playsinline preload="none" poster="/media/tour/scan.jpg" data-src="/media/tour/scan.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/rating.jpg" data-src="/media/tour/rating.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/themen.jpg" data-src="/media/tour/themen.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/suche.jpg" data-src="/media/tour/suche.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/boxen.jpg" data-src="/media/tour/boxen.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/wunschliste.jpg" data-src="/media/tour/wunschliste.mp4"></video>
-                  <video muted loop playsinline preload="none" poster="/media/tour/profil.jpg" data-src="/media/tour/profil.mp4"></video>
+                  <video class="on" muted loop playsinline preload="none" poster="/media/v2/sammlung.jpg" data-src="/media/v2/sammlung.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/tour/scan.jpg" data-src="/media/tour/scan.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/rating.jpg" data-src="/media/v2/rating.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/suche.jpg" data-src="/media/v2/suche.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/boxen.jpg" data-src="/media/v2/boxen.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/wunschliste.jpg" data-src="/media/v2/wunschliste.mp4"></video>
+                  <video muted loop playsinline preload="none" poster="/media/v2/profil.jpg" data-src="/media/v2/profil.mp4"></video>
                 </div>
                 <div class="glare"></div>
               </div>
@@ -993,8 +994,22 @@
           <div class="steps" id="steps">
             <div class="rail" id="stepsRail"></div>
 
-            <article class="step" data-i="0" style="--accent:#3AA8FF">
+            <article class="step" data-i="0" style="--accent:#04D5EB">
               <span class="num">01</span>
+              <span class="tag">Sammlung</span>
+              <h3>Deine ganze Sammlung, nach Themen sortiert.</h3>
+              <p>Alle deine Sets an einem Ort – automatisch nach Themen geordnet, mit Bild, Name und Box-Symbol. Ein Wisch und du siehst alles, was du besitzt.</p>
+              <ul><li>Automatisch sortiert</li><li>Alle Sets auf einen Blick</li><li>Eigene Themen-Bilder</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/sammlung.jpg" data-src="/media/v2/sammlung.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="1" style="--accent:#3AA8FF">
+              <span class="num">02</span>
               <span class="tag">Scannen</span>
               <h3>Scannen. Fertig.</h3>
               <p>Tipp auf den Scan-Button und halte die Kamera auf den Karton – SetHub erkennt sogar mehrere Sets auf einmal. Im Laden zeigt dir der <strong>Shop-Modus</strong>, ob ein Set schon auf deiner Wunschliste steht.</p>
@@ -1007,86 +1022,86 @@
               </div>
             </article>
 
-            <article class="step" data-i="1" style="--accent:#FFC21A">
-              <span class="num">02</span>
+            <article class="step" data-i="2" style="--accent:#2E8CFF">
+              <span class="num">03</span>
+              <span class="tag">Set-Details</span>
+              <h3>Jedes Set mit allen Details.</h3>
+              <p>Teile, Minifiguren, Alter, Erscheinungsjahr, Kartongröße und EAN – mit Bildergalerie und der Info, in welcher Box das Set bei dir steht.</p>
+              <ul><li>Alle Set-Daten</li><li>Bildergalerie</li><li>Box-Zuordnung</li></ul>
+              <div class="step-phone" aria-hidden="true">
+                <div class="phone"><div class="screen"><div class="island"></div>
+                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video><div class="glare"></div>
+                </div></div>
+              </div>
+            </article>
+
+            <article class="step" data-i="3" style="--accent:#FFC21A">
+              <span class="num">04</span>
               <span class="tag">Zustand &amp; Rating</span>
               <h3>Halte den Zustand deiner Sets fest.</h3>
-              <p>Öffne <strong>Rating</strong> in den Details eines Sets und beantworte ein paar Fragen: Verpackung, Vollständigkeit, Bauanleitung. Je mehr du ausfüllst, desto höher steigt dein Rating – bis Gold.</p>
-              <ul><li>Bronze bis Gold</li><li>Eigene Fotos</li><li>Kaufpreis &amp; Datum</li></ul>
+              <p>Originalversiegelt? Karton mit Dellen? Was hast du bezahlt? Beantworte ein paar kurze Fragen – je mehr du ausfüllst, desto höher steigt dein Rating, bis zum <strong>Gold-Rating</strong>.</p>
+              <ul><li>Verpackung &amp; Karton</li><li>Kaufpreis &amp; Datum</li><li>Eigene Fotos</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/rating.jpg" data-src="/media/tour/rating.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/rating.jpg" data-src="/media/v2/rating.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="2" style="--accent:#04D5EB">
-              <span class="num">03</span>
-              <span class="tag">Themen</span>
-              <h3>Deine Sammlung, nach Themen sortiert.</h3>
-              <p>Sets landen automatisch im passenden Thema. Mit dem Stift blendest du Themen aus, sortierst sie per Drag &amp; Drop, benennst sie um oder wählst ein Set als Titelbild.</p>
-              <ul><li>Automatisch sortiert</li><li>Drag &amp; Drop</li><li>Eigene Titelbilder</li></ul>
-              <div class="step-phone" aria-hidden="true">
-                <div class="phone"><div class="screen"><div class="island"></div>
-                  <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/themen.jpg" data-src="/media/tour/themen.mp4"></video><div class="glare"></div>
-                </div></div>
-              </div>
-            </article>
-
-            <article class="step" data-i="3" style="--accent:#2E8CFF">
-              <span class="num">04</span>
+            <article class="step" data-i="4" style="--accent:#7A9CFF">
+              <span class="num">05</span>
               <span class="tag">Suche</span>
               <h3>Über 24.000 Sets in Sekunden gefunden.</h3>
               <p>Such nach Name, Set-Nummer oder Thema – auch Sets, die du noch nicht hast. Ein Tap und es ist in deiner Sammlung oder auf der Wunschliste.</p>
-              <ul><li>Name &amp; Nummer</li><li>Alle Themen</li><li>Ein-Tap-Sammeln</li></ul>
+              <ul><li>Name &amp; Nummer</li><li>Letzte Suchen</li><li>Ein-Tap-Sammeln</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/suche.jpg" data-src="/media/tour/suche.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/suche.jpg" data-src="/media/v2/suche.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="4" style="--accent:#00E08A">
-              <span class="num">05</span>
+            <article class="step" data-i="5" style="--accent:#00E08A">
+              <span class="num">06</span>
               <span class="tag">Boxen</span>
               <h3>Du weißt, wo jedes Set liegt.</h3>
-              <p>Leg für jede Kiste oder jedes Regal eine Box an – mit Farbe, Symbol oder eigenem Foto – und pack deine Sets hinein. Vitrine, Keller, Dachboden: alles im Griff.</p>
-              <ul><li>Farben &amp; Symbole</li><li>Eigene Fotos</li><li>Sets verschieben</li></ul>
+              <p>Leg für jede Kiste oder jedes Regal eine Box an – Vitrine, Regal, Dachboden, Keller – mit eigener Farbe und eigenem Symbol. Dann pack deine Sets hinein.</p>
+              <ul><li>Farben &amp; Symbole</li><li>Eigene Boxen</li><li>Sets verschieben</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/boxen.jpg" data-src="/media/tour/boxen.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/boxen.jpg" data-src="/media/v2/boxen.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="5" style="--accent:#FF5EA0">
-              <span class="num">06</span>
+            <article class="step" data-i="6" style="--accent:#FF5EA0">
+              <span class="num">07</span>
               <span class="tag">Wunschliste</span>
               <h3>Deine Wunschliste zum Teilen.</h3>
-              <p>Sammle Sets, die du dir wünschst, und teile die Liste mit Familie und Freunden – sie sehen sie im Browser, ganz ohne App. Gekauft? Ein Tap und das Set wandert in deine Sammlung.</p>
+              <p>Sammle Sets, die du dir wünschst, und teile die Liste mit Familie und Freunden – sie öffnen sie einfach im Browser. Gekauft? Ein Tap und das Set wandert in deine Sammlung.</p>
               <ul><li>Teilen per Link</li><li>Ohne App ansehen</li><li>„Gekauft“ in einem Tap</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/wunschliste.jpg" data-src="/media/tour/wunschliste.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/wunschliste.jpg" data-src="/media/v2/wunschliste.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
 
-            <article class="step" data-i="6" style="--accent:#CF64E5">
-              <span class="num">07</span>
+            <article class="step" data-i="7" style="--accent:#CF64E5">
+              <span class="num">08</span>
               <span class="tag">Profil &amp; Erfolge</span>
               <h3>Dein Profil, deine Erfolge.</h3>
-              <p>Such dir ein Bild und ein Banner aus und sieh dir die Statistik deiner Sammlung an. Beim Sammeln schaltest du Erfolge mit neuen Bildern und Bannern frei.</p>
-              <ul><li>Profilbild &amp; Banner</li><li>Erfolge freischalten</li><li>Statistik</li></ul>
+              <p>Profilbild und Banner aussuchen, deine Sammlung in Zahlen sehen und beim Sammeln Erfolge freischalten – vom Entdecker bis zum Weltenbummler.</p>
+              <ul><li>Profilbild &amp; Banner</li><li>18 Erfolge</li><li>Statistik</li></ul>
               <div class="step-phone" aria-hidden="true">
                 <div class="phone"><div class="screen"><div class="island"></div>
                   <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
-                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/tour/profil.jpg" data-src="/media/tour/profil.mp4"></video><div class="glare"></div>
+                  <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/profil.jpg" data-src="/media/v2/profil.mp4"></video><div class="glare"></div>
                 </div></div>
               </div>
             </article>
@@ -1112,7 +1127,10 @@
               <p>Wie viele Sets, Teile und Minifiguren hast du? Welche Themen dominieren? Die Statistik zeigt es dir auf einen Blick.</p>
               <ul class="ticks"><li>Sets, Teile &amp; Minifiguren</li><li>Top-Themen als Diagramm</li><li>Ausgelieferte &amp; Box-Übersicht</li></ul>
             </div>
-            <div class="shot"><img src="/media/app/statistik.jpg" alt="Statistik-Ansicht mit Sets, Teilen, Minifiguren und Top-Themen" width="462" height="1035" loading="lazy" decoding="async"></div>
+            <div class="shot"><div class="phone"><div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/statistik.jpg" data-src="/media/v2/statistik.mp4"></video><div class="glare"></div>
+            </div></div></div>
           </article>
           <article class="bcard b-span-6 shot-card reveal d1" style="--accent:#3AA8FF">
             <div class="btext">
@@ -1121,7 +1139,10 @@
               <p>Teile, Minifiguren, Alter, Erscheinungsjahr, Kartongröße und EAN – plus in welcher Box das Set bei dir zuhause steht.</p>
               <ul class="ticks"><li>Alle Set-Daten</li><li>Bildergalerie</li><li>Box-Zuordnung &amp; Rating</li></ul>
             </div>
-            <div class="shot"><img src="/media/app/details.jpg" alt="Set-Details zum Galaxy Explorer" width="462" height="1035" loading="lazy" decoding="async"></div>
+            <div class="shot"><div class="phone"><div class="screen"><div class="island"></div>
+              <div class="sbar"><span>9:41</span><span class="icons"><svg viewBox="0 0 68 12"><use href="#sb-icons"/></svg></span></div>
+              <video class="lazy-play" muted loop playsinline preload="none" poster="/media/v2/details.jpg" data-src="/media/v2/details.mp4"></video><div class="glare"></div>
+            </div></div></div>
           </article>
           <!-- AUSGEBLENDET: Kacheln "Verkaufen" und "Sammlung drucken" (später wieder einblenden)
           <article class="bcard b-span-5 reveal" style="--accent:#2E8CFF">
@@ -1385,20 +1406,14 @@
       }, {passive:true})
     }
 
-    /* ---------- hero fan ---------- */
-    const fan = document.getElementById('fan')
-    if(fan){
-      const go = ()=> requestAnimationFrame(()=> fan.classList.add('in'))
-      const first = fan.querySelector('.fan-item:nth-child(3) img')
-      if(first && !first.complete) first.addEventListener('load', go, {once:true}); else go()
-      setTimeout(go, 1200)
-      if(!reduceMotion && matchMedia('(pointer:fine)').matches){
-        addEventListener('pointermove', e=>{
-          fan.style.setProperty('--mx', ((e.clientX / innerWidth - .5) * 2).toFixed(3))
-          fan.style.setProperty('--my', ((e.clientY / innerHeight - .5) * 2).toFixed(3))
-        }, {passive:true})
-      }
-    }
+
+    /* ---------- Handy-Ansicht: Hero-Handys beim Scrollen einblenden ---------- */
+    ;(function(){
+      const hv = document.getElementById('heroVisual')
+      if(!hv) return
+      const io = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ hv.classList.add('shown'); io.disconnect() } }), {threshold:.12})
+      io.observe(hv)
+    })()
 
     /* ---------- reveal on scroll ---------- */
     const revealIO = new IntersectionObserver(entries=>{
@@ -1679,7 +1694,7 @@
       const f = document.createElement('form')
       f.method = 'post'
       f.action = `https://${MAILCHIMP.host}/subscribe/post?u=${MAILCHIMP.u}&id=${MAILCHIMP.id}`
-      f.target = '_blank'
+      f.target = '_self'
       const i = document.createElement('input')
       i.type = 'hidden'; i.name = 'EMAIL'; i.value = email
       f.appendChild(i)
@@ -1698,10 +1713,9 @@
       if(data.result === 'redirect' || /captcha/i.test(String(data.msg || ''))){
         openMailchimpForm(email)
         signupForm.reset()
-        toast('Fast geschafft! Wir haben ein neues Fenster geöffnet – bestätige dort kurz, dass du kein Roboter bist. Danach bekommst du eine E-Mail zum Bestätigen (schau auch im Spam-Ordner).','Noch ein Klick')
       } else if(data.result === 'success'){
         signupForm.reset()
-        toast('Fast geschafft! Wir haben dir eine E-Mail geschickt – bitte bestätige deine Anmeldung. Schau sicherheitshalber auch im Spam-Ordner nach.','Danke!')
+        location.href = '/newsletter-danke.html'
       } else {
         const raw = String(data.msg || 'Anmeldung fehlgeschlagen')
         const msg = raw.replace(/<[^>]*>/g,'').replace(/^\d+\s*-\s*/,'').trim()

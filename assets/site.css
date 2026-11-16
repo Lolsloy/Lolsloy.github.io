@@ -252,3 +252,47 @@ body.page main{flex:1}
 .cc-dfoot .cc-btn{min-width:140px}
 .cc-dlinks{padding:0 24px 20px;font-size:.85rem;color:var(--muted)}
 .cc-dlinks a{color:#7fdcff}
+
+/* ---------- Newsletter-Seiten ---------- */
+.nl-wrap{position:relative;min-height:calc(100svh - 72px);display:grid;place-items:center;padding:56px 16px 80px;overflow:hidden}
+.nl-wrap::before{content:"";position:absolute;inset:-20% -10% auto;height:100%;pointer-events:none;
+  background:radial-gradient(35% 40% at 25% 30%,rgba(4,213,235,.18),transparent 70%),radial-gradient(35% 45% at 75% 60%,rgba(46,140,255,.22),transparent 70%);filter:blur(10px)}
+.nl-bricks{position:absolute;inset:0;pointer-events:none}
+.nl-bricks svg{position:absolute;width:90px;opacity:.9;animation:nlFloat 7s ease-in-out infinite}
+.nl-bricks .b1{left:8%;top:14%;color:#04D5EB;width:84px}
+.nl-bricks .b2{right:9%;top:20%;color:#FF5EA0;width:70px;animation-delay:-2s}
+.nl-bricks .b3{left:12%;bottom:12%;color:#FFD300;width:64px;animation-delay:-4s}
+.nl-bricks .b4{right:12%;bottom:16%;color:#2E8CFF;width:96px;animation-delay:-1s}
+@keyframes nlFloat{50%{transform:translateY(-16px) rotate(6deg)}}
+@media (max-width:760px){.nl-bricks svg{width:52px !important;opacity:.55}.nl-bricks .b1{left:2%;top:4%}.nl-bricks .b2{right:2%;top:6%}.nl-bricks .b3{left:3%;bottom:3%}.nl-bricks .b4{right:3%;bottom:2%}}
+.nl-card{position:relative;width:min(620px,100%);text-align:center;padding:44px 40px 36px;border-radius:30px;
+  background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01)),#11263B;border:1px solid var(--line2);
+  box-shadow:0 40px 100px -30px rgba(0,0,0,.8);animation:nlIn .8s var(--ease) both}
+.nl-card::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;border-radius:30px 30px 0 0;background:var(--grad)}
+@keyframes nlIn{from{opacity:0;transform:translateY(24px) scale(.98)}}
+.nl-icon{position:relative;width:84px;height:84px;margin:0 auto 22px;border-radius:26px;display:grid;place-items:center}
+.nl-icon svg{width:40px;height:40px}
+.nl-icon.mail{background:rgba(58,168,255,.15);color:#5AB4FF}
+.nl-icon.ok{background:rgba(0,224,138,.14);color:#00E08A}
+.nl-icon .ping{position:absolute;inset:0;border-radius:inherit;border:2px solid currentColor;animation:nlPing 2.2s ease-out infinite}
+@keyframes nlPing{from{opacity:.7;transform:scale(1)}to{opacity:0;transform:scale(1.5)}}
+.nl-card h1{margin:0;font-size:clamp(2.2rem,5vw,3.2rem);line-height:1.05;letter-spacing:-.03em;font-weight:800}
+.nl-card .lead{margin:16px auto 0;color:var(--fg2);font-size:1.08rem;line-height:1.65;max-width:30rem}
+.nl-steps{list-style:none;margin:28px 0 0;padding:0;display:flex;flex-direction:column;gap:10px;text-align:left}
+.nl-steps li{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.nl-steps b{flex:0 0 auto;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(180deg,#22B8FF,#1A7DF0);color:#fff;font-size:.95rem}
+.nl-steps span{color:var(--fg2);font-size:.93rem;line-height:1.45}
+.nl-steps strong{display:block;color:#fff;font-size:1rem;margin-bottom:2px}
+.nl-perks{list-style:none;margin:26px auto 0;padding:0;display:flex;flex-direction:column;gap:10px;max-width:24rem;text-align:left}
+.nl-perks li{display:flex;gap:12px;align-items:center;color:#dfe6ec;font-weight:600}
+.nl-perks li::before{content:"";width:22px;height:22px;flex:0 0 auto;border-radius:7px;background:rgba(0,224,138,.18) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2300E08A' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/14px no-repeat}
+.nl-hint{margin:20px auto 0;font-size:.9rem;color:var(--muted);line-height:1.5;max-width:28rem}
+.nl-hint strong{color:#dfe6ec}
+.nl-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:28px}
+.nl-actions .btn{min-width:200px}
+.nl-social{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center}
+.nl-social span{width:100%;color:var(--muted);font-size:.85rem;font-weight:600;margin-bottom:2px}
+.nl-social a{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px 0 12px;border-radius:13px;background:rgba(255,255,255,.04);border:1px solid var(--line2);color:#fff;text-decoration:none;font-weight:700;transition:transform .18s var(--ease),background .18s ease}
+.nl-social a:hover{transform:translateY(-2px);background:rgba(255,255,255,.08)}
+.nl-social svg{width:18px;height:18px}
+@media (max-width:560px){.nl-card{padding:34px 20px 28px;border-radius:24px}.nl-actions .btn{width:100%}}
