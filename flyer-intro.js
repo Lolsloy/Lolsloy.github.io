@@ -61,13 +61,21 @@
     function dust(x, y, t, t0, n, col, spread) { var p = pr(t, t0, t0 + .6), s = ''; if (p <= 0 || p >= 1) return ''; for (var i = 0; i < n; i++) { var a = (i / (n - 1) - .5) * (spread || 2.4); s += '<circle cx="' + R(x + Math.sin(a) * 90 * eo(p)) + '" cy="' + R(y - Math.cos(a) * 40 * eo(p) - 6) + '" r="' + R(10 + 22 * p) + '" fill="' + (col || '#fff') + '" opacity="' + R(.55 * (1 - p)) + '"/>'; } return s; }
     function confetti(x, y, t, t0, n, sd) { var p = t - t0, s = ''; if (p <= 0 || p > 1.6) return ''; seed = sd || 5; var cols = ['#2E8CFF', '#FF5EA0', '#FFD300', '#00C27A', '#7A5CFF', '#04D5EB']; for (var i = 0; i < n; i++) { var a = -Math.PI * (0.15 + 0.7 * rnd()), v = 420 + rnd() * 520, w = 1 + Math.floor(rnd() * 2), rs = (rnd() - .5) * 900; s += G(fb(-13 * w, -13, 26, w, cols[i % 6]), x + Math.cos(a) * v * p, y + Math.sin(a) * v * p + 900 * p * p, 1, rs * p, cl(1.6 - p) > 1 ? 1 : cl((1.6 - p) * 2)); } return s; }
     var LOGO = "M4.00 65.00Q4 62 6.59 63.52L90.91 112.98Q93.5 114.5 93.50 117.50L93.50 179.00Q93.5 182 90.91 180.49L6.59 131.51Q4 130 4.00 127.00ZM190.41 63.52Q193 62 193.00 65.00L193.00 127.00Q193 130 190.41 131.51L106.09 180.49Q103.5 182 103.50 179.00L103.50 117.50Q103.5 114.5 106.09 112.98ZM74.5 16A24 13 0 0 1 122.5 16V25A24 13 0 0 1 74.5 25ZM76.4 16.3A22.1 11.67 0 1 0 120.6 16.3A22.1 11.67 0 1 0 76.4 16.3ZM26 42A24 13 0 0 1 74 42V51A24 13 0 0 1 26 51ZM27.9 42.3A22.1 11.67 0 1 0 72.1 42.3A22.1 11.67 0 1 0 27.9 42.3ZM123.5 42A24 13 0 0 1 171.5 42V51A24 13 0 0 1 123.5 51ZM125.4 42.3A22.1 11.67 0 1 0 169.6 42.3A22.1 11.67 0 1 0 125.4 42.3ZM74.5 74A24 13 0 0 1 122.5 74V83A24 13 0 0 1 74.5 83ZM76.4 74.3A22.1 11.67 0 1 0 120.6 74.3A22.1 11.67 0 1 0 76.4 74.3Z";
-    var DEFS = '<defs><linearGradient id="fiLg" x1="4" y1="90" x2="193" y2="90" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7C5CFF"/><stop offset="1" stop-color="#D152C0"/></linearGradient><radialGradient id="fiGlow"><stop offset="0" stop-color="#FF5EA0" stop-opacity=".6"/><stop offset="1" stop-color="#FF5EA0" stop-opacity="0"/></radialGradient></defs>';
+    var DEFS = '<defs><linearGradient id="fiLg" x1="4" y1="90" x2="193" y2="90" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#04D5EB"/><stop offset=".5" stop-color="#2E8CFF"/><stop offset="1" stop-color="#CF64E5"/></linearGradient><radialGradient id="fiGlow"><stop offset="0" stop-color="#FF5EA0" stop-opacity=".6"/><stop offset="1" stop-color="#FF5EA0" stop-opacity="0"/></radialGradient></defs>';
     function logo(cx, cy, w, fill) { var k = w / 197; return '<g transform="translate(' + R(cx - w / 2) + ' ' + R(cy - 93 * k) + ') scale(' + R(k * 1000) / 1000 + ')"><path fill-rule="evenodd" fill="' + (fill || 'url(#fiLg)') + '" d="' + LOGO + '"/></g>'; }
     // Schluss: Logo + Schriftzug + Spruch
     function brand(t, t0, dark, line, y, noLogo) {
       var p = pr(t, t0, t0 + .5); if (p <= 0) return ''; var c = dark ? NAVY : '#fff', s = '';
-      if (!noLogo) s += G(logo(0, 0, 170, dark ? null : '#fff'), 500, y - 150, back(p), 0, cl(p * 3));
-      var q = eo(pr(t, t0 + .15, t0 + .65)); if (q > 0) s += G(txt('SetHub', 0, 0, 104, c) + txt(line, 0, 66, 38, c, .9, 600), 500, y + 30 * (1 - q), 1, 0, q);
+      y = Math.min(y, VH - 90);                                   // Spruch bleibt immer im Bild
+      var q = eo(pr(t, t0 + .15, t0 + .65));
+      if (!TALL && !noLogo) {
+        // Querformat: Logo links neben „SetHub“ (wie im Website-Header), braucht wenig Höhe
+        if (p > 0) s += G(logo(0, 0, 104), 292, y - 37, back(p), 0, cl(p * 3));
+        if (q > 0) s += G(txt('SetHub', 0, 0, 104, c), 567, y + 30 * (1 - q), 1, 0, q) + G(txt(line, 0, 0, 38, c, .9, 600), 500, y + 62 + 30 * (1 - q), 1, 0, q);
+        return s;
+      }
+      if (!noLogo) s += G(logo(0, 0, 150), 500, y - 190, back(p), 0, cl(p * 3));   // Hochformat: Logo mit Abstand über „SetHub“
+      if (q > 0) s += G(txt('SetHub', 0, 0, 104, c) + txt(line, 0, 66, 38, c, .9, 600), 500, y + 30 * (1 - q), 1, 0, q);
       return s;
     }
     var BIG = '<rect x="-3000" y="-3000" width="7000" height="8000" fill="';
@@ -217,14 +225,14 @@
         });
         // Logo wird heruntergebeamt
         var ly = VH * .56, lp = pr(t, 3.5, 4.5);
-        if (lp > 0) s += '<circle cx="500" cy="' + R(lerp(uy + 5 * u, ly, eo(lp))) + '" r="' + R(150 * eo(lp)) + '" fill="#04D5EB" opacity="' + R(.25 * (1 - pr(t, 4.6, 5.0))) + '"/>' + G(logo(0, 0, 190, '#fff'), 500, lerp(uy + 5 * u, ly, eo(lp)), .2 + .8 * eo(lp), Math.sin(lp * 12) * 6 * (1 - lp), cl(lp * 4));
+        if (lp > 0) s += '<circle cx="500" cy="' + R(lerp(uy + 5 * u, ly, eo(lp))) + '" r="' + R(150 * eo(lp)) + '" fill="#04D5EB" opacity="' + R(.25 * (1 - pr(t, 4.6, 5.0))) + '"/>' + G(logo(0, 0, 160), 500, lerp(uy + 5 * u, ly, eo(lp)), .2 + .8 * eo(lp), Math.sin(lp * 12) * 6 * (1 - lp), cl(lp * 4));
         // UFO mit Lauflicht
         var uf = sprite(['.....CCCC.....', '....CCCCCC....', '..SSSSSSSSSS..', 'SSSSSSSSSSSSSS', '..DDDDDDDDDD..'], u, -7 * u, 0), on = Math.floor(t * 8);
         for (var k = 0; k < 4; k++) uf += fb((-5 + k * 3) * u, 3 * u, u, 1, (on + k) % 4 === 0 ? '#FFFFFF' : (on + k) % 4 === 1 ? '#FFD300' : '#F2A900', false);
         uf += '<ellipse cx="0" cy="' + R(.5 * u) + '" rx="' + R(1.2 * u) + '" ry="' + R(.5 * u) + '" fill="#fff" opacity=".35"/>';
         s += G(uf, ux, uy, 1, tilt);
         if (out > 0 && out < 1) s += '<line x1="' + R(ux + 7 * u) + '" y1="' + R(uy + 2 * u) + '" x2="' + R(ux + 7 * u + 500 * out) + '" y2="' + R(uy + 2 * u + 160 * out) + '" stroke="#04D5EB" stroke-width="10" stroke-linecap="round" opacity="' + R(.6 * (1 - out)) + '"/>';
-        return s + brand(t, 4.5, false, 'Nicht von dieser Welt.', ly + 250, true);
+        return s + brand(t, 4.5, false, 'Nicht von dieser Welt.', ly + 190, true);
       }
     };
 
